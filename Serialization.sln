@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Newtonsoft.J
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "Application.UnitTests\Application.UnitTests.csproj", "{958867DF-8ACC-4741-97BB-594273EFBC53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Benchmarks", "Serialization.Benchmarks\Serialization.Benchmarks.csproj", "{5F93E58A-6A7C-40C7-BD8C-AE6CFA0B811C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarks", "Benchmarks\Benchmarks.csproj", "{5F93E58A-6A7C-40C7-BD8C-AE6CFA0B811C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
