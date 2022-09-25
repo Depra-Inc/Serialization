@@ -1,7 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <PackageId>Depra.Serialization.Domen</PackageId>
+        <Title>Serialization.Domen</Title>
+        <Authors>Depra, Nikolay Melnikov</Authors>
+        <Description>Domain layer implementation of serialization</Description>
+        <Copyright>Copyright © 2022 Nikolay Melnikov. All rights reserved.</Copyright>
+        <PackageLicenseUrl></PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/Depression-aggression/Serialization</RepositoryUrl>
+        <RepositoryType>Module</RepositoryType>
+        <PackageTags>Serialization, Binary, Xml, Json, Domain</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <PackageVersion>0.9.0</PackageVersion>
+        <AssemblyName>Depra.Serialization.Domain</AssemblyName>
+        <RootNamespace>Depra.Serialization.Domain</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Include="..\LICENSE.md">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
 
 </Project>
