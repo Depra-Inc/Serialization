@@ -3,31 +3,33 @@
 
 using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using Depra.Serialization.Application.Helpers;
 using Depra.Serialization.Domain.Serializers;
 
-namespace Depra.Serialization.Application.Binary
+namespace Depra.Serialization.Application.Xml
 {
-    [Obsolete]
-    public sealed class BinarySerializer : ISerializer
+    public sealed class StandardXmlSerializer : ISerializer
     {
-        private static readonly Encoding ENCODING_TYPE = Encoding.ASCII;
+        private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 
-        private readonly BinaryFormatter _binaryFormatter;
+        public byte[] Serialize<TIn>(TIn input) =>
+            SerializationHelper.SerializeToBytes(this, input);
 
-        public BinarySerializer() => _binaryFormatter = new BinaryFormatter();
+        public void Serialize<TIn>(Stream outputStream, TIn input)
+        {
+            var serializer = new XmlSerializer(typeof(TIn));
+            serializer.Serialize(outputStream, input);
+        }
 
-        public byte[] Serialize<TIn>(TIn input) => SerializationHelper.SerializeToBytes(this, input);
-
-        public void Serialize<TIn>(Stream outputStream, TIn input) => _binaryFormatter.Serialize(outputStream, input);
+        public string SerializeToPrettyString<TIn>(TIn input) => SerializeToString(input);
 
         public Task SerializeAsync<TIn>(Stream outputStream, TIn input) =>
             SerializationAsyncHelper.SerializeAsync(this, outputStream, input);
-
-        public string SerializeToPrettyString<TIn>(TIn input) => SerializeToString(input);
 
         public string SerializeToString<TIn>(TIn input) =>
             SerializationHelper.SerializeToString(this, input, ENCODING_TYPE);
@@ -37,13 +39,16 @@ namespace Depra.Serialization.Application.Binary
 
         public TOut Deserialize<TOut>(Stream inputStream)
         {
+            var serializer = new XmlSerializer(typeof(TOut));
             inputStream.Seek(0, SeekOrigin.Begin);
-            return (TOut) _binaryFormatter.Deserialize(inputStream);
+            var deserialized = serializer.Deserialize(inputStream);
+
+            return (TOut) deserialized;
         }
 
         public Task<TOut> DeserializeAsync<TOut>(Stream inputStream) =>
             SerializationAsyncHelper.DeserializeAsync<TOut>(this, inputStream);
 
-        public override string ToString() => nameof(BinarySerializer);
+        public override string ToString() => nameof(XmlSerializer);
     }
 }

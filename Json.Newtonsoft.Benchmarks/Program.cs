@@ -1,4 +1,4 @@
-// Copyright © 2022 Nikolay Melnikov. All rights reserved.
+﻿// Copyright © 2022 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 using BenchmarkDotNet.Configs;
@@ -9,7 +9,7 @@ using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Toolchains.InProcess.Emit;
 using BenchmarkDotNet.Validators;
 
-namespace Depra.Serialization.Benchmarks;
+namespace Depra.Serialization.Json.Newtonsoft.Benchmarks;
 
 internal static class Program
 {

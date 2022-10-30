@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <AssemblyName>Depra.Serialization.Json.Newtonsoft</AssemblyName>
+        <RootNamespace>Depra.Serialization.Json.Newtonsoft</RootNamespace>
+        <Authors>Nikolay Melnikov</Authors>
+        <Company>Depra</Company>
+        <Product>Depra.Serialization.Integration.Newtonsoft.Json</Product>
+        <Description>Adapter for serializer from Newtonsoft.</Description>
+        <Copyright>Copyright © 2022 Nikolay Melnikov. All rights reserved.</Copyright>
+        <PackageLicenseFile></PackageLicenseFile>
+        <RepositoryUrl>https://github.com/Depression-aggression/Serialization</RepositoryUrl>
+        <RepositoryType>Module</RepositoryType>
+        <PackageTags>Serialization, Binary, Xml, Json, Infrastructure, Newtonsoft</PackageTags>
+        <Version>0.9.0</Version>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2-beta2" />
+    </ItemGroup>
+
+</Project>

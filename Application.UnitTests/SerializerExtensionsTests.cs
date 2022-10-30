@@ -1,60 +1,70 @@
 ﻿// Copyright © 2022 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using Depra.Serialization.Application.Extensions;
-using Depra.Serialization.Application.Serializers;
+using Depra.Serialization.Application.UnitTests.Helpers;
 using Depra.Serialization.Application.UnitTests.Types;
-using FluentAssertions;
-using NUnit.Framework;
+using Depra.Serialization.Domain.Extensions;
+using Depra.Serialization.Domain.Serializers;
 
-namespace Depra.Serialization.Application.UnitTests
+namespace Depra.Serialization.Application.UnitTests;
+
+[TestFixture(TestOf = typeof(SerializerExtensions))]
+internal class SerializerExtensionsTests
 {
-    [TestFixture]
-    public class SerializerExtensionsTests
+    [Test]
+    public void WhenCloneClass_AndInputIsNotNull_ThenClonedObjectEqualsInput(
+        [ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
+        ISerializer serializer)
     {
-        [Test]
-        public void WhenSerializeToStream_AndDeserializeToSourceType_ThenClonedObjectEqualsSource(
-            [ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetInput))]
-            TestInput input,
-            [ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-            ISerializer serializer)
-        {
-            // Arrange.
-            var sourceData = input.Source;
-            var sourceType = input.SourceType;
+        // Arrange.
+        var inputClassInstance = new SerializableClass(RandomIdGenerator.Generate());
 
-            // Act.
-            object deserializedData;
-            using (var stream = serializer.SerializeToStream(sourceData, sourceType))
-            {
-                deserializedData = serializer.DeserializeFromStream(stream, sourceType);
-            }
+        // Act.
+        var clonedClassInstance = serializer.Clone(inputClassInstance);
 
-            // Assert.
-            deserializedData.Should().BeEquivalentTo(sourceData);
+        // Assert.
+        clonedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
-            Helper.PrintDebugCloneResult(sourceData, deserializedData);
-        }
+        ConsoleHelper.PrintResults<SerializableClass>(
+            inputClassInstance, nameof(inputClassInstance),
+            clonedClassInstance, nameof(clonedClassInstance));
+    }
 
-        [Test]
-        public void WhenSerializeToBytes_AndDeserializeToSourceType_ThenClonedObjectEqualsSource(
-            [ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetInput))]
-            TestInput input,
-            [ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-            ISerializer serializer)
-        {
-            // Arrange.
-            var sourceData = input.Source;
-            var sourceType = input.SourceType;
+    [Test]
+    public void WhenCloneStruct_AndInputIsNotNull_ThenClonedObjectEqualsInput(
+        [ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
+        ISerializer serializer)
+    {
+        // Arrange.
+        var inputStructInstance = new SerializableStruct(RandomIdGenerator.Generate());
 
-            // Act.
-            var bytes = serializer.SerializeToBytes(sourceData, sourceType);
-            var deserializedData = serializer.DeserializeBytes(bytes, sourceType);
+        // Act.
+        var clonedStructInstance = serializer.Clone(inputStructInstance);
 
-            // Assert.
-            deserializedData.Should().BeEquivalentTo(sourceData);
+        // Assert.
+        clonedStructInstance.Should().BeEquivalentTo(inputStructInstance);
 
-            Helper.PrintDebugCloneResult(sourceData, deserializedData);
-        }
+        ConsoleHelper.PrintResults<SerializableStruct>(
+            inputStructInstance, nameof(inputStructInstance),
+            clonedStructInstance, nameof(clonedStructInstance));
+    }
+
+    [Test]
+    public void WhenCloneRecord_AndInputIsNotNull_ThenClonedObjectEqualsInput(
+        [ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
+        ISerializer serializer)
+    {
+        // Arrange.
+        var inputRecordInstance = new SerializableRecord(RandomIdGenerator.Generate());
+
+        // Act.
+        var clonedRecordInstance = serializer.Clone(inputRecordInstance);
+
+        // Assert.
+        clonedRecordInstance.Should().BeEquivalentTo(inputRecordInstance);
+
+        ConsoleHelper.PrintResults<SerializableRecord>(
+            inputRecordInstance, nameof(inputRecordInstance),
+            clonedRecordInstance, nameof(clonedRecordInstance));
     }
 }

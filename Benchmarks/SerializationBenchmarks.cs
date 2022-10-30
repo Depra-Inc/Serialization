@@ -1,106 +1,85 @@
 ﻿// Copyright © 2022 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Configs;
 using Depra.Serialization.Application.Binary;
-using Depra.Serialization.Application.Extensions;
-using Depra.Serialization.Application.Serializers;
-using Depra.Serialization.Infrastructure.Newtonsoft.Json;
-using Depra.Serialization.Infrastructure.Serializers.Json;
-using Depra.Serialization.Infrastructure.Serializers.Xml;
-using Newtonsoft.Json;
+using Depra.Serialization.Application.Json;
+using Depra.Serialization.Application.Xml;
+using Depra.Serialization.Benchmarks.SerializableTypes;
+using Depra.Serialization.Domain.Extensions;
+using Depra.Serialization.Domain.Serializers;
+using Depra.Serialization.Json.Microsoft;
+using Depra.Serialization.Json.Newtonsoft;
 
-namespace Depra.Serialization.Benchmarks
+namespace Depra.Serialization.Benchmarks;
+
+[CategoriesColumn, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
+public class SerializationBenchmarks
 {
-    [MemoryDiagnoser]
-    public class SerializationBenchmarks
+    private const string SerializeToBytesCategoryName = "To Bytes";
+    private const string SerializeToStringCategoryName = "To String";
+    private const string CloneCategoryName = "Clone";
+
+    private SerializableClass _serializableClass;
+    private SerializableStruct _serializableStruct;
+    private SerializableRecord _serializableRecord;
+    
+    [ParamsSource(nameof(Serializers))] public ISerializer Serializer { get; set; }
+
+    [GlobalSetup]
+    public void Setup()
     {
-        /// <summary>
-        /// Must be public to <see cref="XmlSerializer"/>.
-        /// </summary>
-        [Serializable]
-        public class TestSerializableClass
-        {
-            /// <summary>
-            /// Property can be a field.
-            /// Cannot be private and internal to <see cref="XmlSerializer"/> and <see cref="NewtonsoftJsonSerializer"/>
-            /// </summary>
-            public string Id { get; set; }
+        _serializableClass = new SerializableClass();
+        _serializableStruct = new SerializableStruct();
+        _serializableRecord = new SerializableRecord();
+    }
 
-            /// <summary>
-            /// Required for <see cref="XmlSerializer"/>
-            /// </summary>
-            public TestSerializableClass() { }
-
-            public TestSerializableClass(string id) => Id = id;
-
-            public override string ToString() => Id;
-        }
-
-        /// <summary>
-        /// Must be public to <see cref="XmlSerializer"/>.
-        /// </summary>
-        [Serializable]
-        public struct TestSerializableStruct
-        {
-            /// <summary>
-            /// Property can be a field.
-            /// Cannot be private and internal to <see cref="XmlSerializer"/> and <see cref="NewtonsoftJsonSerializer"/>
-            /// </summary>
-            public string Id { get; set; }
-
-            public override string ToString() => Id;
-        }
-
-        /// <summary>
-        /// Must be public to <see cref="XmlSerializer"/>.
-        /// </summary>
-        [Serializable]
-        public record TestSerializableRecord(string Id)
-        {
-            /// <summary>
-            /// Required for <see cref="XmlSerializer"/>
-            /// </summary>
-            public TestSerializableRecord() : this("") { }
-        }
-
-        [ParamsSource(nameof(Serializers))] public ISerializer Serializer { get; set; }
+    [Benchmark, BenchmarkCategory(SerializeToBytesCategoryName)]
+    public void SerializeClassToBytes() => Serializer.Serialize(_serializableClass);
+    
+    [Benchmark, BenchmarkCategory(SerializeToBytesCategoryName)]
+    public void SerializeStructToBytes() => Serializer.Serialize(_serializableStruct);
         
-        [Benchmark]
-        public void SerializeClass() => Serializer.SerializeToBytes(new TestSerializableClass());
+    [Benchmark, BenchmarkCategory(SerializeToBytesCategoryName)]
+    public void SerializeRecordToBytes() => Serializer.Serialize(_serializableRecord);
+    
 
-        [Benchmark]
-        public void SerializeStruct() => Serializer.SerializeToBytes(new TestSerializableStruct());
-
-        [Benchmark]
-        public void SerializeRecord() => Serializer.SerializeToBytes(new TestSerializableRecord());
-
-        [Benchmark]
-        public object CloneClass() => Serializer.Clone(new TestSerializableClass());
+    [Benchmark, BenchmarkCategory(SerializeToStringCategoryName)]
+    public void SerializeClassToString() => Serializer.SerializeToString(_serializableClass);
+    
+    [Benchmark, BenchmarkCategory(SerializeToStringCategoryName)]
+    public void SerializeStructToString() => Serializer.SerializeToString(_serializableStruct);
+    
+    [Benchmark, BenchmarkCategory(SerializeToStringCategoryName)]
+    public void SerializeRecordToString() => Serializer.SerializeToString(_serializableRecord);
+    
+    
+    [Benchmark, BenchmarkCategory(CloneCategoryName)]
+    public object CloneClass() => Serializer.Clone(_serializableClass);
         
-        [Benchmark]
-        public void CloneStruct() => Serializer.Clone(new TestSerializableStruct());
+    [Benchmark, BenchmarkCategory(CloneCategoryName)]
+    public void CloneStruct() => Serializer.Clone(_serializableStruct);
+        
+    [Benchmark, BenchmarkCategory(CloneCategoryName)]
+    public void CloneRecord() => Serializer.Clone(_serializableRecord);
+    
 
-        [Benchmark]
-        public void CloneRecord() => Serializer.Clone(new TestSerializableRecord());
+    public static IEnumerable<ISerializer> Serializers()
+    {
+        // Binary.
+        yield return new BinarySerializer();
 
-        public static IEnumerable<ISerializer> Serializers()
-        {
-            // Binary.
-            yield return new BinarySerializer();
+        // XML.
+        yield return new StandardXmlSerializer();
+        yield return new DataContractXmlSerializer();
 
-            // XML.
-            yield return new StandardXmlSerializer();
-            yield return new DataContractXmlSerializer();
+        // Json.
+        yield return new DataContractJsonSerializerAdapter();
+        yield return new NewtonsoftJsonSerializer();
+        yield return new MicrosoftJsonSerializer();
 
-            // Json.
-            yield return new DataContractJsonSerializer();
-            yield return new NewtonsoftJsonSerializer(JsonSerializer.CreateDefault());
-
-            // Add more serializers here if needed.
-        }
+        // Add more serializers here if needed.
     }
 }
