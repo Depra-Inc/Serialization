@@ -13,7 +13,7 @@
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
-        <PackageVersion>0.9.0</PackageVersion>
+        <PackageVersion>1.1.2</PackageVersion>
         <AssemblyName>Depra.Serialization.Domain</AssemblyName>
         <RootNamespace>Depra.Serialization.Domain</RootNamespace>
         <Company>Depra</Company>

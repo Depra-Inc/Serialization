@@ -4,7 +4,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AssemblyName>Depra.Serialization.Infrastructure</AssemblyName>
         <RootNamespace>Depra.Serialization.Infrastructure</RootNamespace>
-        <Version>1.1.0</Version>
+        <Version>1.1.2</Version>
         <Authors>Nikolay Melnikov</Authors>
         <Company>Depra</Company>
         <Description>Infrastructure layer implementation of serialization</Description>
