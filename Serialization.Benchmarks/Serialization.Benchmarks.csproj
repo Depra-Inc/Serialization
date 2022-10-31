@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <AssemblyName>Depra.Serialization.Benchmarks</AssemblyName>
+        <RootNamespace>Depra.Serialization.Benchmarks</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Serialization.Application\Serialization.Application.csproj" />
+      <ProjectReference Include="..\Serialization.Infrastructure\Serialization.Infrastructure.csproj" />
+      <ProjectReference Include="..\Serialization.Json.Microsoft\Serialization.Json.Microsoft.csproj" />
+      <ProjectReference Include="..\Serialization.Json.Newtonsoft\Serialization.Json.Newtonsoft.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AssemblyName>Depra.Serialization.Infrastructure</AssemblyName>
+        <RootNamespace>Depra.Serialization.Infrastructure</RootNamespace>
+        <Version>1.1.0</Version>
+        <Authors>Nikolay Melnikov</Authors>
+        <Company>Depra</Company>
+        <Description>Infrastructure layer implementation of serialization</Description>
+        <Copyright>Copyright © 2022 Nikolay Melnikov. All rights reserved.</Copyright>
+        <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+        <RepositoryUrl>https://github.com/Depression-aggression/Serialization</RepositoryUrl>
+        <RepositoryType>Module</RepositoryType>
+        <PackageTags>Serialization, Adapter, Infrastructure</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <TargetFramework>netstandard2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Serialization.Application\Serialization.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\LICENSE.md">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
+
+</Project>

@@ -6,27 +6,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FB50B3DE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{3FE0C27F-17C8-4EA4-926A-027D4833BCA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{36485310-81DD-41F0-989F-EA9F1456F669}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Domain", "Serialization.Domain\Serialization.Domain.csproj", "{36485310-81DD-41F0-989F-EA9F1456F669}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{C73B6492-3FAF-48C6-A5D8-249F16D64BCC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Application", "Serialization.Application\Serialization.Application.csproj", "{C73B6492-3FAF-48C6-A5D8-249F16D64BCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{27DF8F8B-94B2-4545-8523-2D122AD03F37}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Infrastructure", "Serialization.Infrastructure\Serialization.Infrastructure.csproj", "{27DF8F8B-94B2-4545-8523-2D122AD03F37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.UnitTests", "Application.UnitTests\Application.UnitTests.csproj", "{958867DF-8ACC-4741-97BB-594273EFBC53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Application.UnitTests", "Serialization.Application.UnitTests\Serialization.Application.UnitTests.csproj", "{958867DF-8ACC-4741-97BB-594273EFBC53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarks", "Benchmarks\Benchmarks.csproj", "{5F93E58A-6A7C-40C7-BD8C-AE6CFA0B811C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Benchmarks", "Serialization.Benchmarks\Serialization.Benchmarks.csproj", "{5F93E58A-6A7C-40C7-BD8C-AE6CFA0B811C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json.Newtonsoft", "Json.Newtonsoft\Json.Newtonsoft.csproj", "{F49A701F-DF80-43D2-8ED8-2045CA5960D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Json.Newtonsoft", "Serialization.Json.Newtonsoft\Serialization.Json.Newtonsoft.csproj", "{F49A701F-DF80-43D2-8ED8-2045CA5960D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json.Microsoft", "Json.Microsoft\Json.Microsoft.csproj", "{DC0D6A6B-CE99-41E8-A6A4-39E0D190A3AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Json.Microsoft", "Serialization.Json.Microsoft\Serialization.Json.Microsoft.csproj", "{DC0D6A6B-CE99-41E8-A6A4-39E0D190A3AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json.Newtonsoft.Benchmarks", "Json.Newtonsoft.Benchmarks\Json.Newtonsoft.Benchmarks.csproj", "{6AD03186-DE6F-4C81-B073-4317B908FA2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Json.Newtonsoft.Benchmarks", "Serialization.Json.Newtonsoft.Benchmarks\Serialization.Json.Newtonsoft.Benchmarks.csproj", "{6AD03186-DE6F-4C81-B073-4317B908FA2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json.Microsoft.Benchmarks", "Json.Microsoft.Benchmarks\Json.Microsoft.Benchmarks.csproj", "{B52D6375-1B47-4F7F-9CD4-3E7A03FB1A57}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Json.Microsoft.Benchmarks", "Serialization.Json.Microsoft.Benchmarks\Serialization.Json.Microsoft.Benchmarks.csproj", "{B52D6375-1B47-4F7F-9CD4-3E7A03FB1A57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json.Newtonsoft.UnitTests", "Json.Newtonsoft.UnitTests\Json.Newtonsoft.UnitTests.csproj", "{D0CC77DF-9D3C-4A0F-AD4F-8E02BCB686EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Json.Newtonsoft.UnitTests", "Serialization.Json.Newtonsoft.UnitTests\Serialization.Json.Newtonsoft.UnitTests.csproj", "{D0CC77DF-9D3C-4A0F-AD4F-8E02BCB686EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json.Microsoft.UnitTests", "Json.Microsoft.UnitTests\Json.Microsoft.UnitTests.csproj", "{ED593B0C-5B9A-4A44-AB0A-955FD389CFE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Json.Microsoft.UnitTests", "Serialization.Json.Microsoft.UnitTests\Serialization.Json.Microsoft.UnitTests.csproj", "{ED593B0C-5B9A-4A44-AB0A-955FD389CFE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization", "Serialization\Serialization.csproj", "{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,7 @@ Global
 		{B52D6375-1B47-4F7F-9CD4-3E7A03FB1A57} = {3FE0C27F-17C8-4EA4-926A-027D4833BCA7}
 		{D0CC77DF-9D3C-4A0F-AD4F-8E02BCB686EF} = {FB50B3DE-B661-4252-8EBC-D0166A5CCA64}
 		{ED593B0C-5B9A-4A44-AB0A-955FD389CFE1} = {FB50B3DE-B661-4252-8EBC-D0166A5CCA64}
+		{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6} = {044D8F5B-9DF3-4C9F-B8F6-115420728902}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{36485310-81DD-41F0-989F-EA9F1456F669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -91,5 +94,9 @@ Global
 		{ED593B0C-5B9A-4A44-AB0A-955FD389CFE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED593B0C-5B9A-4A44-AB0A-955FD389CFE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED593B0C-5B9A-4A44-AB0A-955FD389CFE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
