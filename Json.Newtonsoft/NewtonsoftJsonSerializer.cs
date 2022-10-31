@@ -10,10 +10,14 @@ using Newtonsoft.Json;
 
 namespace Depra.Serialization.Json.Newtonsoft
 {
+    /// <summary>
+    /// Serializer using <see cref="JsonSerializer"/> and <see cref="JsonConvert"/>.
+    /// </summary>
     public sealed class NewtonsoftJsonSerializer : SerializerAdapter
     {
         private readonly JsonSerializer _serializer;
 
+        /// <inheritdoc />
         public override byte[] Serialize<TIn>(TIn input)
         {
             var serializedString = JsonConvert.SerializeObject(input);
@@ -22,6 +26,7 @@ namespace Depra.Serialization.Json.Newtonsoft
             return bytesFromString;
         }
 
+        /// <inheritdoc />
         public override void Serialize<TIn>(Stream outputStream, TIn input)
         {
             var bytes = Serialize(input);
@@ -29,22 +34,27 @@ namespace Depra.Serialization.Json.Newtonsoft
             outputStream.Seek(0, SeekOrigin.Begin);
         }
 
+        /// <inheritdoc />
         public override async Task SerializeAsync<TIn>(Stream outputStream, TIn input)
         {
-            using var writer = new StreamWriter(outputStream, leaveOpen: true);
+            await using var writer = new StreamWriter(outputStream, leaveOpen: true);
             using var jsonWriter = new JsonTextWriter(writer);
 
             _serializer.Serialize(jsonWriter, input);
             await jsonWriter.FlushAsync();
         }
 
+        /// <inheritdoc />
         public override string SerializeToPrettyString<TIn>(TIn input) =>
             JsonConvert.SerializeObject(input, Formatting.Indented);
 
+        /// <inheritdoc />
         public override string SerializeToString<TIn>(TIn input) => JsonConvert.SerializeObject(input);
 
+        /// <inheritdoc />
         public override TOut Deserialize<TOut>(string input) => JsonConvert.DeserializeObject<TOut>(input);
 
+        /// <inheritdoc />
         public override TOut Deserialize<TOut>(Stream inputStream)
         {
             ThrowIfNullOrEmpty(inputStream, nameof(inputStream));
@@ -69,6 +79,7 @@ namespace Depra.Serialization.Json.Newtonsoft
             return deserializedObject;
         }
 
+        /// <inheritdoc />
         public override TOut Deserialize<TOut>(ReadOnlyMemory<byte> input)
         {
             ThrowIfEmpty(input.ToArray(), nameof(input));
@@ -79,6 +90,7 @@ namespace Depra.Serialization.Json.Newtonsoft
             return deserializedObject;
         }
 
+        /// <inheritdoc />
         public override async Task<TOut> DeserializeAsync<TOut>(Stream inputStream)
         {
             if (inputStream.Position == inputStream.Length)
@@ -104,6 +116,10 @@ namespace Depra.Serialization.Json.Newtonsoft
         public NewtonsoftJsonSerializer(JsonSerializer serializer = null) =>
             _serializer = serializer ?? JsonSerializer.CreateDefault();
 
+        /// <summary>
+        /// Just for tests and benchmarks.
+        /// </summary>
+        /// <returns>Returns the pretty name of the <see cref="SerializerAdapter"/>.</returns>
         public override string ToString() => typeof(JsonSerializer).Namespace;
     }
 }

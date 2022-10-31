@@ -3,11 +3,11 @@
 
 namespace Depra.Serialization.Json.Microsoft.Benchmarks.SerializableTypes;
 
-public class TestSerializableClass
+public class SerializableClass
 {
-    public string Id { get; set; }
+    public readonly string Id;
     
-    public TestSerializableClass(string id) => Id = id;
+    public SerializableClass(string id) => Id = id;
     
     public override string ToString() => Id;
 }

@@ -12,26 +12,38 @@ using Depra.Serialization.Application.Interfaces;
 
 namespace Depra.Serialization.Infrastructure.Adapter
 {
+    /// <summary>
+    /// Adapter class for third party serializers.
+    /// </summary>
     public abstract class SerializerAdapter : ISerializationProvider
     {
+        /// <inheritdoc />
         public abstract byte[] Serialize<TIn>(TIn input);
 
+        /// <inheritdoc />
         public abstract void Serialize<TIn>(Stream outputStream, TIn input);
 
+        /// <inheritdoc />
         public abstract Task SerializeAsync<TIn>(Stream outputStream, TIn input);
 
+        /// <inheritdoc />
         public abstract string SerializeToPrettyString<TIn>(TIn input);
 
+        /// <inheritdoc />
         public abstract string SerializeToString<TIn>(TIn input);
 
+        /// <inheritdoc />
         public abstract TOut Deserialize<TOut>(string input);
 
+        /// <inheritdoc />
         public abstract TOut Deserialize<TOut>(Stream inputStream);
 
 #if CSHARP8_OR_GREATER
+        /// <inheritdoc />
         public abstract TOut Deserialize<TOut>(ReadOnlyMemory<byte> input);
 #endif
 
+        /// <inheritdoc />
         public abstract Task<TOut> DeserializeAsync<TOut>(Stream inputStream);
 
         protected static void ThrowIfNullOrEmpty(string input, string argumentName) =>

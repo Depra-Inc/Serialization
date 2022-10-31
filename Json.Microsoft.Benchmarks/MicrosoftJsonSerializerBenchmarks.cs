@@ -1,3 +1,6 @@
+// Copyright © 2022 Nikolay Melnikov. All rights reserved.
+// SPDX-License-Identifier: Apache-2.0
+
 using System.Text.Json;
 using BenchmarkDotNet.Attributes;
 using Depra.Serialization.Json.Microsoft.Benchmarks.SerializableTypes;
@@ -7,35 +10,35 @@ namespace Depra.Serialization.Json.Microsoft.Benchmarks;
 public class MicrosoftJsonSerializerBenchmarks
 {
     private Type _typeCache = null!;
-    private string _testObjectAsJson = null!;
-    private TestSerializableClass _testClass = null!;
+    private string _serializableClassAsJson = null!;
+    private SerializableClass _serializableClass = null!;
 
     [GlobalSetup]
     public void Setup()
     {
-        _testClass = new TestSerializableClass(nameof(TestSerializableClass));
-        _typeCache = typeof(TestSerializableClass);
-        _testObjectAsJson = JsonSerializer.Serialize(_testClass);
+        _serializableClass = new SerializableClass(nameof(SerializableClass));
+        _typeCache = typeof(SerializableClass);
+        _serializableClassAsJson = JsonSerializer.Serialize(_serializableClass);
     }
 
     [Benchmark]
-    public string SerializeUsingType() => JsonSerializer.Serialize(_testClass, typeof(TestSerializableClass));
+    public string SerializeUsingType() => JsonSerializer.Serialize(_serializableClass, typeof(SerializableClass));
 
     [Benchmark]
-    public string SerializeUsingCachedType() => JsonSerializer.Serialize(_testClass, _typeCache);
+    public string SerializeUsingCachedType() => JsonSerializer.Serialize(_serializableClass, _typeCache);
 
     [Benchmark]
-    public string SerializeUsingGeneric() => JsonSerializer.Serialize(_testClass);
+    public string SerializeUsingGeneric() => JsonSerializer.Serialize(_serializableClass);
 
     [Benchmark]
-    public TestSerializableClass DeserializeUsingType() =>
-        (TestSerializableClass) JsonSerializer.Deserialize(_testObjectAsJson, typeof(TestSerializableClass))!;
+    public SerializableClass DeserializeUsingType() =>
+        (SerializableClass) JsonSerializer.Deserialize(_serializableClassAsJson, typeof(SerializableClass))!;
 
     [Benchmark]
-    public TestSerializableClass DeserializeUsingCachedType() =>
-        (TestSerializableClass) JsonSerializer.Deserialize(_testObjectAsJson, _typeCache)!;
+    public SerializableClass DeserializeUsingCachedType() =>
+        (SerializableClass) JsonSerializer.Deserialize(_serializableClassAsJson, _typeCache)!;
 
     [Benchmark]
-    public TestSerializableClass DeserializeUsingGeneric() =>
-        JsonSerializer.Deserialize<TestSerializableClass>(_testObjectAsJson)!;
+    public SerializableClass DeserializeUsingGeneric() =>
+        JsonSerializer.Deserialize<SerializableClass>(_serializableClassAsJson)!;
 }
