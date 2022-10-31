@@ -5,7 +5,7 @@
         <RootNamespace>Depra.Serialization</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <Version>1.1.0</Version>
+        <Version>1.1.2</Version>
         <Authors>Nikolay Melnikov</Authors>
         <Company>Depra</Company>
         <Description>Implementation of serialization providers</Description>
@@ -16,18 +16,26 @@
         <PackageTags>Serialization, Deserialization, Serializer, Async, Binary, Xml, Json, Domain, Application, Infrastructure</PackageTags>
         <TargetFramework>netstandard2.1</TargetFramework>
     </PropertyGroup>
-
+    
     <ItemGroup>
-        <ProjectReference Include="..\Serialization.Application\Serialization.Application.csproj" />
-        <ProjectReference Include="..\Serialization.Domain\Serialization.Domain.csproj" />
-        <ProjectReference Include="..\Serialization.Infrastructure\Serialization.Infrastructure.csproj" />
+        <ProjectReference Include="..\Serialization.Application\Serialization.Application.csproj" PrivateAssets="all" />
+        <ProjectReference Include="..\Serialization.Domain\Serialization.Domain.csproj" PrivateAssets="All"/>
+        <ProjectReference Include="..\Serialization.Infrastructure\Serialization.Infrastructure.csproj" PrivateAssets="All"/>
     </ItemGroup>
+    <PropertyGroup>
+        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    </PropertyGroup>
+    <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
+        <ItemGroup>
+            <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
+        </ItemGroup>
+    </Target>
 
     <ItemGroup>
-      <None Include="..\LICENSE.md">
-        <Pack>True</Pack>
-        <PackagePath></PackagePath>
-      </None>
+        <None Include="..\LICENSE.md">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
     </ItemGroup>
 
 </Project>
