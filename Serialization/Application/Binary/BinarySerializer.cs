@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,6 +55,9 @@ namespace Depra.Serialization.Application.Binary
             SerializationAsyncHelper.DeserializeAsync<TOut>(this, inputStream);
 
         public BinarySerializer() => _binaryFormatter = new BinaryFormatter();
+
+        public BinarySerializer(ISurrogateSelector surrogateSelector) =>
+            _binaryFormatter = new BinaryFormatter {SurrogateSelector = surrogateSelector};
 
         /// <summary>
         /// Just for tests and benchmarks.

@@ -49,7 +49,7 @@ namespace Depra.Serialization.Json.Microsoft
         /// <inheritdoc />
         public override TOut Deserialize<TOut>(ReadOnlyMemory<byte> input)
         {
-            ThrowIfEmpty(input.ToArray(), nameof(input));
+            ThrowIfEmpty(input, nameof(input));
 
             return JsonSerializer.Deserialize<TOut>(input.Span, _options);
         }

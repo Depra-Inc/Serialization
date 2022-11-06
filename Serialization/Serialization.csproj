@@ -15,27 +15,19 @@
         <RepositoryType>Module</RepositoryType>
         <PackageTags>Serialization, Deserialization, Serializer, Async, Binary, Xml, Json, Domain, Application, Infrastructure</PackageTags>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <PackageVersion>1.1.3</PackageVersion>
     </PropertyGroup>
     
-    <ItemGroup>
-        <ProjectReference Include="..\Serialization.Application\Serialization.Application.csproj" PrivateAssets="all" />
-        <ProjectReference Include="..\Serialization.Domain\Serialization.Domain.csproj" PrivateAssets="All"/>
-        <ProjectReference Include="..\Serialization.Infrastructure\Serialization.Infrastructure.csproj" PrivateAssets="All"/>
-    </ItemGroup>
-    <PropertyGroup>
-        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    </PropertyGroup>
-    <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
-        <ItemGroup>
-            <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
-        </ItemGroup>
-    </Target>
-
     <ItemGroup>
         <None Include="..\LICENSE.md">
             <Pack>True</Pack>
             <PackagePath></PackagePath>
         </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Application" />
+      <Folder Include="Infrastructure" />
     </ItemGroup>
 
 </Project>

@@ -18,7 +18,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Serialization.Infrastructure\Serialization.Infrastructure.csproj" />
+      <ProjectReference Include="..\Serialization\Serialization.csproj" />
     </ItemGroup>
 
     <ItemGroup>

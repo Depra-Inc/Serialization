@@ -47,7 +47,7 @@ namespace Depra.Serialization.Infrastructure.Adapter
         protected static void ThrowIfNullOrEmpty(Stream inputStream, string argumentName) =>
             Guard.AgainstNullOrEmpty(inputStream, argumentName);
 
-        protected static void ThrowIfEmpty(ArraySegment<byte> input, string argumentName) =>
+        protected static void ThrowIfEmpty(ReadOnlyMemory<byte> input, string argumentName) =>
             Guard.AgainstEmpty(input, argumentName);
     }
 }

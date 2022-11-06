@@ -82,7 +82,7 @@ namespace Depra.Serialization.Json.Newtonsoft
         /// <inheritdoc />
         public override TOut Deserialize<TOut>(ReadOnlyMemory<byte> input)
         {
-            ThrowIfEmpty(input.ToArray(), nameof(input));
+            ThrowIfEmpty(input, nameof(input));
 
             var inputAsString = Encoding.UTF8.GetString(input.Span);
             var deserializedObject = JsonConvert.DeserializeObject<TOut>(inputAsString);
