@@ -16,6 +16,7 @@
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <TargetFrameworks>net5.0;net6.0;netstandard2.1</TargetFrameworks>
+        <PackageVersion>1.0.1</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>

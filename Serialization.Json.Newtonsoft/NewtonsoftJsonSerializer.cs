@@ -16,11 +16,12 @@ namespace Depra.Serialization.Json.Newtonsoft
     public sealed class NewtonsoftJsonSerializer : SerializerAdapter
     {
         private readonly JsonSerializer _serializer;
+        private readonly JsonSerializerSettings _serializerSettings;
 
         /// <inheritdoc />
         public override byte[] Serialize<TIn>(TIn input)
         {
-            var serializedString = JsonConvert.SerializeObject(input);
+            var serializedString = JsonConvert.SerializeObject(input, _serializerSettings);
             var bytesFromString = Encoding.UTF8.GetBytes(serializedString);
 
             return bytesFromString;
@@ -46,13 +47,15 @@ namespace Depra.Serialization.Json.Newtonsoft
 
         /// <inheritdoc />
         public override string SerializeToPrettyString<TIn>(TIn input) =>
-            JsonConvert.SerializeObject(input, Formatting.Indented);
+            JsonConvert.SerializeObject(input, Formatting.Indented, _serializerSettings);
 
         /// <inheritdoc />
-        public override string SerializeToString<TIn>(TIn input) => JsonConvert.SerializeObject(input);
+        public override string SerializeToString<TIn>(TIn input) =>
+            JsonConvert.SerializeObject(input, _serializerSettings);
 
         /// <inheritdoc />
-        public override TOut Deserialize<TOut>(string input) => JsonConvert.DeserializeObject<TOut>(input);
+        public override TOut Deserialize<TOut>(string input) =>
+            JsonConvert.DeserializeObject<TOut>(input, _serializerSettings);
 
         /// <inheritdoc />
         public override TOut Deserialize<TOut>(Stream inputStream)
@@ -85,7 +88,7 @@ namespace Depra.Serialization.Json.Newtonsoft
             ThrowIfEmpty(input, nameof(input));
 
             var inputAsString = Encoding.UTF8.GetString(input.Span);
-            var deserializedObject = JsonConvert.DeserializeObject<TOut>(inputAsString);
+            var deserializedObject = JsonConvert.DeserializeObject<TOut>(inputAsString, _serializerSettings);
 
             return deserializedObject;
         }
@@ -113,8 +116,12 @@ namespace Depra.Serialization.Json.Newtonsoft
             return deserializedObject;
         }
 
-        public NewtonsoftJsonSerializer(JsonSerializer serializer = null) =>
-            _serializer = serializer ?? JsonSerializer.CreateDefault();
+        public NewtonsoftJsonSerializer(JsonSerializer serializer = null,
+            JsonSerializerSettings serializerSettings = null)
+        {
+            _serializer = serializer ?? JsonSerializer.CreateDefault(serializerSettings);
+            _serializerSettings = serializerSettings;
+        }
 
         /// <summary>
         /// Just for tests and benchmarks.
