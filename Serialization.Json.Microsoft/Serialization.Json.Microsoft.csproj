@@ -3,7 +3,7 @@
     <PropertyGroup>
         <AssemblyName>Depra.Serialization.Json.Microsoft</AssemblyName>
         <RootNamespace>Depra.Serialization.Json.Microsoft</RootNamespace>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
         <Authors>Nikolay Melnikov</Authors>
         <Company>Depra</Company>
         <Description>Adapter for serializer from System.Text.Json.</Description>
@@ -14,7 +14,7 @@
         <PackageTags>Serialization, Adapter, Integration, System, Text, Json</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <TargetFrameworks>net5.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;net7.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>

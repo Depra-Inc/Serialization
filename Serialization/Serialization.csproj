@@ -9,13 +9,14 @@
         <Authors>Nikolay Melnikov</Authors>
         <Company>Depra</Company>
         <Description>Implementation of serialization providers</Description>
-        <Copyright>Copyright © 2022 Nikolay Melnikov. All rights reserved.</Copyright>
+        <Copyright>Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.</Copyright>
         <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
         <RepositoryUrl>https://github.com/Depression-aggression/Serialization</RepositoryUrl>
         <RepositoryType>Module</RepositoryType>
         <PackageTags>Serialization, Deserialization, Serializer, Async, Binary, Xml, Json, Domain, Application, Infrastructure</PackageTags>
-        <PackageVersion>1.1.3</PackageVersion>
+        <PackageVersion>1.1.4</PackageVersion>
         <TargetFramework>netstandard2.1</TargetFramework>
+        <PackageReleaseNotes>Improvements for Async Support</PackageReleaseNotes>
     </PropertyGroup>
     
     <ItemGroup>

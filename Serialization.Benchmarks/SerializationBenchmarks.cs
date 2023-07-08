@@ -18,15 +18,16 @@ namespace Depra.Serialization.Benchmarks;
 [CategoriesColumn, GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 public class SerializationBenchmarks
 {
-    private const string SerializeToBytesCategoryName = "To Bytes";
-    private const string SerializeToStringCategoryName = "To String";
-    private const string CloneCategoryName = "Clone";
+    private const string CLONE_CATEGORY_NAME = "Clone";
+    private const string SERIALIZE_TO_BYTES_CATEGORY_NAME = "To Bytes";
+    private const string SERIALIZE_TO_STRING_CATEGORY_NAME = "To String";
 
     private SerializableClass _serializableClass;
     private SerializableStruct _serializableStruct;
     private SerializableRecord _serializableRecord;
-    
-    [ParamsSource(nameof(Serializers))] public ISerializer Serializer { get; set; }
+
+    [ParamsSource(nameof(Serializers))] 
+    public ISerializer Serializer { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -36,40 +37,42 @@ public class SerializationBenchmarks
         _serializableRecord = new SerializableRecord();
     }
 
-    [Benchmark, BenchmarkCategory(SerializeToBytesCategoryName)]
+    [Benchmark, BenchmarkCategory(SERIALIZE_TO_BYTES_CATEGORY_NAME)]
     public void SerializeClassToBytes() => Serializer.Serialize(_serializableClass);
-    
-    [Benchmark, BenchmarkCategory(SerializeToBytesCategoryName)]
-    public void SerializeStructToBytes() => Serializer.Serialize(_serializableStruct);
-        
-    [Benchmark, BenchmarkCategory(SerializeToBytesCategoryName)]
-    public void SerializeRecordToBytes() => Serializer.Serialize(_serializableRecord);
-    
 
-    [Benchmark, BenchmarkCategory(SerializeToStringCategoryName)]
+    [Benchmark, BenchmarkCategory(SERIALIZE_TO_BYTES_CATEGORY_NAME)]
+    public void SerializeStructToBytes() => Serializer.Serialize(_serializableStruct);
+
+    [Benchmark, BenchmarkCategory(SERIALIZE_TO_BYTES_CATEGORY_NAME)]
+    public void SerializeRecordToBytes() => Serializer.Serialize(_serializableRecord);
+
+
+    [Benchmark, BenchmarkCategory(SERIALIZE_TO_STRING_CATEGORY_NAME)]
     public void SerializeClassToString() => Serializer.SerializeToString(_serializableClass);
-    
-    [Benchmark, BenchmarkCategory(SerializeToStringCategoryName)]
+
+    [Benchmark, BenchmarkCategory(SERIALIZE_TO_STRING_CATEGORY_NAME)]
     public void SerializeStructToString() => Serializer.SerializeToString(_serializableStruct);
-    
-    [Benchmark, BenchmarkCategory(SerializeToStringCategoryName)]
+
+    [Benchmark, BenchmarkCategory(SERIALIZE_TO_STRING_CATEGORY_NAME)]
     public void SerializeRecordToString() => Serializer.SerializeToString(_serializableRecord);
-    
-    
-    [Benchmark, BenchmarkCategory(CloneCategoryName)]
+
+
+    [Benchmark, BenchmarkCategory(CLONE_CATEGORY_NAME)]
     public object CloneClass() => Serializer.Clone(_serializableClass);
-        
-    [Benchmark, BenchmarkCategory(CloneCategoryName)]
+
+    [Benchmark, BenchmarkCategory(CLONE_CATEGORY_NAME)]
     public void CloneStruct() => Serializer.Clone(_serializableStruct);
-        
-    [Benchmark, BenchmarkCategory(CloneCategoryName)]
+
+    [Benchmark, BenchmarkCategory(CLONE_CATEGORY_NAME)]
     public void CloneRecord() => Serializer.Clone(_serializableRecord);
     
-
+    
     public static IEnumerable<ISerializer> Serializers()
     {
         // Binary.
+#pragma warning disable CS0612
         yield return new BinarySerializer();
+#pragma warning restore CS0612
 
         // XML.
         yield return new StandardXmlSerializer();

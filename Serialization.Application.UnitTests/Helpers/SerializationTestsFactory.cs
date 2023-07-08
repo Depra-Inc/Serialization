@@ -14,7 +14,9 @@ internal static class SerializationTestsFactory
     public static IEnumerable<ISerializer> GetSerializers()
     {
         // Binary.
+#pragma warning disable CS0612
         yield return new BinarySerializer();
+#pragma warning restore CS0612
 
         // XML.
         yield return new StandardXmlSerializer();
