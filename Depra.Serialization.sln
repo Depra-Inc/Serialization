@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Json.Microsof
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization", "Serialization\Serialization.csproj", "{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Unsafe", "Serialization.Unsafe\Serialization.Unsafe.csproj", "{1541837A-26FF-4E76-A729-1BCE211C9C45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,7 @@ Global
 		{D0CC77DF-9D3C-4A0F-AD4F-8E02BCB686EF} = {FB50B3DE-B661-4252-8EBC-D0166A5CCA64}
 		{ED593B0C-5B9A-4A44-AB0A-955FD389CFE1} = {FB50B3DE-B661-4252-8EBC-D0166A5CCA64}
 		{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6} = {044D8F5B-9DF3-4C9F-B8F6-115420728902}
+		{1541837A-26FF-4E76-A729-1BCE211C9C45} = {044D8F5B-9DF3-4C9F-B8F6-115420728902}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{958867DF-8ACC-4741-97BB-594273EFBC53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -77,5 +80,9 @@ Global
 		{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0CF4F7E-2ADF-4451-B75A-33A15A5AFFC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1541837A-26FF-4E76-A729-1BCE211C9C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1541837A-26FF-4E76-A729-1BCE211C9C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1541837A-26FF-4E76-A729-1BCE211C9C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1541837A-26FF-4E76-A729-1BCE211C9C45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
