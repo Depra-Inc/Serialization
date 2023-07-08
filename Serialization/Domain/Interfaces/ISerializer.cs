@@ -1,7 +1,8 @@
-// Copyright © 2022 Nikolay Melnikov. All rights reserved.
+// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Depra.Serialization.Domain.Interfaces
@@ -72,8 +73,9 @@ namespace Depra.Serialization.Domain.Interfaces
         /// Deserializes the specified object from given <see cref="Stream"/> asynchronously.
         /// </summary>
         /// <param name="inputStream">The <see cref="Stream"/> to be deserialized.</param>
+        /// <param name="cancellationToken">For cancellation ability.</param>
         /// <typeparam name="TOut">The type of the object to be deserialized.</typeparam>
         /// <returns>The deserialized object of specified type.</returns>
-        Task<TOut> DeserializeAsync<TOut>(Stream inputStream);
+        ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream, CancellationToken cancellationToken = default);
     }
 }

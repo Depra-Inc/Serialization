@@ -3,23 +3,24 @@
 
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Depra.Serialization.Application.Helpers;
-using Depra.Serialization.Application.Interfaces;
+using Depra.Serialization.Domain.Interfaces;
 
 namespace Depra.Serialization.Application.Xml
 {
     /// <summary>
     /// Serializer using <see cref="XmlSerializer"/>.
     /// </summary>
-    public sealed class StandardXmlSerializer : ISerializationProvider
+    public sealed class StandardXmlSerializer : ISerializer
     {
         private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 
         /// <inheritdoc />
         public byte[] Serialize<TIn>(TIn input) =>
-            SerializationHelper.SerializeToBytes(this, input);
+            MemorySerialization.SerializeToBytes(this, input);
 
         /// <inheritdoc />
         public void Serialize<TIn>(Stream outputStream, TIn input)
@@ -29,19 +30,20 @@ namespace Depra.Serialization.Application.Xml
         }
 
         /// <inheritdoc />
-        public string SerializeToPrettyString<TIn>(TIn input) => SerializeToString(input);
+        public string SerializeToPrettyString<TIn>(TIn input) =>
+            SerializeToString(input);
 
         /// <inheritdoc />
         public Task SerializeAsync<TIn>(Stream outputStream, TIn input) =>
-            SerializationAsyncHelper.SerializeAsync(this, outputStream, input);
+            FakeSerializerAsync.SerializeAsync(this, outputStream, input);
 
         /// <inheritdoc />
         public string SerializeToString<TIn>(TIn input) =>
-            SerializationHelper.SerializeToString(this, input, ENCODING_TYPE);
+            MemorySerialization.SerializeToString(this, input, ENCODING_TYPE);
 
         /// <inheritdoc />
         public TOut Deserialize<TOut>(string input) =>
-            SerializationHelper.DeserializeFromString<TOut>(this, input, ENCODING_TYPE);
+            MemorySerialization.DeserializeFromString<TOut>(this, input, ENCODING_TYPE);
 
         /// <inheritdoc />
         public TOut Deserialize<TOut>(Stream inputStream)
@@ -54,13 +56,14 @@ namespace Depra.Serialization.Application.Xml
         }
 
         /// <inheritdoc />
-        public Task<TOut> DeserializeAsync<TOut>(Stream inputStream) =>
-            SerializationAsyncHelper.DeserializeAsync<TOut>(this, inputStream);
+        public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream, 
+            CancellationToken cancellationToken = default) =>
+            FakeSerializerAsync.DeserializeAsync<TOut>(this, inputStream, cancellationToken);
 
         /// <summary>
         /// Just for tests and benchmarks.
         /// </summary>
-        /// <returns>Returns the pretty name of the <see cref="ISerializationProvider"/>.</returns>
+        /// <returns>Returns the pretty name of the <see cref="ISerializer"/>.</returns>
         public override string ToString() => nameof(XmlSerializer);
     }
 }

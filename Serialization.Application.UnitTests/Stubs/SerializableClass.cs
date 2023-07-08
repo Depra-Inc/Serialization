@@ -1,10 +1,9 @@
 ﻿// Copyright © 2022 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using System;
 using System.Xml.Serialization;
 
-namespace Depra.Serialization.Application.UnitTests.Types;
+namespace Depra.Serialization.Application.UnitTests.Stubs;
 
 /// <summary>
 /// Must be public to <see cref="XmlSerializer"/>.
@@ -21,10 +20,7 @@ public class SerializableClass
     /// <summary>
     /// Required for <see cref="XmlSerializer"/>
     /// </summary>
-    public SerializableClass()
-    {
-        Id = string.Empty;
-    }
+    public SerializableClass() => Id = string.Empty;
 
     public SerializableClass(string id) => Id = id;
 

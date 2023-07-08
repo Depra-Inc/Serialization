@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using Depra.Serialization.Json.Microsoft.UnitTests.Helpers;
-using Depra.Serialization.Json.Microsoft.UnitTests.Types;
+using Depra.Serialization.Json.Microsoft.UnitTests.Stubs;
 
 namespace Depra.Serialization.Json.Microsoft.UnitTests;
 
@@ -13,8 +13,9 @@ internal class MicrosoftJsonSerializerTests
     public void WhenSerializeClassToBytes_AndInputIsNotEmpty_ThenSerializedBytesIsNotNullOrEmpty()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputClassInstance = new SerializableClass(RandomIdGenerator.Generate());
+        var inputClassInstance = new SerializableClass(randomId);
 
         // Act.
         var inputClassAsBytes = serializerAdapter.Serialize(inputClassInstance);
@@ -22,6 +23,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         inputClassAsBytes.Should().NotBeNullOrEmpty();
 
+        // Debug.
         ConsoleHelper.PrintResults(inputClassInstance, nameof(inputClassInstance),
             inputClassAsBytes, nameof(inputClassAsBytes));
     }
@@ -30,8 +32,9 @@ internal class MicrosoftJsonSerializerTests
     public void WhenSerializeStructToBytes_AndInputIsNotEmpty_ThenSerializedBytesIsNotNullOrEmpty()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputStructInstance = new SerializableStruct(RandomIdGenerator.Generate());
+        var inputStructInstance = new SerializableStruct(randomId);
 
         // Act.
         var inputStructInstanceAsBytes = serializerAdapter.Serialize(inputStructInstance);
@@ -39,6 +42,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         inputStructInstanceAsBytes.Should().NotBeNullOrEmpty();
 
+        // Debug.
         ConsoleHelper.PrintResults(inputStructInstance, nameof(inputStructInstance),
             inputStructInstanceAsBytes, nameof(inputStructInstanceAsBytes));
     }
@@ -47,8 +51,9 @@ internal class MicrosoftJsonSerializerTests
     public void WhenSerializeRecordToBytes_AndInputIsNotEmpty_ThenSerializedBytesIsNotNullOrEmpty()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputRecordInstance = new SerializableRecord(RandomIdGenerator.Generate());
+        var inputRecordInstance = new SerializableRecord(randomId);
 
         // Act.
         var inputRecordInstanceAsBytes = serializerAdapter.Serialize(inputRecordInstance);
@@ -56,6 +61,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         inputRecordInstanceAsBytes.Should().NotBeNullOrEmpty();
 
+        // Debug.
         ConsoleHelper.PrintResults(inputRecordInstance, nameof(inputRecordInstance),
             inputRecordInstanceAsBytes, nameof(inputRecordInstanceAsBytes));
     }
@@ -64,8 +70,9 @@ internal class MicrosoftJsonSerializerTests
     public void WhenSerializeClassToString_AndDeserializeFromString_ThenDeserializedClassEqualsInput()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputClassInstance = new SerializableClass(RandomIdGenerator.Generate());
+        var inputClassInstance = new SerializableClass(randomId);
 
         // Act.
         var inputClassInstanceAsString = serializerAdapter.SerializeToString(inputClassInstance);
@@ -76,6 +83,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults(inputClassInstance, nameof(inputClassInstance),
             deserializedClassInstance, nameof(deserializedClassInstance));
     }
@@ -84,8 +92,9 @@ internal class MicrosoftJsonSerializerTests
     public void WhenSerializeStructToString_AndDeserializeFromString_ThenDeserializedStructEqualsInput()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputClassInstance = new SerializableStruct(RandomIdGenerator.Generate());
+        var inputClassInstance = new SerializableStruct(randomId);
 
         // Act.
         var inputClassInstanceAsString = serializerAdapter.SerializeToString(inputClassInstance);
@@ -94,6 +103,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults(inputClassInstance, nameof(inputClassInstance),
             deserializedClassInstance, nameof(deserializedClassInstance));
     }
@@ -102,8 +112,9 @@ internal class MicrosoftJsonSerializerTests
     public void WhenSerializeRecordToString_AndDeserializeFromString_ThenDeserializedRecordEqualsInput()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputClassInstance = new SerializableRecord(RandomIdGenerator.Generate());
+        var inputClassInstance = new SerializableRecord(randomId);
 
         // Act.
         var inputClassInstanceAsString = serializerAdapter.SerializeToString(inputClassInstance);
@@ -112,6 +123,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults(inputClassInstance, nameof(inputClassInstance),
             deserializedClassInstance, nameof(deserializedClassInstance));
     }
@@ -121,8 +133,9 @@ internal class MicrosoftJsonSerializerTests
     public void WhenSerializeClassToStream_AndDeserializeToInputType_ThenDeserializedClassEqualsInput()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputClassInstance = new SerializableClass(RandomIdGenerator.Generate());
+        var inputClassInstance = new SerializableClass(randomId);
 
         // Act.
         SerializableClass deserializedClassInstance;
@@ -135,6 +148,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults(inputClassInstance, nameof(inputClassInstance),
             deserializedClassInstance, nameof(deserializedClassInstance));
     }
@@ -143,8 +157,9 @@ internal class MicrosoftJsonSerializerTests
     public void WhenSerializeStructToStream_AndDeserializeToInputType_ThenDeserializedStructEqualsInput()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputStructInstance = new SerializableStruct(RandomIdGenerator.Generate());
+        var inputStructInstance = new SerializableStruct(randomId);
 
         // Act.
         SerializableStruct deserializedStructInstance;
@@ -157,6 +172,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         deserializedStructInstance.Should().BeEquivalentTo(inputStructInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults(inputStructInstance, nameof(inputStructInstance),
             deserializedStructInstance, nameof(deserializedStructInstance));
     }
@@ -165,8 +181,9 @@ internal class MicrosoftJsonSerializerTests
     public void WhenSerializeRecordToStream_AndDeserializeToInputType_ThenDeserializedRecordEqualsInput()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputRecordInstance = new SerializableRecord(RandomIdGenerator.Generate());
+        var inputRecordInstance = new SerializableRecord(randomId);
 
         // Act.
         SerializableRecord deserializedRecordInstance;
@@ -179,6 +196,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         deserializedRecordInstance.Should().BeEquivalentTo(inputRecordInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults(inputRecordInstance, nameof(inputRecordInstance),
             deserializedRecordInstance, nameof(deserializedRecordInstance));
     }
@@ -187,8 +205,9 @@ internal class MicrosoftJsonSerializerTests
     public async Task WhenSerializeClassToStreamAsync_AndDeserializeAsyncToInputType_ThenDeserializedClassEqualsInput()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputClassInstance = new SerializableClass(RandomIdGenerator.Generate());
+        var inputClassInstance = new SerializableClass(randomId);
 
         // Act.
         SerializableClass deserializedClassInstance;
@@ -201,6 +220,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults(inputClassInstance, nameof(inputClassInstance),
             deserializedClassInstance, nameof(deserializedClassInstance));
     }
@@ -209,8 +229,9 @@ internal class MicrosoftJsonSerializerTests
     public async Task WhenSerializeStructToStreamAsync_AndDeserializeAsyncToInputType_ThenDeserializedStructEqualsInput()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputStructInstance = new SerializableStruct(RandomIdGenerator.Generate());
+        var inputStructInstance = new SerializableStruct(randomId);
 
         // Act.
         SerializableStruct deserializedStructInstance;
@@ -223,6 +244,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         deserializedStructInstance.Should().BeEquivalentTo(inputStructInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults(inputStructInstance, nameof(inputStructInstance),
             deserializedStructInstance, nameof(deserializedStructInstance));
     }
@@ -231,8 +253,9 @@ internal class MicrosoftJsonSerializerTests
     public async Task WhenSerializeRecordToStreamAsync_AndDeserializeAsyncToInputType_ThenDeserializedRecordEqualsInput()
     {
         // Arrange.
+        var randomId = Guid.NewGuid().ToString();
         var serializerAdapter = new MicrosoftJsonSerializer();
-        var inputRecordInstance = new SerializableRecord(RandomIdGenerator.Generate());
+        var inputRecordInstance = new SerializableRecord(randomId);
 
         // Act.
         SerializableRecord deserializedRecordInstance;
@@ -245,6 +268,7 @@ internal class MicrosoftJsonSerializerTests
         // Assert.
         deserializedRecordInstance.Should().BeEquivalentTo(inputRecordInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults(inputRecordInstance, nameof(inputRecordInstance),
             deserializedRecordInstance, nameof(deserializedRecordInstance));
     }

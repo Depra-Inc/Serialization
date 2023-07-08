@@ -4,7 +4,9 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Depra.Serialization.Infrastructure;
 using Depra.Serialization.Infrastructure.Adapter;
 using Newtonsoft.Json;
 
@@ -13,10 +15,17 @@ namespace Depra.Serialization.Json.Newtonsoft
     /// <summary>
     /// Serializer using <see cref="JsonSerializer"/> and <see cref="JsonConvert"/>.
     /// </summary>
-    public sealed class NewtonsoftJsonSerializer : SerializerAdapter
+    public sealed class NewtonsoftJsonSerializer : GuardedSerializer
     {
         private readonly JsonSerializer _serializer;
         private readonly JsonSerializerSettings _serializerSettings;
+
+        public NewtonsoftJsonSerializer(JsonSerializer serializer = null,
+            JsonSerializerSettings serializerSettings = null)
+        {
+            _serializer = serializer ?? JsonSerializer.CreateDefault(serializerSettings);
+            _serializerSettings = serializerSettings;
+        }
 
         /// <inheritdoc />
         public override byte[] Serialize<TIn>(TIn input)
@@ -94,7 +103,8 @@ namespace Depra.Serialization.Json.Newtonsoft
         }
 
         /// <inheritdoc />
-        public override async Task<TOut> DeserializeAsync<TOut>(Stream inputStream)
+        public override async ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
+            CancellationToken cancellationToken = default)
         {
             if (inputStream.Position == inputStream.Length)
             {
@@ -102,7 +112,7 @@ namespace Depra.Serialization.Json.Newtonsoft
             }
 
             var buffer = new Memory<byte>(new byte[inputStream.Length]);
-            var bytesRead = await inputStream.ReadAsync(buffer);
+            var bytesRead = await inputStream.ReadAsync(buffer, cancellationToken);
             if (bytesRead == 0)
             {
                 throw new InvalidDataException();
@@ -116,19 +126,6 @@ namespace Depra.Serialization.Json.Newtonsoft
             return deserializedObject;
         }
 
-        public NewtonsoftJsonSerializer(JsonSerializer serializer = null,
-            JsonSerializerSettings serializerSettings = null)
-        {
-            _serializer = serializer ?? JsonSerializer.CreateDefault(serializerSettings);
-            _serializerSettings = serializerSettings;
-        }
-
-        /// <summary>
-        /// Just for tests and benchmarks.
-        /// </summary>
-        /// <returns>Returns the pretty name of the <see cref="SerializerAdapter"/>.</returns>
-        public override string ToString() => typeof(JsonSerializer).Namespace;
-
         private static StreamWriter CreateStreamWriter(Stream stream)
         {
 #if NET5_0_OR_GREATER
@@ -137,5 +134,11 @@ namespace Depra.Serialization.Json.Newtonsoft
             return new StreamWriter(stream, Encoding.Default, 1024, true);
 #endif
         }
+
+        /// <summary>
+        /// Just for tests and benchmarks.
+        /// </summary>
+        /// <returns>Returns the pretty name of the <see cref="GuardedSerializer"/>.</returns>
+        public override string ToString() => typeof(JsonSerializer).Namespace;
     }
 }

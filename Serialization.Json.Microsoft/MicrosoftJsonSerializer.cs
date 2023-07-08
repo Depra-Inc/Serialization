@@ -5,7 +5,9 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
+using Depra.Serialization.Infrastructure;
 using Depra.Serialization.Infrastructure.Adapter;
 
 namespace Depra.Serialization.Json.Microsoft
@@ -13,12 +15,16 @@ namespace Depra.Serialization.Json.Microsoft
     /// <summary>
     /// Serializer using <see cref="JsonSerializer"/>.
     /// </summary>
-    public sealed class MicrosoftJsonSerializer : SerializerAdapter
+    public sealed class MicrosoftJsonSerializer : GuardedSerializer
     {
         private readonly JsonSerializerOptions _options;
 
+        public MicrosoftJsonSerializer(JsonSerializerOptions options = null) =>
+            _options = options;
+
         /// <inheritdoc />
-        public override byte[] Serialize<TIn>(TIn input) => JsonSerializer.SerializeToUtf8Bytes(input, _options);
+        public override byte[] Serialize<TIn>(TIn input) =>
+            JsonSerializer.SerializeToUtf8Bytes(input, _options);
 
         /// <inheritdoc />
         public override void Serialize<TIn>(Stream outputStream, TIn input)
@@ -33,25 +39,29 @@ namespace Depra.Serialization.Json.Microsoft
 
         /// <inheritdoc />
         public override string SerializeToPrettyString<TIn>(TIn input) =>
-            JsonSerializer.Serialize(input, new JsonSerializerOptions {WriteIndented = true});
+            JsonSerializer.Serialize(input, new JsonSerializerOptions { WriteIndented = true });
 
         /// <inheritdoc />
-        public override string SerializeToString<TIn>(TIn input) => JsonSerializer.Serialize(input, _options);
+        public override string SerializeToString<TIn>(TIn input) =>
+            JsonSerializer.Serialize(input, _options);
 
         /// <inheritdoc />
         public override TOut Deserialize<TOut>(string input)
         {
             ThrowIfNullOrEmpty(input, nameof(input));
+            var bytes = Encoding.UTF8.GetBytes(input);
+            var deserializedObject = JsonSerializer.Deserialize<TOut>(bytes, _options);
 
-            return JsonSerializer.Deserialize<TOut>(Encoding.UTF8.GetBytes(input), _options);
+            return deserializedObject;
         }
 
         /// <inheritdoc />
         public override TOut Deserialize<TOut>(ReadOnlyMemory<byte> input)
         {
             ThrowIfEmpty(input, nameof(input));
+            var deserializedObject = JsonSerializer.Deserialize<TOut>(input.Span, _options);
 
-            return JsonSerializer.Deserialize<TOut>(input.Span, _options);
+            return deserializedObject;
         }
 
         /// <inheritdoc />
@@ -79,24 +89,26 @@ namespace Depra.Serialization.Json.Microsoft
         }
 
         /// <inheritdoc />
-        public override async Task<TOut> DeserializeAsync<TOut>(Stream inputStream)
+        public override async ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
+            CancellationToken cancellationToken = default)
         {
             ThrowIfNullOrEmpty(inputStream, nameof(inputStream));
-
             if (inputStream.Position == inputStream.Length)
             {
                 inputStream.Seek(0, SeekOrigin.Begin);
             }
 
-            return await JsonSerializer.DeserializeAsync<TOut>(inputStream, _options).ConfigureAwait(false);
-        }
+            var deserializedObject = await JsonSerializer
+                .DeserializeAsync<TOut>(inputStream, _options, cancellationToken)
+                .ConfigureAwait(false);
 
-        public MicrosoftJsonSerializer(JsonSerializerOptions options = null) => _options = options;
+            return deserializedObject;
+        }
 
         /// <summary>
         /// Just for tests and benchmarks.
         /// </summary>
-        /// <returns>Returns the pretty name of the <see cref="SerializerAdapter"/>.</returns>
+        /// <returns>Returns the pretty name of the <see cref="GuardedSerializer"/>.</returns>
         public override string ToString() => typeof(JsonSerializer).Namespace;
     }
 }

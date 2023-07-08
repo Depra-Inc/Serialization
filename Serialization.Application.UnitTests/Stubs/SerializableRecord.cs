@@ -1,10 +1,9 @@
 // Copyright © 2022 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using System;
 using System.Xml.Serialization;
 
-namespace Depra.Serialization.Application.UnitTests.Types;
+namespace Depra.Serialization.Application.UnitTests.Stubs;
 
 /// <summary>
 /// Must be public to <see cref="XmlSerializer"/>.

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using Depra.Serialization.Application.UnitTests.Helpers;
-using Depra.Serialization.Application.UnitTests.Types;
+using Depra.Serialization.Application.UnitTests.Stubs;
 using Depra.Serialization.Domain.Extensions;
 using Depra.Serialization.Domain.Interfaces;
 
@@ -17,7 +17,8 @@ internal class SerializerExtensionsTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputClassInstance = new SerializableClass(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputClassInstance = new SerializableClass(randomId);
 
         // Act.
         var clonedClassInstance = serializer.Clone(inputClassInstance);
@@ -36,7 +37,8 @@ internal class SerializerExtensionsTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputStructInstance = new SerializableStruct(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputStructInstance = new SerializableStruct(randomId);
 
         // Act.
         var clonedStructInstance = serializer.Clone(inputStructInstance);
@@ -55,7 +57,8 @@ internal class SerializerExtensionsTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputRecordInstance = new SerializableRecord(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputRecordInstance = new SerializableRecord(randomId);
 
         // Act.
         var clonedRecordInstance = serializer.Clone(inputRecordInstance);

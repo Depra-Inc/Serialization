@@ -5,18 +5,18 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace Depra.Serialization.Application.Errors
+namespace Depra.Serialization.Infrastructure.Errors
 {
     internal static class Guard
     {
-        private const string CantBeNull = "{0} can't be null or empty.";
+        private const string CANT_BE_NULL = "{0} can't be null or empty.";
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AgainstNullOrEmpty(string argumentValue, string argumentName)
         {
             if (string.IsNullOrEmpty(argumentValue))
             {
-                throw new ArgumentException(string.Format(CantBeNull, argumentName));
+                throw new ArgumentException(string.Format(CANT_BE_NULL, argumentName));
             }
         }
 
@@ -25,7 +25,7 @@ namespace Depra.Serialization.Application.Errors
         {
             if (argumentValue is null || argumentValue.Length == 0)
             {
-                throw new ArgumentException(string.Format(CantBeNull, argumentName));
+                throw new ArgumentException(string.Format(CANT_BE_NULL, argumentName));
             }
         }
 
@@ -34,7 +34,7 @@ namespace Depra.Serialization.Application.Errors
         {
             if (argumentValue.Length == 0)
             {
-                throw new ArgumentException(string.Format(CantBeNull, argumentName));
+                throw new ArgumentException(string.Format(CANT_BE_NULL, argumentName));
             }
         }
     }

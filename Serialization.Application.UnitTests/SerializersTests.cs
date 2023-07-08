@@ -1,11 +1,10 @@
 ﻿// Copyright © 2022 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using System;
 using System.IO;
 using System.Threading.Tasks;
 using Depra.Serialization.Application.UnitTests.Helpers;
-using Depra.Serialization.Application.UnitTests.Types;
+using Depra.Serialization.Application.UnitTests.Stubs;
 using Depra.Serialization.Domain.Interfaces;
 
 namespace Depra.Serialization.Application.UnitTests;
@@ -19,7 +18,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputClassInstance = new SerializableClass(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputClassInstance = new SerializableClass(randomId);
 
         // Act.
         var inputClassAsBytes = serializer.Serialize(inputClassInstance);
@@ -27,6 +27,7 @@ internal class SerializersTests
         // Assert.
         inputClassAsBytes.Should().NotBeNullOrEmpty();
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableClass>(
             inputClassInstance, nameof(inputClassInstance),
             inputClassAsBytes, nameof(inputClassAsBytes));
@@ -38,7 +39,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputStructInstance = new SerializableStruct(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputStructInstance = new SerializableStruct(randomId);
 
         // Act.
         var inputStructInstanceAsBytes = serializer.Serialize(inputStructInstance);
@@ -46,6 +48,7 @@ internal class SerializersTests
         // Assert.
         inputStructInstanceAsBytes.Should().NotBeNullOrEmpty();
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableStruct>(
             inputStructInstance, nameof(inputStructInstance),
             inputStructInstanceAsBytes, nameof(inputStructInstanceAsBytes));
@@ -57,7 +60,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputRecordInstance = new SerializableRecord(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputRecordInstance = new SerializableRecord(randomId);
 
         // Act.
         var inputRecordInstanceAsBytes = serializer.Serialize(inputRecordInstance);
@@ -65,6 +69,7 @@ internal class SerializersTests
         // Assert.
         inputRecordInstanceAsBytes.Should().NotBeNullOrEmpty();
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableRecord>(
             inputRecordInstance, nameof(inputRecordInstance),
             inputRecordInstanceAsBytes, nameof(inputRecordInstanceAsBytes));
@@ -76,7 +81,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputClassInstance = new SerializableClass(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputClassInstance = new SerializableClass(randomId);
 
         // Act.
         var inputClassInstanceAsString = serializer.SerializeToString(inputClassInstance);
@@ -87,6 +93,7 @@ internal class SerializersTests
         // Assert.
         deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableClass>(
             inputClassInstance, nameof(inputClassInstance),
             deserializedClassInstance, nameof(deserializedClassInstance));
@@ -98,7 +105,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputClassInstance = new SerializableStruct(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputClassInstance = new SerializableStruct(randomId);
 
         // Act.
         var inputClassInstanceAsString = serializer.SerializeToString(inputClassInstance);
@@ -107,6 +115,7 @@ internal class SerializersTests
         // Assert.
         deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableStruct>(
             inputClassInstance, nameof(inputClassInstance),
             deserializedClassInstance, nameof(deserializedClassInstance));
@@ -118,7 +127,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputClassInstance = new SerializableRecord(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputClassInstance = new SerializableRecord(randomId);
 
         // Act.
         var inputClassInstanceAsString = serializer.SerializeToString(inputClassInstance);
@@ -127,6 +137,7 @@ internal class SerializersTests
         // Assert.
         deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableRecord>(
             inputClassInstance, nameof(inputClassInstance),
             deserializedClassInstance, nameof(deserializedClassInstance));
@@ -139,7 +150,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputClassInstance = new SerializableClass(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputClassInstance = new SerializableClass(randomId);
 
         // Act.
         SerializableClass deserializedClassInstance;
@@ -152,6 +164,7 @@ internal class SerializersTests
         // Assert.
         deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableClass>(
             inputClassInstance, nameof(inputClassInstance),
             deserializedClassInstance, nameof(deserializedClassInstance));
@@ -163,7 +176,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputStructInstance = new SerializableStruct(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputStructInstance = new SerializableStruct(randomId);
 
         // Act.
         SerializableStruct deserializedStructInstance;
@@ -176,6 +190,7 @@ internal class SerializersTests
         // Assert.
         deserializedStructInstance.Should().BeEquivalentTo(inputStructInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableStruct>(
             inputStructInstance, nameof(inputStructInstance),
             deserializedStructInstance, nameof(deserializedStructInstance));
@@ -187,7 +202,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputRecordInstance = new SerializableRecord(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputRecordInstance = new SerializableRecord(randomId);
 
         // Act.
         SerializableRecord deserializedRecordInstance;
@@ -200,6 +216,7 @@ internal class SerializersTests
         // Assert.
         deserializedRecordInstance.Should().BeEquivalentTo(inputRecordInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableRecord>(
             inputRecordInstance, nameof(inputRecordInstance),
             deserializedRecordInstance, nameof(deserializedRecordInstance));
@@ -211,7 +228,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputClassInstance = new SerializableClass(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputClassInstance = new SerializableClass(randomId);
 
         // Act.
         SerializableClass deserializedClassInstance;
@@ -224,6 +242,7 @@ internal class SerializersTests
         // Assert.
         deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableClass>(
             inputClassInstance, nameof(inputClassInstance),
             deserializedClassInstance, nameof(deserializedClassInstance));
@@ -235,7 +254,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputStructInstance = new SerializableStruct(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputStructInstance = new SerializableStruct(randomId);
 
         // Act.
         SerializableStruct deserializedStructInstance;
@@ -248,6 +268,7 @@ internal class SerializersTests
         // Assert.
         deserializedStructInstance.Should().BeEquivalentTo(inputStructInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableStruct>(
             inputStructInstance, nameof(inputStructInstance),
             deserializedStructInstance, nameof(deserializedStructInstance));
@@ -259,7 +280,8 @@ internal class SerializersTests
         ISerializer serializer)
     {
         // Arrange.
-        var inputRecordInstance = new SerializableRecord(RandomIdGenerator.Generate());
+        var randomId = Guid.NewGuid().ToString();
+        var inputRecordInstance = new SerializableRecord(randomId);
 
         // Act.
         SerializableRecord deserializedRecordInstance;
@@ -272,6 +294,7 @@ internal class SerializersTests
         // Assert.
         deserializedRecordInstance.Should().BeEquivalentTo(inputRecordInstance);
 
+        // Debug.
         ConsoleHelper.PrintResults<SerializableRecord>(
             inputRecordInstance, nameof(inputRecordInstance),
             deserializedRecordInstance, nameof(deserializedRecordInstance));

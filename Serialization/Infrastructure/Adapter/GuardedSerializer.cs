@@ -3,16 +3,17 @@
 
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
-using Depra.Serialization.Application.Errors;
-using Depra.Serialization.Application.Interfaces;
+using Depra.Serialization.Domain.Interfaces;
+using Depra.Serialization.Infrastructure.Errors;
 
 namespace Depra.Serialization.Infrastructure.Adapter
 {
     /// <summary>
     /// Adapter class for third party serializers.
     /// </summary>
-    public abstract class SerializerAdapter : ISerializationProvider, IMemoryOptimalDeserializationProvider
+    public abstract class GuardedSerializer : ISerializer, IMemoryOptimalDeserializer
     {
         /// <inheritdoc />
         public abstract byte[] Serialize<TIn>(TIn input);
@@ -39,15 +40,16 @@ namespace Depra.Serialization.Infrastructure.Adapter
         public abstract TOut Deserialize<TOut>(ReadOnlyMemory<byte> input);
 
         /// <inheritdoc />
-        public abstract Task<TOut> DeserializeAsync<TOut>(Stream inputStream);
+        public abstract ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
+            CancellationToken cancellationToken = default);
 
-        protected static void ThrowIfNullOrEmpty(string input, string argumentName) =>
+        protected void ThrowIfNullOrEmpty(string input, string argumentName) =>
             Guard.AgainstNullOrEmpty(input, argumentName);
 
-        protected static void ThrowIfNullOrEmpty(Stream inputStream, string argumentName) =>
+        protected void ThrowIfNullOrEmpty(Stream inputStream, string argumentName) =>
             Guard.AgainstNullOrEmpty(inputStream, argumentName);
 
-        protected static void ThrowIfEmpty(ReadOnlyMemory<byte> input, string argumentName) =>
+        protected void ThrowIfEmpty(ReadOnlyMemory<byte> input, string argumentName) =>
             Guard.AgainstEmpty(input, argumentName);
     }
 }
