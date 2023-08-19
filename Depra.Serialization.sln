@@ -6,7 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FB50B3DE
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{3FE0C27F-17C8-4EA4-926A-027D4833BCA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Application.UnitTests", "Serialization.Application.UnitTests\Serialization.Application.UnitTests.csproj", "{958867DF-8ACC-4741-97BB-594273EFBC53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.UnitTests", "Serialization.UnitTests\Serialization.UnitTests.csproj", "{958867DF-8ACC-4741-97BB-594273EFBC53}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization.Benchmarks", "Serialization.Benchmarks\Serialization.Benchmarks.csproj", "{5F93E58A-6A7C-40C7-BD8C-AE6CFA0B811C}"
 EndProject

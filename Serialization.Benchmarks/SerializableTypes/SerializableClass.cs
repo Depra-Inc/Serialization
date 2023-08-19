@@ -1,4 +1,4 @@
-// Copyright © 2022 Nikolay Melnikov. All rights reserved.
+// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
@@ -13,18 +13,18 @@ namespace Depra.Serialization.Benchmarks.SerializableTypes;
 [Serializable]
 public class SerializableClass
 {
-    /// <summary>
-    /// Property can be a field.
-    /// Cannot be private and internal to <see cref="XmlSerializer"/> and <see cref="NewtonsoftJsonSerializer"/>
-    /// </summary>
-    public string Id { get; set; }
+	/// <summary>
+	/// Property can be a field.
+	/// Cannot be private and internal to <see cref="XmlSerializer"/> and <see cref="NewtonsoftJsonSerializer"/>
+	/// </summary>
+	public string Id { get; set; }
 
-    /// <summary>
-    /// Required for <see cref="XmlSerializer"/>
-    /// </summary>
-    public SerializableClass() { }
+	/// <summary>
+	/// Required for <see cref="XmlSerializer"/>
+	/// </summary>
+	public SerializableClass() { }
 
-    public SerializableClass(string id) => Id = id;
+	public SerializableClass(string id) => Id = id;
 
-    public override string ToString() => Id;
+	public override string ToString() => Id;
 }

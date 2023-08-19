@@ -3,18 +3,21 @@
     <PropertyGroup>
         <AssemblyName>Depra.Serialization.Json.Microsoft</AssemblyName>
         <RootNamespace>Depra.Serialization.Json.Microsoft</RootNamespace>
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
         <Authors>Nikolay Melnikov</Authors>
         <Company>Depra</Company>
         <Description>Adapter for serializer from System.Text.Json.</Description>
-        <Copyright>Copyright © 2022 Nikolay Melnikov. All rights reserved.</Copyright>
+        <Copyright>Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.</Copyright>
         <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
         <RepositoryUrl>https://github.com/Depression-aggression/Serialization</RepositoryUrl>
         <RepositoryType>Module</RepositoryType>
-        <PackageTags>Serialization, Adapter, Integration, System, Text, Json</PackageTags>
+        <PackageTags>Depra, Serialization, Adapter, Integration, System, Text, Json</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <TargetFrameworks>netstandard2.1;net7.0</TargetFrameworks>
+        <PackageReleaseNotes>Namespaces cleaned; 
+Adapter removed; 
+License updated</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>

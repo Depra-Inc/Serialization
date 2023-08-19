@@ -13,10 +13,13 @@
         <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
         <RepositoryUrl>https://github.com/Depression-aggression/Serialization</RepositoryUrl>
         <RepositoryType>Module</RepositoryType>
-        <PackageTags>Serialization, Deserialization, Serializer, Async, Binary, Xml, Json, Domain, Application, Infrastructure</PackageTags>
-        <PackageVersion>1.1.4</PackageVersion>
+        <PackageTags>Depra, Serialization, Deserialization, Serializer, Async, Binary, Xml, Json</PackageTags>
+        <PackageVersion>1.1.5</PackageVersion>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <PackageReleaseNotes>Improvements for Async Support</PackageReleaseNotes>
+        <PackageReleaseNotes>Namespaces cleaned; 
+Adapter removed; 
+License updated</PackageReleaseNotes>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
     
     <ItemGroup>
@@ -26,8 +29,5 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Application" />
-    </ItemGroup>
 
 </Project>

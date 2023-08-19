@@ -1,4 +1,4 @@
-// Copyright © 2022 Nikolay Melnikov. All rights reserved.
+// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
@@ -12,8 +12,8 @@ namespace Depra.Serialization.Benchmarks.SerializableTypes;
 [Serializable]
 public record SerializableRecord(string Id)
 {
-    /// <summary>
-    /// Required for <see cref="XmlSerializer"/>
-    /// </summary>
-    public SerializableRecord() : this("") { }
+	/// <summary>
+	/// Required for <see cref="XmlSerializer"/>
+	/// </summary>
+	public SerializableRecord() : this("") { }
 }

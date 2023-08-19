@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
-using Depra.Serialization.Domain.Interfaces;
+using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Unsafe
 {
@@ -12,11 +12,9 @@ namespace Depra.Serialization.Unsafe
             var bytes = ChangeType(toSerialize, Array.Empty<byte>());
             try
             {
-                using (var writer = new BinaryWriter(stream))
-                {
-                    writer.Write(bytes.LongLength);
-                    writer.Write(bytes);
-                }
+                using var writer = new BinaryWriter(stream);
+                writer.Write(bytes.LongLength);
+                writer.Write(bytes);
             }
             finally
             {
@@ -26,12 +24,10 @@ namespace Depra.Serialization.Unsafe
 
         public T[] Deserialize<T>(Stream stream)
         {
-            using (var reader = new BinaryReader(stream))
-            {
-                var lenght = reader.ReadInt64();
-                var bytes = reader.ReadBytes((int)lenght);
-                return ChangeType(bytes, Array.Empty<T>());
-            }
+            using var reader = new BinaryReader(stream);
+            var lenght = reader.ReadInt64();
+            var bytes = reader.ReadBytes((int)lenght);
+            return ChangeType(bytes, Array.Empty<T>());
         }
 
         private static unsafe byte[] ChangeType<T>(T[] array, byte[] v)

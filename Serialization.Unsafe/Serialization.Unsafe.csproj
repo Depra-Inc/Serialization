@@ -5,6 +5,7 @@
         <AssemblyName>Depra.Serialization.Unsafe</AssemblyName>
         <RootNamespace>Depra.Serialization.Unsafe</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

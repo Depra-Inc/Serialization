@@ -1,4 +1,4 @@
-// Copyright © 2022 Nikolay Melnikov. All rights reserved.
+// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
@@ -13,11 +13,11 @@ namespace Depra.Serialization.Benchmarks.SerializableTypes;
 [Serializable]
 public struct SerializableStruct
 {
-    /// <summary>
-    /// Property can be a field.
-    /// Cannot be private and internal to <see cref="XmlSerializer"/> and <see cref="NewtonsoftJsonSerializer"/>
-    /// </summary>
-    public string Id { get; set; }
+	/// <summary>
+	/// Property can be a field.
+	/// Cannot be private and internal to <see cref="XmlSerializer"/> and <see cref="NewtonsoftJsonSerializer"/>
+	/// </summary>
+	public string Id { get; set; }
 
-    public override string ToString() => Id;
+	public override string ToString() => Id;
 }
