@@ -27,7 +27,7 @@ public class SerializationBenchmarks
 	private SerializableRecord _serializableRecord;
 
 	[ParamsSource(nameof(Serializers))]
-	public ISerializer Serializer { get; set; }
+	public IGenericSerializer Serializer { get; set; }
 
 	[GlobalSetup]
 	public void Setup()

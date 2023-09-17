@@ -12,6 +12,15 @@ namespace Depra.Serialization.Errors
         private const string CANT_BE_NULL = "{0} can't be null or empty.";
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Against(bool condition, Func<Exception> exception)
+        {
+            if (condition)
+            {
+                throw exception();
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AgainstNullOrEmpty(string argumentValue, string argumentName)
         {
             if (string.IsNullOrEmpty(argumentValue))

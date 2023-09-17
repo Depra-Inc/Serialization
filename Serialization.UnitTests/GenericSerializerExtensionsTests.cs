@@ -6,13 +6,13 @@ using Depra.Serialization.UnitTests.Helpers;
 
 namespace Depra.Serialization.UnitTests;
 
-[TestFixture(TestOf = typeof(SerializerExtensions))]
-internal sealed class SerializerExtensionsTests
+[TestFixture(TestOf = typeof(GenericSerializerExtensions))]
+internal sealed class GenericSerializerExtensionsTests
 {
 	[Test]
 	public void WhenCloneClass_AndInputIsNotNull_ThenClonedObjectEqualsInput(
 		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		ISerializer serializer)
+		IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -31,7 +31,7 @@ internal sealed class SerializerExtensionsTests
 	[Test]
 	public void WhenCloneStruct_AndInputIsNotNull_ThenClonedObjectEqualsInput(
 		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		ISerializer serializer)
+		IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -50,7 +50,7 @@ internal sealed class SerializerExtensionsTests
 	[Test]
 	public void WhenCloneRecord_AndInputIsNotNull_ThenClonedObjectEqualsInput(
 		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		ISerializer serializer)
+		IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();

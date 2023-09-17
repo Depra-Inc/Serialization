@@ -8,18 +8,16 @@ using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Extensions
 {
-	public static partial class SerializerExtensions
+	public static partial class GenericSerializerExtensions
 	{
-		internal static Task SerializeAsync<TIn>(this ISerializer self, Stream outputStream, TIn input) =>
+		internal static Task SerializeAsync<TIn>(this IGenericSerializer self, Stream outputStream, TIn input) =>
 			Task.Run(() => self.Serialize(outputStream, input));
 
-		internal static ValueTask<TOut> DeserializeAsync<TOut>(this ISerializer self, Stream inputStream,
+		internal static ValueTask<TOut> DeserializeAsync<TOut>(this IGenericSerializer self, Stream inputStream,
 			CancellationToken cancellationToken = default)
 		{
 			cancellationToken.ThrowIfCancellationRequested();
-			var deserializedObject = self.Deserialize<TOut>(inputStream);
-
-			return new ValueTask<TOut>(deserializedObject);
+			return new ValueTask<TOut>(self.Deserialize<TOut>(inputStream));
 		}
 	}
 }

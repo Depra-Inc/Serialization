@@ -15,7 +15,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 	/// <summary>
 	/// Serializer using <see cref="JsonSerializer"/> and <see cref="JsonConvert"/>.
 	/// </summary>
-	public sealed class NewtonsoftJsonSerializer : ISerializer, IMemoryOptimalDeserializer
+	public sealed class NewtonsoftJsonSerializer : ISerializer, IGenericSerializer, IMemoryOptimalDeserializer
 	{
 		private readonly JsonSerializer _serializer;
 		private readonly JsonSerializerSettings _settings;
@@ -26,16 +26,14 @@ namespace Depra.Serialization.Json.Newtonsoft
 			_settings = settings;
 		}
 
-		/// <inheritdoc />
-		public byte[] Serialize<TIn>(TIn input)
-		{
-			var serializedString = JsonConvert.SerializeObject(input, _settings);
-			var bytesFromString = Encoding.UTF8.GetBytes(serializedString);
+		public byte[] Serialize<TIn>(TIn input) => Encoding.UTF8
+			.GetBytes(JsonConvert
+				.SerializeObject(input, _settings));
 
-			return bytesFromString;
-		}
+		public byte[] Serialize(object input, Type inputType) => Encoding.UTF8
+			.GetBytes(JsonConvert
+				.SerializeObject(input, inputType, _settings));
 
-		/// <inheritdoc />
 		public void Serialize<TIn>(Stream outputStream, TIn input)
 		{
 			var bytes = Serialize(input);
@@ -43,7 +41,13 @@ namespace Depra.Serialization.Json.Newtonsoft
 			outputStream.Seek(0, SeekOrigin.Begin);
 		}
 
-		/// <inheritdoc />
+		public void Serialize(Stream outputStream, object input, Type inputType)
+		{
+			var bytes = Serialize(input, inputType);
+			outputStream.Write(bytes);
+			outputStream.Seek(0, SeekOrigin.Begin);
+		}
+
 		public async Task SerializeAsync<TIn>(Stream outputStream, TIn input)
 		{
 			await using var writer = CreateStreamWriter(outputStream);
@@ -53,20 +57,34 @@ namespace Depra.Serialization.Json.Newtonsoft
 			await jsonWriter.FlushAsync();
 		}
 
-		/// <inheritdoc />
-		public string SerializeToPrettyString<TIn>(TIn input) =>
-			JsonConvert.SerializeObject(input, Formatting.Indented, _settings);
+		public async Task SerializeAsync(Stream outputStream, object input, Type inputType)
+		{
+			await using var writer = CreateStreamWriter(outputStream);
+			using var jsonWriter = new JsonTextWriter(writer);
 
-		/// <inheritdoc />
+			_serializer.Serialize(jsonWriter, input, inputType);
+			await jsonWriter.FlushAsync();
+		}
+
 		public string SerializeToString<TIn>(TIn input) =>
 			JsonConvert.SerializeObject(input, _settings);
 
-		/// <inheritdoc />
+		public string SerializeToString(object input, Type inputType) =>
+			JsonConvert.SerializeObject(input, inputType, _settings);
+
+		public string SerializeToPrettyString<TIn>(TIn input) =>
+			JsonConvert.SerializeObject(input, Formatting.Indented, _settings);
+
+		public string SerializeToPrettyString(object input, Type inputType) =>
+			JsonConvert.SerializeObject(input, inputType, Formatting.Indented, _settings);
+
 		public TOut Deserialize<TOut>(string input) =>
 			JsonConvert.DeserializeObject<TOut>(input, _settings);
 
-		/// <inheritdoc />
-		public TOut Deserialize<TOut>(Stream inputStream)
+		public object Deserialize(string input, Type outputType) =>
+			JsonConvert.DeserializeObject(input, outputType, _settings);
+
+		public object Deserialize(Stream inputStream, Type outputType)
 		{
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
 
@@ -76,34 +94,27 @@ namespace Depra.Serialization.Json.Newtonsoft
 			}
 
 			var buffer = new Span<byte>(new byte[inputStream.Length]);
-			var bytesRead = inputStream.Read(buffer);
-			if (bytesRead == 0)
-			{
-				throw new InvalidDataException();
-			}
+			Guard.Against(inputStream.Read(buffer) == 0, () => throw new InvalidDataException());
 
 			var bytesAsString = Encoding.UTF8.GetString(buffer);
 			using var stringReader = new StringReader(bytesAsString);
 			using var jsonReader = new JsonTextReader(stringReader);
-			var deserializedObject = _serializer.Deserialize<TOut>(jsonReader);
 
-			return deserializedObject;
+			return _serializer.Deserialize(jsonReader, outputType);
 		}
 
-		/// <inheritdoc />
+		public TOut Deserialize<TOut>(Stream inputStream) =>
+			(TOut)Deserialize(inputStream, typeof(TOut));
+
 		public TOut Deserialize<TOut>(ReadOnlyMemory<byte> input)
 		{
 			Guard.AgainstEmpty(input, nameof(input));
 
 			var inputAsString = Encoding.UTF8.GetString(input.Span);
-			var deserializedObject = JsonConvert.DeserializeObject<TOut>(inputAsString, _settings);
-
-			return deserializedObject;
+			return JsonConvert.DeserializeObject<TOut>(inputAsString, _settings);
 		}
 
-		/// <inheritdoc />
-		public async ValueTask<TOut> DeserializeAsync<TOut>(
-			Stream inputStream,
+		public async ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
 			CancellationToken cancellationToken = default)
 		{
 			if (inputStream.Position == inputStream.Length)
@@ -112,18 +123,33 @@ namespace Depra.Serialization.Json.Newtonsoft
 			}
 
 			var buffer = new Memory<byte>(new byte[inputStream.Length]);
-			var bytesRead = await inputStream.ReadAsync(buffer, cancellationToken);
-			if (bytesRead == 0)
-			{
-				throw new InvalidDataException();
-			}
+			Guard.Against(await inputStream.ReadAsync(buffer, cancellationToken) == 0,
+				() => throw new InvalidDataException());
 
 			var bytesAsString = Encoding.UTF8.GetString(buffer.Span);
 			using var stringReader = new StringReader(bytesAsString);
 			using var jsonReader = new JsonTextReader(stringReader);
-			var deserializedObject = _serializer.Deserialize<TOut>(jsonReader);
 
-			return deserializedObject;
+			return _serializer.Deserialize<TOut>(jsonReader);
+		}
+
+		public async ValueTask<object> DeserializeAsync(Stream inputStream, Type outputType,
+			CancellationToken cancellationToken = default)
+		{
+			if (inputStream.Position == inputStream.Length)
+			{
+				inputStream.Seek(0, SeekOrigin.Begin);
+			}
+
+			var buffer = new Memory<byte>(new byte[inputStream.Length]);
+			Guard.Against(await inputStream.ReadAsync(buffer, cancellationToken) == 0,
+				() => throw new InvalidDataException());
+
+			var bytesAsString = Encoding.UTF8.GetString(buffer.Span);
+			using var stringReader = new StringReader(bytesAsString);
+			using var jsonReader = new JsonTextReader(stringReader);
+
+			return _serializer.Deserialize(jsonReader, outputType);
 		}
 
 		private static StreamWriter CreateStreamWriter(Stream stream)
@@ -138,7 +164,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 		/// <summary>
 		/// Just for tests and benchmarks.
 		/// </summary>
-		/// <returns>Returns the pretty name of the <see cref="ISerializer"/>.</returns>
+		/// <returns>Returns the pretty name of the serializer.</returns>
 		public override string ToString() => typeof(JsonSerializer).Namespace;
 	}
 }

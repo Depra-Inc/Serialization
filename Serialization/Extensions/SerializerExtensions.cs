@@ -1,41 +1,27 @@
-﻿// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
-// SPDX-License-Identifier: Apache-2.0
-
+using System;
 using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Extensions
 {
-    public static partial class SerializerExtensions
-    {
-        /// <summary>
-        /// Clones the specified <paramref name="input"/> from give instance.
-        /// </summary>
-        /// <param name="serializer">Helper serializer.</param>
-        /// <param name="input">The object to be serialized.</param>
-        /// <typeparam name="T">The type of the object to be cloned.</typeparam>
-        /// <returns>The cloned object of specified type.</returns>
-        public static T Clone<T>(this ISerializer serializer, T input)
-        {
-            var bytes = serializer.Serialize(input);
-            var deserializedObject = serializer.DeserializeBytes<T>(bytes);
+	public static partial class SerializerExtensions
+	{
+		internal static object DeserializeFromString(ISerializer serializer, string input, Encoding encoding, Type outputType)
+		{
+			var bytes = encoding.GetBytes(input);
+			using var stream = new MemoryStream(bytes);
 
-            return deserializedObject;
-        }
+			return serializer.Deserialize(stream, outputType);
+		}
 
-        /// <summary>
-        /// Deserializes the specified object from given <see cref="byte"/>[].
-        /// </summary>
-        /// <param name="serializer">Helper serializer.</param>
-        /// <param name="serializedObject">The serialized object as <see cref="byte"/>[].</param>
-        /// <typeparam name="TOut">The type of the object to be deserialized.</typeparam>
-        /// <returns>The deserialized object of specified type.</returns>
-        private static TOut DeserializeBytes<TOut>(this ISerializer serializer, byte[] serializedObject)
-        {
-            using var memoryStream = new MemoryStream(serializedObject);
-            var deserializedObject = serializer.Deserialize<TOut>(memoryStream);
-
-            return deserializedObject;
-        }
-    }
+		internal static ValueTask<object> DeserializeAsync(this ISerializer self, Stream inputStream,
+			CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			return new ValueTask<object>(self.Deserialize(inputStream, typeof(object)));
+		}
+	}
 }
