@@ -1,6 +1,7 @@
 // Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace Depra.Serialization.UnitTests.Stubs;
@@ -10,10 +11,11 @@ namespace Depra.Serialization.UnitTests.Stubs;
 /// </summary>
 /// <param name="Id"></param>
 [Serializable]
+[KnownType(typeof(SerializableRecord))]
 public record SerializableRecord(string Id)
 {
-    /// <summary>
-    /// Required for <see cref="XmlSerializer"/>
-    /// </summary>
-    public SerializableRecord() : this(string.Empty) { }
+	/// <summary>
+	/// Required for <see cref="XmlSerializer"/>
+	/// </summary>
+	public SerializableRecord() : this(string.Empty) { }
 }

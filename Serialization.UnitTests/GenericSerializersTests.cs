@@ -1,20 +1,39 @@
 ﻿// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Depra.Serialization.Binary;
 using Depra.Serialization.Extensions;
-using Depra.Serialization.UnitTests.Helpers;
+using Depra.Serialization.Json;
+using Depra.Serialization.Xml;
 
 namespace Depra.Serialization.UnitTests;
 
 [TestFixture(TestOf = typeof(IGenericSerializer))]
 internal sealed class GenericSerializersTests
 {
+	private static IEnumerable<IGenericSerializer> GetSerializers()
+	{
+		// Binary.
+#pragma warning disable CS0612
+		yield return new BinarySerializer();
+#pragma warning restore CS0612
+
+		// XML.
+		yield return new StandardXmlSerializer();
+		yield return new DataContractXmlSerializer();
+
+		// Json.
+		yield return new DataContractJsonSerializerAdapter();
+
+		// Add more serializers here if needed.
+	}
+
 	[Test]
-	public void WhenSerializeClassToBytes_AndInputIsNotEmpty_ThenSerializedBytesIsNotNullOrEmpty(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public void Serialize_ClassToBytes_ThenResultIsNotNullOrEmpty(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -32,9 +51,8 @@ internal sealed class GenericSerializersTests
 	}
 
 	[Test]
-	public void WhenSerializeStructToBytes_AndInputIsNotEmpty_ThenSerializedBytesIsNotNullOrEmpty(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public void Serialize_StructToBytes_ThenResultIsNotNullOrEmpty(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -52,9 +70,8 @@ internal sealed class GenericSerializersTests
 	}
 
 	[Test]
-	public void WhenSerializeRecordToBytes_AndInputIsNotEmpty_ThenSerializedBytesIsNotNullOrEmpty(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public void Serialize_RecordToBytes_ThenResultIsNotNullOrEmpty(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -72,9 +89,8 @@ internal sealed class GenericSerializersTests
 	}
 
 	[Test]
-	public void WhenSerializeClassToString_AndDeserializeFromString_ThenDeserializedClassEqualsInput(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public void SerializeClassToString_AndDeserializeFromString_ThenResultEqualsInput(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -95,9 +111,8 @@ internal sealed class GenericSerializersTests
 	}
 
 	[Test]
-	public void WhenSerializeStructToString_AndDeserializeFromString_ThenDeserializedStructEqualsInput(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public void SerializeStructToString_AndDeserializeFromString_ThenResultEqualsInput(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -116,9 +131,8 @@ internal sealed class GenericSerializersTests
 	}
 
 	[Test]
-	public void WhenSerializeRecordToString_AndDeserializeFromString_ThenDeserializedRecordEqualsInput(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public void SerializeRecordToString_AndDeserializeFromString_ThenResultEqualsInput(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -138,9 +152,8 @@ internal sealed class GenericSerializersTests
 
 
 	[Test]
-	public void WhenSerializeClassToStream_AndDeserializeToInputType_ThenDeserializedClassEqualsInput(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public void SerializeClassToStream_AndDeserializeFromString_ThenResultEqualsInput(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -163,9 +176,8 @@ internal sealed class GenericSerializersTests
 	}
 
 	[Test]
-	public void WhenSerializeStructToStream_AndDeserializeToInputType_ThenDeserializedStructEqualsInput(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public void SerializeStructToStream_AndDeserializeFromString_ThenResultEqualsInput(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -188,9 +200,8 @@ internal sealed class GenericSerializersTests
 	}
 
 	[Test]
-	public void WhenSerializeRecordToStream_AndDeserializeToInputType_ThenDeserializedRecordEqualsInput(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public void SerializeRecordToStream_AndDeserializeFromString_ThenResultEqualsInput(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -213,9 +224,8 @@ internal sealed class GenericSerializersTests
 	}
 
 	[Test]
-	public async Task WhenSerializeClassToStreamAsync_AndDeserializeAsyncToInputType_ThenDeserializedClassEqualsInput(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public async Task SerializeClassToStreamAsync_AndDeserializeFromStringAsync_ThenResultEqualsInput(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -238,9 +248,8 @@ internal sealed class GenericSerializersTests
 	}
 
 	[Test]
-	public async Task WhenSerializeStructToStreamAsync_AndDeserializeAsyncToInputType_ThenDeserializedStructEqualsInput(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public async Task SerializeStructToStreamAsync_AndDeserializeFromStringAsync_ThenResultEqualsInput(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();
@@ -263,9 +272,8 @@ internal sealed class GenericSerializersTests
 	}
 
 	[Test]
-	public async Task WhenSerializeRecordToStreamAsync_AndDeserializeAsyncToInputType_ThenDeserializedRecordEqualsInput(
-		[ValueSource(typeof(SerializationTestsFactory), nameof(SerializationTestsFactory.GetSerializers))]
-		IGenericSerializer serializer)
+	public async Task SerializeRecordToStreamAsync_AndDeserializeFromStringAsync_ThenResultEqualsInput(
+		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
 		var randomId = Guid.NewGuid().ToString();

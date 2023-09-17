@@ -1,6 +1,7 @@
 ﻿// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace Depra.Serialization.UnitTests.Stubs;
@@ -9,15 +10,16 @@ namespace Depra.Serialization.UnitTests.Stubs;
 /// Cannot be private and internal to <see cref="XmlSerializer"/>.
 /// </summary>
 [Serializable]
+[KnownType(typeof(SerializableStruct))]
 public struct SerializableStruct
 {
-    /// <summary>
-    /// Property can be a field.
-    /// Cannot be private and internal to <see cref="XmlSerializer"/>.
-    /// </summary>
-    public string Id { get; set; }
+	/// <summary>
+	/// Property can be a field.
+	/// Cannot be private and internal to <see cref="XmlSerializer"/>.
+	/// </summary>
+	public string Id { get; set; }
 
-    public SerializableStruct(string id) => Id = id;
+	public SerializableStruct(string id) => Id = id;
 
-    public override string ToString() => Id;
+	public override string ToString() => Id;
 }

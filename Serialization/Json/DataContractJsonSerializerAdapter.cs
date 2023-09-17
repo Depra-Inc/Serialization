@@ -17,11 +17,13 @@ namespace Depra.Serialization.Json
 	/// </summary>
 	public readonly struct DataContractJsonSerializerAdapter : ISerializer, IGenericSerializer
 	{
+		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
+
 		public byte[] Serialize<TIn>(TIn input) =>
 			SerializationHelper.SerializeToBytes(this, input);
 
 		public byte[] Serialize(object input, Type inputType) =>
-			Serialize(input);
+			SerializationHelper.SerializeToBytes(this, input, inputType);
 
 		public void Serialize<TIn>(Stream outputStream, TIn input) =>
 			Serialize(outputStream, input, typeof(TIn));
@@ -33,25 +35,25 @@ namespace Depra.Serialization.Json
 			SerializationHelper.SerializeAsync(this, outputStream, input);
 
 		public Task SerializeAsync(Stream outputStream, object input, Type inputType) =>
-			SerializeAsync(outputStream, input);
+			SerializationHelper.SerializeAsync(this, outputStream, input, inputType);
 
 		public string SerializeToString<TIn>(TIn input) =>
-			SerializationHelper.SerializeToString(this, input, Encoding.UTF8);
+			SerializationHelper.SerializeToString(this, input, ENCODING_TYPE);
 
 		public string SerializeToString(object input, Type inputType) =>
-			SerializeToString(input);
+			SerializationHelper.SerializeToString(this, input, inputType, ENCODING_TYPE);
 
 		string IGenericSerializer.SerializeToPrettyString<TIn>(TIn input) =>
 			SerializeToString(input);
 
 		string ISerializer.SerializeToPrettyString(object input, Type inputType) =>
-			SerializeToString(input);
+			SerializeToString(input, inputType);
 
 		public TOut Deserialize<TOut>(string input) =>
-			SerializationHelper.DeserializeFromString<TOut>(this, input, Encoding.UTF8);
+			SerializationHelper.DeserializeFromString<TOut>(this, input, ENCODING_TYPE);
 
 		public object Deserialize(string input, Type outputType) =>
-			SerializationHelper.DeserializeFromString(this, input, Encoding.UTF8, outputType);
+			SerializationHelper.DeserializeFromString(this, input, outputType, ENCODING_TYPE);
 
 		public TOut Deserialize<TOut>(Stream inputStream) =>
 			(TOut)Deserialize(inputStream, typeof(TOut));

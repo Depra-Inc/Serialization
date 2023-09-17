@@ -1,6 +1,7 @@
 ﻿// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace Depra.Serialization.UnitTests.Stubs;
@@ -9,20 +10,21 @@ namespace Depra.Serialization.UnitTests.Stubs;
 /// Must be public to <see cref="XmlSerializer"/>.
 /// </summary>
 [Serializable]
+[KnownType(typeof(SerializableClass))]
 public class SerializableClass
 {
-    /// <summary>
-    /// Property can be a field.
-    /// Cannot be private and internal to <see cref="XmlSerializer"/>.
-    /// </summary>
-    public string Id { get; set; }
+	/// <summary>
+	/// Property can be a field.
+	/// Cannot be private and internal to <see cref="XmlSerializer"/>.
+	/// </summary>
+	public string Id { get; set; }
 
-    /// <summary>
-    /// Required for <see cref="XmlSerializer"/>
-    /// </summary>
-    public SerializableClass() => Id = string.Empty;
+	/// <summary>
+	/// Required for <see cref="XmlSerializer"/>
+	/// </summary>
+	public SerializableClass() => Id = string.Empty;
 
-    public SerializableClass(string id) => Id = id;
+	public SerializableClass(string id) => Id = id;
 
-    public override string ToString() => Id;
+	public override string ToString() => Id;
 }

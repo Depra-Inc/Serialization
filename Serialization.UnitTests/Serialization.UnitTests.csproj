@@ -21,4 +21,5 @@
       <ProjectReference Include="..\Serialization\Serialization.csproj" />
     </ItemGroup>
 
+
 </Project>
