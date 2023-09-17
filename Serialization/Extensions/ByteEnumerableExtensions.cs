@@ -11,4 +11,5 @@ namespace Depra.Serialization.Extensions
 		public static string Flatten(this IEnumerable<byte> bytes) =>
 			bytes.Aggregate(string.Empty, (current, @byte) => current + @byte);
 	}
+
 }

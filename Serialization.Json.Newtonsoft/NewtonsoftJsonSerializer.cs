@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Depra.Serialization.Errors;
+using Depra.Serialization.Extensions;
 using Depra.Serialization.Interfaces;
 using Newtonsoft.Json;
 
@@ -17,6 +18,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 	/// </summary>
 	public sealed class NewtonsoftJsonSerializer : ISerializer, IGenericSerializer, IMemoryOptimalDeserializer
 	{
+		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 		private readonly JsonSerializer _serializer;
 		private readonly JsonSerializerSettings _settings;
 
@@ -26,11 +28,11 @@ namespace Depra.Serialization.Json.Newtonsoft
 			_settings = settings;
 		}
 
-		public byte[] Serialize<TIn>(TIn input) => Encoding.UTF8
+		public byte[] Serialize<TIn>(TIn input) => ENCODING_TYPE
 			.GetBytes(JsonConvert
 				.SerializeObject(input, _settings));
 
-		public byte[] Serialize(object input, Type inputType) => Encoding.UTF8
+		public byte[] Serialize(object input, Type inputType) => ENCODING_TYPE
 			.GetBytes(JsonConvert
 				.SerializeObject(input, inputType, _settings));
 
@@ -88,12 +90,9 @@ namespace Depra.Serialization.Json.Newtonsoft
 		{
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
 
-			if (inputStream.Position == inputStream.Length)
-			{
-				inputStream.Seek(0, SeekOrigin.Begin);
-			}
-
+			inputStream.SeekIfAtEnd();
 			var buffer = new Span<byte>(new byte[inputStream.Length]);
+
 			Guard.Against(inputStream.Read(buffer) == 0, () => throw new InvalidDataException());
 
 			var bytesAsString = Encoding.UTF8.GetString(buffer);
@@ -117,11 +116,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 		public async ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
 			CancellationToken cancellationToken = default)
 		{
-			if (inputStream.Position == inputStream.Length)
-			{
-				inputStream.Seek(0, SeekOrigin.Begin);
-			}
-
+			inputStream.SeekIfAtEnd();
 			var buffer = new Memory<byte>(new byte[inputStream.Length]);
 			Guard.Against(await inputStream.ReadAsync(buffer, cancellationToken) == 0,
 				() => throw new InvalidDataException());

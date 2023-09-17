@@ -1,27 +1,32 @@
 using System;
 using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Extensions
 {
-	public static partial class SerializerExtensions
+	public static class SerializerExtensions
 	{
-		internal static object DeserializeFromString(ISerializer serializer, string input, Encoding encoding, Type outputType)
-		{
-			var bytes = encoding.GetBytes(input);
-			using var stream = new MemoryStream(bytes);
+		/// <summary>
+		/// Clones the specified <paramref name="input"/> from give instance.
+		/// </summary>
+		/// <param name="serializer">Helper serializer.</param>
+		/// <param name="input">The object to be serialized.</param>
+		/// <param name="inputType">The type of the object to be cloned.</param>
+		/// <returns>The cloned object of specified type.</returns>
+		public static object Clone(this ISerializer serializer, object input, Type inputType) =>
+			serializer.DeserializeBytes(serializer.Serialize(input, inputType), inputType);
 
-			return serializer.Deserialize(stream, outputType);
-		}
-
-		internal static ValueTask<object> DeserializeAsync(this ISerializer self, Stream inputStream,
-			CancellationToken cancellationToken = default)
+		/// <summary>
+		/// Deserializes the specified object from given <see cref="byte"/>[].
+		/// </summary>
+		/// <param name="self">Helper serializer.</param>
+		/// <param name="serializedObject">The serialized object as <see cref="byte"/>[].</param>
+		/// <param name="outputType">The type of the object to be deserialized.</param>
+		/// <returns>The deserialized object of specified type.</returns>
+		private static object DeserializeBytes(this ISerializer self, byte[] serializedObject, Type outputType)
 		{
-			cancellationToken.ThrowIfCancellationRequested();
-			return new ValueTask<object>(self.Deserialize(inputStream, typeof(object)));
+			using var memoryStream = new MemoryStream(serializedObject);
+			return self.Deserialize(memoryStream, outputType);
 		}
 	}
 }

@@ -6,33 +6,29 @@ using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Extensions
 {
-
-	public static partial class GenericSerializerExtensions
+	public static class GenericSerializerExtensions
 	{
 		/// <summary>
 		/// Clones the specified <paramref name="input"/> from give instance.
 		/// </summary>
 		/// <param name="serializer">Helper serializer.</param>
 		/// <param name="input">The object to be serialized.</param>
-		/// <typeparam name="T">The type of the object to be cloned.</typeparam>
+		/// <typeparam name="TOut">The type of the object to be cloned.</typeparam>
 		/// <returns>The cloned object of specified type.</returns>
-		public static T Clone<T>(this IGenericSerializer serializer, T input)
-		{
-			var bytes = serializer.Serialize(input);
-			return serializer.DeserializeBytes<T>(bytes);
-		}
+		public static TOut Clone<TOut>(this IGenericSerializer serializer, TOut input) =>
+			serializer.DeserializeBytes<TOut>(serializer.Serialize(input));
 
 		/// <summary>
 		/// Deserializes the specified object from given <see cref="byte"/>[].
 		/// </summary>
-		/// <param name="serializer">Helper serializer.</param>
+		/// <param name="self">Helper serializer.</param>
 		/// <param name="serializedObject">The serialized object as <see cref="byte"/>[].</param>
 		/// <typeparam name="TOut">The type of the object to be deserialized.</typeparam>
 		/// <returns>The deserialized object of specified type.</returns>
-		private static TOut DeserializeBytes<TOut>(this IGenericSerializer serializer, byte[] serializedObject)
+		private static TOut DeserializeBytes<TOut>(this IGenericSerializer self, byte[] serializedObject)
 		{
 			using var memoryStream = new MemoryStream(serializedObject);
-			return serializer.Deserialize<TOut>(memoryStream);
+			return self.Deserialize<TOut>(memoryStream);
 		}
 	}
 }

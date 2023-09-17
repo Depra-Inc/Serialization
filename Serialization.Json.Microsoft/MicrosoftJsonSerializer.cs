@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Depra.Serialization.Errors;
+using Depra.Serialization.Extensions;
 using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Json.Microsoft
@@ -17,6 +18,7 @@ namespace Depra.Serialization.Json.Microsoft
 	/// </summary>
 	public readonly struct MicrosoftJsonSerializer : ISerializer, IGenericSerializer, IMemoryOptimalDeserializer
 	{
+		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 		private readonly JsonSerializerOptions _options;
 
 		public MicrosoftJsonSerializer(JsonSerializerOptions options) =>
@@ -61,8 +63,7 @@ namespace Depra.Serialization.Json.Microsoft
 		public TOut Deserialize<TOut>(string input)
 		{
 			Guard.AgainstNullOrEmpty(input, nameof(input));
-			var bytes = Encoding.UTF8.GetBytes(input);
-			return JsonSerializer.Deserialize<TOut>(bytes, _options);
+			return JsonSerializer.Deserialize<TOut>(ENCODING_TYPE.GetBytes(input), _options);
 		}
 
 		public TOut Deserialize<TOut>(ReadOnlyMemory<byte> input)
@@ -74,21 +75,16 @@ namespace Depra.Serialization.Json.Microsoft
 		public object Deserialize(string input, Type outputType)
 		{
 			Guard.AgainstNullOrEmpty(input, nameof(input));
-			var bytes = Encoding.UTF8.GetBytes(input);
-			return JsonSerializer.Deserialize(bytes, outputType, _options);
+			return JsonSerializer.Deserialize(ENCODING_TYPE.GetBytes(input), outputType, _options);
 		}
 
 		public TOut Deserialize<TOut>(Stream inputStream)
 		{
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
 
-			if (inputStream.Position == inputStream.Length)
-			{
-				inputStream.Seek(0, SeekOrigin.Begin);
-			}
+			inputStream.SeekIfAtEnd();
+			var buffer = new Span<byte>(new byte[inputStream.Length]);
 
-			var length = (int)inputStream.Length;
-			var buffer = new Span<byte>(new byte[length]);
 			Guard.Against(inputStream.Read(buffer) == 0, () => throw new InvalidDataException());
 
 			var utf8Reader = new Utf8JsonReader(buffer);
@@ -99,13 +95,9 @@ namespace Depra.Serialization.Json.Microsoft
 		{
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
 
-			if (inputStream.Position == inputStream.Length)
-			{
-				inputStream.Seek(0, SeekOrigin.Begin);
-			}
+			inputStream.SeekIfAtEnd();
+			var buffer = new Span<byte>(new byte[inputStream.Length]);
 
-			var length = (int)inputStream.Length;
-			var buffer = new Span<byte>(new byte[length]);
 			Guard.Against(inputStream.Read(buffer) == 0, () => throw new InvalidDataException());
 
 			var utf8Reader = new Utf8JsonReader(buffer);
@@ -115,10 +107,7 @@ namespace Depra.Serialization.Json.Microsoft
 		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream, CancellationToken cancellationToken = default)
 		{
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
-			if (inputStream.Position == inputStream.Length)
-			{
-				inputStream.Seek(0, SeekOrigin.Begin);
-			}
+			inputStream.SeekIfAtEnd();
 
 			return JsonSerializer.DeserializeAsync<TOut>(inputStream, _options, cancellationToken);
 		}
@@ -127,10 +116,7 @@ namespace Depra.Serialization.Json.Microsoft
 			CancellationToken cancellationToken = default)
 		{
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
-			if (inputStream.Position == inputStream.Length)
-			{
-				inputStream.Seek(0, SeekOrigin.Begin);
-			}
+			inputStream.SeekIfAtEnd();
 
 			return JsonSerializer.DeserializeAsync(inputStream, outputType, _options, cancellationToken);
 		}

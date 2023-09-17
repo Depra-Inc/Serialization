@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -9,8 +10,10 @@ namespace Depra.Serialization.Errors
 {
     internal static class Guard
     {
+        private const string DEBUG_CONDITION = "DEBUG";
         private const string CANT_BE_NULL = "{0} can't be null or empty.";
 
+        [Conditional(DEBUG_CONDITION)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Against(bool condition, Func<Exception> exception)
         {
@@ -20,6 +23,7 @@ namespace Depra.Serialization.Errors
             }
         }
 
+        [Conditional(DEBUG_CONDITION)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AgainstNullOrEmpty(string argumentValue, string argumentName)
         {
@@ -29,6 +33,7 @@ namespace Depra.Serialization.Errors
             }
         }
 
+        [Conditional(DEBUG_CONDITION)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AgainstNullOrEmpty(Stream argumentValue, string argumentName)
         {
@@ -38,6 +43,7 @@ namespace Depra.Serialization.Errors
             }
         }
 
+        [Conditional(DEBUG_CONDITION)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AgainstEmpty<T>(ReadOnlyMemory<T> argumentValue, string argumentName)
         {

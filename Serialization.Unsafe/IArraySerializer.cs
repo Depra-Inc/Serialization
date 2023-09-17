@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Depra.Serialization.Interfaces
+namespace Depra.Serialization.Unsafe
 {
     internal interface IArraySerializer
     {
