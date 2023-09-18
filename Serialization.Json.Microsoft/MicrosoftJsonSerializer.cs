@@ -84,8 +84,9 @@ namespace Depra.Serialization.Json.Microsoft
 
 			inputStream.SeekIfAtEnd();
 			var buffer = new Span<byte>(new byte[inputStream.Length]);
+			var totalBytes = inputStream.Read(buffer);
 
-			Guard.Against(inputStream.Read(buffer) == 0, () => throw new InvalidDataException());
+			Guard.Against(totalBytes == 0, () => throw new InvalidDataException());
 
 			var utf8Reader = new Utf8JsonReader(buffer);
 			return JsonSerializer.Deserialize<TOut>(ref utf8Reader, _options);
@@ -97,8 +98,9 @@ namespace Depra.Serialization.Json.Microsoft
 
 			inputStream.SeekIfAtEnd();
 			var buffer = new Span<byte>(new byte[inputStream.Length]);
+			var totalBytes = inputStream.Read(buffer);
 
-			Guard.Against(inputStream.Read(buffer) == 0, () => throw new InvalidDataException());
+			Guard.Against(totalBytes == 0, () => throw new InvalidDataException());
 
 			var utf8Reader = new Utf8JsonReader(buffer);
 			return JsonSerializer.Deserialize(ref utf8Reader, outputType, _options);

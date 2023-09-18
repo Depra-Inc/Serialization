@@ -12,5 +12,7 @@ internal class SerializableClass
 
     public SerializableClass(string id) => Id = id;
 
+    public SerializableClass() => Id = Guid.NewGuid().ToString();
+
     public override string ToString() => Id;
 }

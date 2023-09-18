@@ -92,8 +92,9 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 			inputStream.SeekIfAtEnd();
 			var buffer = new Span<byte>(new byte[inputStream.Length]);
+			var totalBytes = inputStream.Read(buffer);
 
-			Guard.Against(inputStream.Read(buffer) == 0, () => throw new InvalidDataException());
+			Guard.Against(totalBytes == 0, () => throw new InvalidDataException());
 
 			var bytesAsString = Encoding.UTF8.GetString(buffer);
 			using var stringReader = new StringReader(bytesAsString);
@@ -116,10 +117,13 @@ namespace Depra.Serialization.Json.Newtonsoft
 		public async ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
 			CancellationToken cancellationToken = default)
 		{
+			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
+
 			inputStream.SeekIfAtEnd();
 			var buffer = new Memory<byte>(new byte[inputStream.Length]);
-			Guard.Against(await inputStream.ReadAsync(buffer, cancellationToken) == 0,
-				() => throw new InvalidDataException());
+			var totalBytes = await inputStream.ReadAsync(buffer, cancellationToken);
+
+			Guard.Against(totalBytes == 0, () => throw new InvalidDataException());
 
 			var bytesAsString = Encoding.UTF8.GetString(buffer.Span);
 			using var stringReader = new StringReader(bytesAsString);
@@ -131,14 +135,13 @@ namespace Depra.Serialization.Json.Newtonsoft
 		public async ValueTask<object> DeserializeAsync(Stream inputStream, Type outputType,
 			CancellationToken cancellationToken = default)
 		{
-			if (inputStream.Position == inputStream.Length)
-			{
-				inputStream.Seek(0, SeekOrigin.Begin);
-			}
+			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
 
+			inputStream.SeekIfAtEnd();
 			var buffer = new Memory<byte>(new byte[inputStream.Length]);
-			Guard.Against(await inputStream.ReadAsync(buffer, cancellationToken) == 0,
-				() => throw new InvalidDataException());
+			var totalBytes = await inputStream.ReadAsync(buffer, cancellationToken);
+
+			Guard.Against(totalBytes == 0, () => throw new InvalidDataException());
 
 			var bytesAsString = Encoding.UTF8.GetString(buffer.Span);
 			using var stringReader = new StringReader(bytesAsString);

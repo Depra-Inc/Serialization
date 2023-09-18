@@ -2,274 +2,98 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using Depra.Serialization.Extensions;
-using Depra.Serialization.Json.Newtonsoft.UnitTests.Stubs;
 
 namespace Depra.Serialization.Json.Newtonsoft.UnitTests;
 
-[TestFixture(TestOf = typeof(NewtonsoftJsonSerializer))]
-internal class NewtonsoftJsonSerializerTests
+[TestFixture(typeof(SerializableClass))]
+[TestFixture(typeof(SerializableStruct))]
+[TestFixture(typeof(SerializableRecord))]
+internal sealed class NewtonsoftJsonSerializerTests<TSerializable> where TSerializable : new()
 {
+	private NewtonsoftJsonSerializer _serializer;
+
+	[SetUp]
+	public void Setup() => _serializer = new NewtonsoftJsonSerializer();
+
 	[Test]
-	public void WhenSerializeClassToBytes_AndInputIsNotEmpty_ThenSerializedBytesIsNotNullOrEmpty()
+	public void SerializeToBytes_ThenResultIsNotNullOrEmpty()
 	{
 		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputClassInstance = new SerializableClass(randomId);
+		var input = new TSerializable();
 
 		// Act.
-		var inputClassAsBytes = serializerAdapter.Serialize(inputClassInstance);
+		var serialized = _serializer.Serialize(input);
 
 		// Assert.
-		inputClassAsBytes.Should().NotBeNullOrEmpty();
+		serialized.Should().NotBeNullOrEmpty();
 
 		// Debug.
-		TestContext.WriteLine($"{nameof(inputClassInstance)} : {inputClassInstance}\n" +
-		                      $"{nameof(inputClassAsBytes)} : {inputClassAsBytes.Flatten()}");
+		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
+		                      $"{nameof(serialized)} : {serialized.Flatten()}");
 	}
 
 	[Test]
-	public void WhenSerializeStructToBytes_AndInputIsNotEmpty_ThenSerializedBytesIsNotNullOrEmpty()
+	public void SerializeToString_AndDeserializeFromString_ThenResultEqualsInput()
 	{
 		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputStructInstance = new SerializableStruct(randomId);
+		var input = new TSerializable();
 
 		// Act.
-		var inputStructInstanceAsBytes = serializerAdapter.Serialize(inputStructInstance);
+		var serialized = _serializer.SerializeToString(input);
+		var deserialized = _serializer.Deserialize<TSerializable>(serialized);
+
+		TestContext.WriteLine(serialized);
 
 		// Assert.
-		inputStructInstanceAsBytes.Should().NotBeNullOrEmpty();
+		deserialized.Should().BeEquivalentTo(input);
 
 		// Debug.
-		TestContext.WriteLine($"{nameof(inputStructInstance)} : {inputStructInstance}\n" +
-		                      $"{nameof(inputStructInstanceAsBytes)} : {inputStructInstanceAsBytes.Flatten()}");
+		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
+		                      $"{nameof(serialized)} : {serialized}\n" +
+		                      $"{nameof(deserialized)} : {deserialized}");
 	}
 
 	[Test]
-	public void WhenSerializeRecordToBytes_AndInputIsNotEmpty_ThenSerializedBytesIsNotNullOrEmpty()
+	public void SerializeToStream_AndDeserializeToInputType_ThenResultEqualsInput()
 	{
 		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputRecordInstance = new SerializableRecord(randomId);
+		var input = new TSerializable();
 
 		// Act.
-		var inputRecordInstanceAsBytes = serializerAdapter.Serialize(inputRecordInstance);
-
-		// Assert.
-		inputRecordInstanceAsBytes.Should().NotBeNullOrEmpty();
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(inputRecordInstance)} : {inputRecordInstance}\n" +
-		                      $"{nameof(inputRecordInstanceAsBytes)} : {inputRecordInstanceAsBytes.Flatten()}");
-	}
-
-	[Test]
-	public void WhenSerializeClassToString_AndDeserializeFromString_ThenDeserializedClassEqualsInput()
-	{
-		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputClassInstance = new SerializableClass(randomId);
-
-		// Act.
-		var inputClassInstanceAsString = serializerAdapter.SerializeToString(inputClassInstance);
-		var deserializedClassInstance = serializerAdapter.Deserialize<SerializableClass>(inputClassInstanceAsString);
-
-		TestContext.WriteLine(inputClassInstanceAsString);
-
-		// Assert.
-		deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(inputClassInstance)} : {inputClassInstance}\n" +
-		                      $"{nameof(deserializedClassInstance)} : {deserializedClassInstance}");
-	}
-
-	[Test]
-	public void WhenSerializeStructToString_AndDeserializeFromString_ThenDeserializedStructEqualsInput()
-	{
-		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputClassInstance = new SerializableStruct(randomId);
-
-		// Act.
-		var inputClassInstanceAsString = serializerAdapter.SerializeToString(inputClassInstance);
-		var deserializedClassInstance = serializerAdapter.Deserialize<SerializableStruct>(inputClassInstanceAsString);
-
-		// Assert.
-		deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(inputClassInstance)} : {inputClassInstance}\n" +
-		                      $"{nameof(deserializedClassInstance)} : {deserializedClassInstance}");
-	}
-
-	[Test]
-	public void WhenSerializeRecordToString_AndDeserializeFromString_ThenDeserializedRecordEqualsInput()
-	{
-		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputClassInstance = new SerializableRecord(randomId);
-
-		// Act.
-		var inputClassInstanceAsString = serializerAdapter.SerializeToString(inputClassInstance);
-		var deserializedClassInstance = serializerAdapter.Deserialize<SerializableRecord>(inputClassInstanceAsString);
-
-		// Assert.
-		deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(inputClassInstance)} : {inputClassInstance}\n" +
-		                      $"{nameof(deserializedClassInstance)} : {deserializedClassInstance}");
-	}
-
-
-	[Test]
-	public void WhenSerializeClassToStream_AndDeserializeToInputType_ThenDeserializedClassEqualsInput()
-	{
-		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputClassInstance = new SerializableClass(randomId);
-
-		// Act.
-		SerializableClass deserializedClassInstance;
+		TSerializable deserialized;
 		using (var stream = new MemoryStream())
 		{
-			serializerAdapter.Serialize(stream, inputClassInstance);
-			deserializedClassInstance = serializerAdapter.Deserialize<SerializableClass>(stream);
+			_serializer.Serialize(stream, input);
+			deserialized = _serializer.Deserialize<TSerializable>(stream);
 		}
 
 		// Assert.
-		deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
+		deserialized.Should().BeEquivalentTo(input);
 
 		// Debug.
-		TestContext.WriteLine($"{nameof(inputClassInstance)} : {inputClassInstance}\n" +
-		                      $"{nameof(deserializedClassInstance)} : {deserializedClassInstance}");
+		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
+		                      $"{nameof(deserialized)} : {deserialized}");
 	}
 
 	[Test]
-	public void WhenSerializeStructToStream_AndDeserializeToInputType_ThenDeserializedStructEqualsInput()
+	public async Task SerializeToStreamAsync_AndDeserializeAsyncToInputType_ThenResultEqualsInput()
 	{
 		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputStructInstance = new SerializableStruct(randomId);
+		var input = new TSerializable();
 
 		// Act.
-		SerializableStruct deserializedStructInstance;
-		using (var stream = new MemoryStream())
-		{
-			serializerAdapter.Serialize(stream, inputStructInstance);
-			deserializedStructInstance = serializerAdapter.Deserialize<SerializableStruct>(stream);
-		}
-
-		// Assert.
-		deserializedStructInstance.Should().BeEquivalentTo(inputStructInstance);
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(inputStructInstance)} : {inputStructInstance}\n" +
-		                      $"{nameof(deserializedStructInstance)} : {deserializedStructInstance}");
-	}
-
-	[Test]
-	public void WhenSerializeRecordToStream_AndDeserializeToInputType_ThenDeserializedRecordEqualsInput()
-	{
-		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputRecordInstance = new SerializableRecord(randomId);
-
-		// Act.
-		SerializableRecord deserializedRecordInstance;
-		using (var stream = new MemoryStream())
-		{
-			serializerAdapter.Serialize(stream, inputRecordInstance);
-			deserializedRecordInstance = serializerAdapter.Deserialize<SerializableRecord>(stream);
-		}
-
-		// Assert.
-		deserializedRecordInstance.Should().BeEquivalentTo(inputRecordInstance);
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(inputRecordInstance)} : {inputRecordInstance}\n" +
-		                      $"{nameof(deserializedRecordInstance)} : {deserializedRecordInstance}");
-	}
-
-	[Test]
-	public async Task WhenSerializeClassToStreamAsync_AndDeserializeAsyncToInputType_ThenDeserializedClassEqualsInput()
-	{
-		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputClassInstance = new SerializableClass(randomId);
-
-		// Act.
-		SerializableClass deserializedClassInstance;
+		TSerializable deserialized;
 		await using (var stream = new MemoryStream())
 		{
-			await serializerAdapter.SerializeAsync(stream, inputClassInstance);
-			deserializedClassInstance = await serializerAdapter.DeserializeAsync<SerializableClass>(stream);
+			await _serializer.SerializeAsync(stream, input);
+			deserialized = await _serializer.DeserializeAsync<TSerializable>(stream);
 		}
 
 		// Assert.
-		deserializedClassInstance.Should().BeEquivalentTo(inputClassInstance);
+		deserialized.Should().BeEquivalentTo(input);
 
 		// Debug.
-		TestContext.WriteLine($"{nameof(inputClassInstance)} : {inputClassInstance}\n" +
-		                      $"{nameof(deserializedClassInstance)} : {deserializedClassInstance}");
-	}
-
-	[Test]
-	public async Task WhenSerializeStructToStreamAsync_AndDeserializeAsyncToInputType_ThenDeserializedStructEqualsInput()
-	{
-		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputStructInstance = new SerializableStruct(randomId);
-
-		// Act.
-		SerializableStruct deserializedStructInstance;
-		await using (var stream = new MemoryStream())
-		{
-			await serializerAdapter.SerializeAsync(stream, inputStructInstance);
-			deserializedStructInstance = await serializerAdapter.DeserializeAsync<SerializableStruct>(stream);
-		}
-
-		// Assert.
-		deserializedStructInstance.Should().BeEquivalentTo(inputStructInstance);
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(inputStructInstance)} : {inputStructInstance}\n" +
-		                      $"{nameof(deserializedStructInstance)} : {deserializedStructInstance}");
-	}
-
-	[Test]
-	public async Task WhenSerializeRecordToStreamAsync_AndDeserializeAsyncToInputType_ThenDeserializedRecordEqualsInput()
-	{
-		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var serializerAdapter = new NewtonsoftJsonSerializer();
-		var inputRecordInstance = new SerializableRecord(randomId);
-
-		// Act.
-		SerializableRecord deserializedRecordInstance;
-		await using (var stream = new MemoryStream())
-		{
-			await serializerAdapter.SerializeAsync(stream, inputRecordInstance);
-			deserializedRecordInstance = await serializerAdapter.DeserializeAsync<SerializableRecord>(stream);
-		}
-
-		// Assert.
-		deserializedRecordInstance.Should().BeEquivalentTo(inputRecordInstance);
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(inputRecordInstance)} : {inputRecordInstance}\n" +
-		                      $"{nameof(deserializedRecordInstance)} : {deserializedRecordInstance}");
+		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
+		                      $"{nameof(deserialized)} : {deserialized}");
 	}
 }

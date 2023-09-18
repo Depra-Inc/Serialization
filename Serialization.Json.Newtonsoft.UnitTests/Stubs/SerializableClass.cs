@@ -13,6 +13,8 @@ namespace Depra.Serialization.Json.Newtonsoft.UnitTests.Stubs
 
         public SerializableClass(string id) => Id = id;
 
+        public SerializableClass() => Id = Guid.NewGuid().ToString();
+
         public override string ToString() => Id;
     }
 }

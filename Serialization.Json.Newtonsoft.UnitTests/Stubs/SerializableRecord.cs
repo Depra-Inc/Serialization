@@ -3,4 +3,7 @@
 
 namespace Depra.Serialization.Json.Newtonsoft.UnitTests.Stubs;
 
-internal record SerializableRecord(string Id);
+internal record SerializableRecord(string Id)
+{
+	public SerializableRecord() : this(Guid.NewGuid().ToString()) { }
+}

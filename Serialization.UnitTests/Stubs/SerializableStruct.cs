@@ -21,5 +21,7 @@ public struct SerializableStruct
 
 	public SerializableStruct(string id) => Id = id;
 
+	public SerializableStruct() => Id = Guid.NewGuid().ToString();
+
 	public override string ToString() => Id;
 }

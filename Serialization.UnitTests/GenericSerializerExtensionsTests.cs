@@ -9,8 +9,10 @@ using Depra.Serialization.Xml;
 
 namespace Depra.Serialization.UnitTests;
 
-[TestFixture(TestOf = typeof(GenericSerializerExtensions))]
-internal sealed class GenericSerializerExtensionsTests
+[TestFixture(typeof(SerializableClass))]
+[TestFixture(typeof(SerializableStruct))]
+[TestFixture(typeof(SerializableRecord))]
+internal sealed class GenericSerializerExtensionsTests<TSerializable> where TSerializable : new()
 {
 	private static IEnumerable<ISerializer> GetSerializers()
 	{
@@ -30,56 +32,20 @@ internal sealed class GenericSerializerExtensionsTests
 	}
 
 	[Test]
-	public void WhenCloneClass_AndInputIsNotNull_ThenClonedObjectEqualsInput(
+	public void Clone_ThenClonedObjectEqualsInput(
 		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
 	{
 		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var inputClassInstance = new SerializableClass(randomId);
+		var input = new TSerializable();
 
 		// Act.
-		var clonedClassInstance = serializer.Clone(inputClassInstance);
+		var cloned = serializer.Clone(input);
 
 		// Assert.
-		clonedClassInstance.Should().BeEquivalentTo(inputClassInstance);
+		cloned.Should().BeEquivalentTo(input);
 
-		TestContext.WriteLine($"{nameof(inputClassInstance)} : {inputClassInstance}\n" +
-		                      $"{nameof(clonedClassInstance)} : {clonedClassInstance}");
-	}
-
-	[Test]
-	public void WhenCloneStruct_AndInputIsNotNull_ThenClonedObjectEqualsInput(
-		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
-	{
-		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var inputStructInstance = new SerializableStruct(randomId);
-
-		// Act.
-		var clonedStructInstance = serializer.Clone(inputStructInstance);
-
-		// Assert.
-		clonedStructInstance.Should().BeEquivalentTo(inputStructInstance);
-
-		TestContext.WriteLine($"{nameof(inputStructInstance)} : {inputStructInstance}\n" +
-		                      $"{nameof(clonedStructInstance)} : {clonedStructInstance}");
-	}
-
-	[Test]
-	public void WhenCloneRecord_AndInputIsNotNull_ThenClonedObjectEqualsInput(
-		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
-	{
-		// Arrange.
-		var randomId = Guid.NewGuid().ToString();
-		var inputRecordInstance = new SerializableRecord(randomId);
-
-		// Act.
-		var clonedRecordInstance = serializer.Clone(inputRecordInstance);
-
-		// Assert.
-		clonedRecordInstance.Should().BeEquivalentTo(inputRecordInstance);
-
-		TestContext.WriteLine($"{nameof(inputRecordInstance)} : {inputRecordInstance}\n" +
-		                      $"{nameof(clonedRecordInstance)} : {clonedRecordInstance}");
+		// Debug.
+		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
+		                      $"{nameof(cloned)} : {cloned}");
 	}
 }

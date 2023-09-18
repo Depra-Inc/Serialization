@@ -22,7 +22,7 @@ public class SerializableClass
 	/// <summary>
 	/// Required for <see cref="XmlSerializer"/>
 	/// </summary>
-	public SerializableClass() => Id = string.Empty;
+	public SerializableClass() => Id = Guid.NewGuid().ToString();
 
 	public SerializableClass(string id) => Id = id;
 

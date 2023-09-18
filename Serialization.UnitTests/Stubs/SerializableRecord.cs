@@ -17,5 +17,5 @@ public record SerializableRecord(string Id)
 	/// <summary>
 	/// Required for <see cref="XmlSerializer"/>
 	/// </summary>
-	public SerializableRecord() : this(string.Empty) { }
+	public SerializableRecord() : this(Guid.NewGuid().ToString()) { }
 }
