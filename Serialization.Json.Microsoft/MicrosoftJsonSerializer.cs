@@ -16,19 +16,13 @@ namespace Depra.Serialization.Json.Microsoft
 	/// <summary>
 	/// Serializer using <see cref="JsonSerializer"/>.
 	/// </summary>
-	public readonly struct MicrosoftJsonSerializer : ISerializer, IGenericSerializer, IMemoryOptimalDeserializer
+	public readonly partial struct MicrosoftJsonSerializer : IStreamSerializer, IMemoryOptimalDeserializer
 	{
 		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 		private readonly JsonSerializerOptions _options;
 
 		public MicrosoftJsonSerializer(JsonSerializerOptions options) =>
 			_options = options;
-
-		public byte[] Serialize<TIn>(TIn input) =>
-			JsonSerializer.SerializeToUtf8Bytes(input, _options);
-
-		public byte[] Serialize(object input, Type inputType) =>
-			JsonSerializer.SerializeToUtf8Bytes(input, inputType, _options);
 
 		public void Serialize<TIn>(Stream outputStream, TIn input)
 		{
@@ -48,34 +42,10 @@ namespace Depra.Serialization.Json.Microsoft
 		public Task SerializeAsync(Stream outputStream, object input, Type inputType) =>
 			JsonSerializer.SerializeAsync(outputStream, input, inputType, _options);
 
-		public string SerializeToString<TIn>(TIn input) =>
-			JsonSerializer.Serialize(input, _options);
-
-		public string SerializeToString(object input, Type inputType) =>
-			JsonSerializer.Serialize(input, inputType, _options);
-
-		public string SerializeToPrettyString<TIn>(TIn input) =>
-			JsonSerializer.Serialize(input, new JsonSerializerOptions { WriteIndented = true });
-
-		public string SerializeToPrettyString(object input, Type inputType) =>
-			JsonSerializer.Serialize(input, inputType, new JsonSerializerOptions { WriteIndented = true });
-
-		public TOut Deserialize<TOut>(string input)
-		{
-			Guard.AgainstNullOrEmpty(input, nameof(input));
-			return JsonSerializer.Deserialize<TOut>(ENCODING_TYPE.GetBytes(input), _options);
-		}
-
 		public TOut Deserialize<TOut>(ReadOnlyMemory<byte> input)
 		{
 			Guard.AgainstEmpty(input, nameof(input));
 			return JsonSerializer.Deserialize<TOut>(input.Span, _options);
-		}
-
-		public object Deserialize(string input, Type outputType)
-		{
-			Guard.AgainstNullOrEmpty(input, nameof(input));
-			return JsonSerializer.Deserialize(ENCODING_TYPE.GetBytes(input), outputType, _options);
 		}
 
 		public TOut Deserialize<TOut>(Stream inputStream)

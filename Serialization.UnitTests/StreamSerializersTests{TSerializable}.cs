@@ -1,11 +1,6 @@
-﻿// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
-// SPDX-License-Identifier: Apache-2.0
-
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Depra.Serialization.Binary;
-using Depra.Serialization.Extensions;
 using Depra.Serialization.Json;
 using Depra.Serialization.Xml;
 
@@ -14,9 +9,9 @@ namespace Depra.Serialization.UnitTests;
 [TestFixture(typeof(SerializableClass))]
 [TestFixture(typeof(SerializableStruct))]
 [TestFixture(typeof(SerializableRecord))]
-internal sealed class GenericSerializersTests<TSerializable> where TSerializable : new()
+internal sealed class StreamSerializersTests<TSerializable> where TSerializable : new()
 {
-	private static IEnumerable<IGenericSerializer> GetSerializers()
+	private static IEnumerable<IStreamSerializer> GetSerializers()
 	{
 		// Binary.
 #pragma warning disable CS0612
@@ -34,47 +29,8 @@ internal sealed class GenericSerializersTests<TSerializable> where TSerializable
 	}
 
 	[Test]
-	public void SerializeToBytes_ThenResultIsNotNullOrEmpty(
-		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
-	{
-		// Arrange.
-		var input = new TSerializable();
-
-		// Act.
-		var serialized = serializer.Serialize(input);
-
-		// Assert.
-		serialized.Should().NotBeNullOrEmpty();
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
-		                      $"{nameof(serialized)} : {serialized.Flatten()}");
-	}
-
-	[Test]
-	public void SerializeToString_AndDeserializeFromString_ThenResultEqualsInput(
-		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
-	{
-		// Arrange.
-		var input = new TSerializable();
-
-		// Act.
-		var serialized = serializer.SerializeToString(input);
-		var deserialized = serializer.Deserialize<TSerializable>(serialized);
-
-		TestContext.WriteLine(serialized);
-
-		// Assert.
-		deserialized.Should().BeEquivalentTo(input);
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
-		                      $"{nameof(deserialized)} : {deserialized}");
-	}
-
-	[Test]
 	public void SerializeToStream_AndDeserializeFromString_ThenResultEqualsInput(
-		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
+		[ValueSource(nameof(GetSerializers))] IStreamSerializer serializer)
 	{
 		// Arrange.
 		var input = new TSerializable();
@@ -97,7 +53,7 @@ internal sealed class GenericSerializersTests<TSerializable> where TSerializable
 
 	[Test]
 	public async Task SerializeToStreamAsync_AndDeserializeFromStringAsync_ThenResultEqualsInput(
-		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
+		[ValueSource(nameof(GetSerializers))] IStreamSerializer serializer)
 	{
 		// Arrange.
 		var input = new TSerializable();

@@ -12,6 +12,8 @@ namespace Depra.Serialization.Benchmarks.SerializableTypes;
 [Serializable]
 public record SerializableRecord(string Id)
 {
+	internal static readonly Type Type = typeof(SerializableRecord);
+
 	/// <summary>
 	/// Required for <see cref="XmlSerializer"/>
 	/// </summary>

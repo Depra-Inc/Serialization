@@ -16,7 +16,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 	/// <summary>
 	/// Serializer using <see cref="JsonSerializer"/> and <see cref="JsonConvert"/>.
 	/// </summary>
-	public sealed class NewtonsoftJsonSerializer : ISerializer, IGenericSerializer, IMemoryOptimalDeserializer
+	public sealed partial class NewtonsoftJsonSerializer : IStreamSerializer, IMemoryOptimalDeserializer
 	{
 		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 		private readonly JsonSerializer _serializer;
@@ -27,14 +27,6 @@ namespace Depra.Serialization.Json.Newtonsoft
 			_serializer = serializer ?? JsonSerializer.CreateDefault(settings);
 			_settings = settings;
 		}
-
-		public byte[] Serialize<TIn>(TIn input) => ENCODING_TYPE
-			.GetBytes(JsonConvert
-				.SerializeObject(input, _settings));
-
-		public byte[] Serialize(object input, Type inputType) => ENCODING_TYPE
-			.GetBytes(JsonConvert
-				.SerializeObject(input, inputType, _settings));
 
 		public void Serialize<TIn>(Stream outputStream, TIn input)
 		{
@@ -67,24 +59,6 @@ namespace Depra.Serialization.Json.Newtonsoft
 			_serializer.Serialize(jsonWriter, input, inputType);
 			await jsonWriter.FlushAsync();
 		}
-
-		public string SerializeToString<TIn>(TIn input) =>
-			JsonConvert.SerializeObject(input, _settings);
-
-		public string SerializeToString(object input, Type inputType) =>
-			JsonConvert.SerializeObject(input, inputType, _settings);
-
-		public string SerializeToPrettyString<TIn>(TIn input) =>
-			JsonConvert.SerializeObject(input, Formatting.Indented, _settings);
-
-		public string SerializeToPrettyString(object input, Type inputType) =>
-			JsonConvert.SerializeObject(input, inputType, Formatting.Indented, _settings);
-
-		public TOut Deserialize<TOut>(string input) =>
-			JsonConvert.DeserializeObject<TOut>(input, _settings);
-
-		public object Deserialize(string input, Type outputType) =>
-			JsonConvert.DeserializeObject(input, outputType, _settings);
 
 		public object Deserialize(Stream inputStream, Type outputType)
 		{

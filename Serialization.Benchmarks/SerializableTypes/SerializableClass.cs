@@ -13,6 +13,8 @@ namespace Depra.Serialization.Benchmarks.SerializableTypes;
 [Serializable]
 public class SerializableClass
 {
+	internal static readonly Type Type = typeof(SerializableClass);
+
 	/// <summary>
 	/// Property can be a field.
 	/// Cannot be private and internal to <see cref="XmlSerializer"/> and <see cref="NewtonsoftJsonSerializer"/>

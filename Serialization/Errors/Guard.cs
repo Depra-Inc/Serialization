@@ -25,6 +25,16 @@ namespace Depra.Serialization.Errors
 
         [Conditional(DEBUG_CONDITION)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AgainstNull<T>(T value, string argumentName)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(argumentName);
+            }
+        }
+
+        [Conditional(DEBUG_CONDITION)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AgainstNullOrEmpty(string argumentValue, string argumentName)
         {
             if (string.IsNullOrEmpty(argumentValue))

@@ -1,9 +1,4 @@
-﻿// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
-// SPDX-License-Identifier: Apache-2.0
-
-using System.Collections.Generic;
 using Depra.Serialization.Binary;
-using Depra.Serialization.Extensions;
 using Depra.Serialization.Json;
 using Depra.Serialization.Xml;
 
@@ -12,9 +7,9 @@ namespace Depra.Serialization.UnitTests;
 [TestFixture(typeof(SerializableClass))]
 [TestFixture(typeof(SerializableStruct))]
 [TestFixture(typeof(SerializableRecord))]
-internal sealed class GenericSerializerExtensionsTests<TSerializable> where TSerializable : new()
+internal sealed class TextSerializersTests<TSerializable> where TSerializable : new()
 {
-	private static IEnumerable<ISerializer> GetSerializers()
+	private static IEnumerable<ITextSerializer> GetSerializers()
 	{
 		// Binary.
 #pragma warning disable CS0612
@@ -32,20 +27,23 @@ internal sealed class GenericSerializerExtensionsTests<TSerializable> where TSer
 	}
 
 	[Test]
-	public void Clone_ThenClonedObjectEqualsInput(
-		[ValueSource(nameof(GetSerializers))] IGenericSerializer serializer)
+	public void SerializeToString_AndDeserializeFromString_ThenResultEqualsInput(
+		[ValueSource(nameof(GetSerializers))] ITextSerializer serializer)
 	{
 		// Arrange.
 		var input = new TSerializable();
 
 		// Act.
-		var cloned = serializer.Clone(input);
+		var serialized = serializer.SerializeToString(input);
+		var deserialized = serializer.Deserialize<TSerializable>(serialized);
+
+		TestContext.WriteLine(serialized);
 
 		// Assert.
-		cloned.Should().BeEquivalentTo(input);
+		deserialized.Should().BeEquivalentTo(input);
 
 		// Debug.
 		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
-		                      $"{nameof(cloned)} : {cloned}");
+		                      $"{nameof(deserialized)} : {deserialized}");
 	}
 }

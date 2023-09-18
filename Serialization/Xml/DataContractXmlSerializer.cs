@@ -4,7 +4,6 @@
 using System;
 using System.IO;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Depra.Serialization.Interfaces;
@@ -15,45 +14,25 @@ namespace Depra.Serialization.Xml
 	/// <summary>
 	/// Serializer using <see cref="DataContractSerializer"/>.
 	/// </summary>
-	public readonly struct DataContractXmlSerializer : ISerializer, IGenericSerializer
+	public readonly partial struct DataContractXmlSerializer : IStreamSerializer
 	{
-		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
-
-		public byte[] Serialize<TIn>(TIn input) =>
-			SerializationHelper.SerializeToBytes(this, input);
-
-		public byte[] Serialize(object input, Type inputType) =>
-			SerializationHelper.SerializeToBytes(this, input, inputType);
-
 		public void Serialize<TIn>(Stream outputStream, TIn input) =>
 			Serialize(outputStream, input, typeof(TIn));
 
 		public void Serialize(Stream outputStream, object input, Type inputType) =>
 			new DataContractSerializer(inputType).WriteObject(outputStream, input);
 
-		public Task SerializeAsync<TIn>(Stream outputStream, TIn input) =>
-			SerializationHelper.SerializeAsync(this, outputStream, input);
+		public Task SerializeAsync<TIn>(Stream outputStream, TIn input)
+		{
+			var serializer = this;
+			return Task.Run(() => serializer.Serialize(outputStream, input));
+		}
 
-		public Task SerializeAsync(Stream outputStream, object input, Type inputType) =>
-			SerializationHelper.SerializeAsync(this, outputStream, input, inputType);
-
-		public string SerializeToString<TIn>(TIn input) =>
-			SerializationHelper.SerializeToString(this, input, ENCODING_TYPE);
-
-		public string SerializeToString(object input, Type inputType) =>
-			SerializationHelper.SerializeToString(this, input, inputType, ENCODING_TYPE);
-
-		string IGenericSerializer.SerializeToPrettyString<TIn>(TIn input) =>
-			SerializeToString(input);
-
-		string ISerializer.SerializeToPrettyString(object input, Type inputType) =>
-			SerializeToString(input, inputType);
-
-		public TOut Deserialize<TOut>(string input) =>
-			SerializationHelper.DeserializeFromString<TOut>(this, input, ENCODING_TYPE);
-
-		public object Deserialize(string input, Type outputType) =>
-			SerializationHelper.DeserializeFromString(this, input, outputType, ENCODING_TYPE);
+		public Task SerializeAsync(Stream outputStream, object input, Type inputType)
+		{
+			var serializer = this;
+			return Task.Run(() => serializer.Serialize(outputStream, input, inputType));
+		}
 
 		public TOut Deserialize<TOut>(Stream inputStream) =>
 			(TOut)Deserialize(inputStream, typeof(TOut));
@@ -66,12 +45,18 @@ namespace Depra.Serialization.Xml
 			return serializer.ReadObject(inputStream);
 		}
 
-		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream, CancellationToken cancellationToken = default) =>
-			SerializationHelper.DeserializeAsync<TOut>(this, inputStream, cancellationToken);
+		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream, CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			return new ValueTask<TOut>(Deserialize<TOut>(inputStream));
+		}
 
 		public ValueTask<object> DeserializeAsync(Stream inputStream, Type outputType,
-			CancellationToken cancellationToken = default) =>
-			SerializationHelper.DeserializeAsync(this, inputStream, outputType, cancellationToken);
+			CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			return new ValueTask<object>(Deserialize(inputStream, outputType));
+		}
 
 		/// <summary>
 		/// Just for tests and benchmarks.

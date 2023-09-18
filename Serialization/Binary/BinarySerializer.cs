@@ -5,11 +5,9 @@ using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Depra.Serialization.Interfaces;
-using Depra.Serialization.Internal;
 
 namespace Depra.Serialization.Binary
 {
@@ -17,9 +15,8 @@ namespace Depra.Serialization.Binary
 	/// Serializer using <see cref="BinaryFormatter"/>.
 	/// </summary>
 	[Obsolete]
-	public sealed class BinarySerializer : ISerializer, IGenericSerializer
+	public sealed partial class BinarySerializer : IStreamSerializer
 	{
-		private static readonly Encoding ENCODING_TYPE = Encoding.ASCII;
 		private readonly BinaryFormatter _binaryFormatter;
 
 		public BinarySerializer() => _binaryFormatter = new BinaryFormatter();
@@ -27,41 +24,17 @@ namespace Depra.Serialization.Binary
 		public BinarySerializer(ISurrogateSelector surrogateSelector) =>
 			_binaryFormatter = new BinaryFormatter { SurrogateSelector = surrogateSelector };
 
-		public byte[] Serialize<TIn>(TIn input) =>
-			SerializationHelper.SerializeToBytes(this, input);
-
-		public byte[] Serialize(object input, Type inputType) =>
-			SerializationHelper.SerializeToBytes(this, input, inputType);
-
 		public void Serialize<TIn>(Stream outputStream, TIn input) =>
 			_binaryFormatter.Serialize(outputStream, input);
 
 		public void Serialize(Stream outputStream, object input, Type inputType) =>
-			Serialize(outputStream, input);
+			_binaryFormatter.Serialize(outputStream, input);
 
 		public Task SerializeAsync<TIn>(Stream outputStream, TIn input) =>
-			SerializationHelper.SerializeAsync(this, outputStream, input);
+			Task.Run(() => Serialize(outputStream, input));
 
 		public Task SerializeAsync(Stream outputStream, object input, Type inputType) =>
-			SerializationHelper.SerializeAsync(this, outputStream, input, inputType);
-
-		public string SerializeToString<TIn>(TIn input) =>
-			SerializationHelper.SerializeToString(this, input, ENCODING_TYPE);
-
-		public string SerializeToString(object input, Type inputType) =>
-			SerializationHelper.SerializeToString(this, input, inputType, ENCODING_TYPE);
-
-		string IGenericSerializer.SerializeToPrettyString<TIn>(TIn input) =>
-			SerializeToString(input);
-
-		string ISerializer.SerializeToPrettyString(object input, Type inputType) =>
-			SerializeToString(input, inputType);
-
-		public TOut Deserialize<TOut>(string input) =>
-			SerializationHelper.DeserializeFromString<TOut>(this, input, ENCODING_TYPE);
-
-		public object Deserialize(string input, Type outputType) =>
-			SerializationHelper.DeserializeFromString(this, input, outputType, ENCODING_TYPE);
+			Task.Run(() => Serialize(outputStream, input, inputType));
 
 		public TOut Deserialize<TOut>(Stream inputStream) =>
 			(TOut)Deserialize(inputStream, typeof(TOut));
@@ -72,13 +45,18 @@ namespace Depra.Serialization.Binary
 			return _binaryFormatter.Deserialize(inputStream);
 		}
 
-		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
-			CancellationToken cancellationToken = default) =>
-			SerializationHelper.DeserializeAsync<TOut>(this, inputStream, cancellationToken);
+		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream, CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			return new ValueTask<TOut>(Deserialize<TOut>(inputStream));
+		}
 
 		public ValueTask<object> DeserializeAsync(Stream inputStream, Type outputType,
-			CancellationToken cancellationToken = default) =>
-			SerializationHelper.DeserializeAsync(this, inputStream, outputType, cancellationToken);
+			CancellationToken cancellationToken = default)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			return new ValueTask<object>(Deserialize(inputStream, outputType));
+		}
 
 		/// <summary>
 		/// Just for tests and benchmarks.
