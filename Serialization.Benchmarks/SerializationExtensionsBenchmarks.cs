@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
-using Depra.Serialization.Benchmarks.SerializableTypes;
 using Depra.Serialization.Binary;
 using Depra.Serialization.Extensions;
 using Depra.Serialization.Interfaces;
@@ -20,9 +19,7 @@ public class SerializationExtensionsBenchmarks
 	public static IEnumerable<RawAndStreamSerializer> Serializers()
 	{
 		// Binary.
-#pragma warning disable CS0612
 		yield return new RawAndStreamSerializer(new BinarySerializer());
-#pragma warning restore CS0612
 
 		// XML.
 		yield return new RawAndStreamSerializer(new StandardXmlSerializer());

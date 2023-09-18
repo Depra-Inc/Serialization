@@ -19,9 +19,7 @@ internal sealed class SerializerExtensionsTests<TSerializable> where TSerializab
 	private static IEnumerable<RawAndStreamSerializer> GetSerializers()
 	{
 		// Binary.
-#pragma warning disable CS0612
 		yield return new RawAndStreamSerializer(new BinarySerializer());
-#pragma warning restore CS0612
 
 		// XML.
 		yield return new RawAndStreamSerializer(new StandardXmlSerializer());

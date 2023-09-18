@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using Depra.Serialization.Extensions;
-using Depra.Serialization.Json.Microsoft.UnitTests.Stubs;
 
 namespace Depra.Serialization.Json.Microsoft.UnitTests;
 
@@ -57,9 +56,9 @@ internal sealed class MicrosoftJsonSerializerTests<TSerializable> where TSeriali
 	{
 		// Arrange.
 		var input = new TSerializable();
+		using var stream = new MemoryStream();
 
 		// Act.
-		using var stream = new MemoryStream();
 		_serializer.Serialize(stream, input);
 		var deserialized = _serializer.Deserialize<TSerializable>(stream);
 
@@ -76,9 +75,9 @@ internal sealed class MicrosoftJsonSerializerTests<TSerializable> where TSeriali
 	{
 		// Arrange.
 		var input = new TSerializable();
+		await using var stream = new MemoryStream();
 
 		// Act.
-		await using var stream = new MemoryStream();
 		await _serializer.SerializeAsync(stream, input);
 		var deserialized = await _serializer.DeserializeAsync<TSerializable>(stream);
 

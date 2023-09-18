@@ -58,14 +58,11 @@ internal sealed class NewtonsoftJsonSerializerTests<TSerializable> where TSerial
 	{
 		// Arrange.
 		var input = new TSerializable();
+		using var stream = new MemoryStream();
 
 		// Act.
-		TSerializable deserialized;
-		using (var stream = new MemoryStream())
-		{
-			_serializer.Serialize(stream, input);
-			deserialized = _serializer.Deserialize<TSerializable>(stream);
-		}
+		_serializer.Serialize(stream, input);
+		var deserialized = _serializer.Deserialize<TSerializable>(stream);
 
 		// Assert.
 		deserialized.Should().BeEquivalentTo(input);
@@ -80,14 +77,11 @@ internal sealed class NewtonsoftJsonSerializerTests<TSerializable> where TSerial
 	{
 		// Arrange.
 		var input = new TSerializable();
+		await using var stream = new MemoryStream();
 
 		// Act.
-		TSerializable deserialized;
-		await using (var stream = new MemoryStream())
-		{
-			await _serializer.SerializeAsync(stream, input);
-			deserialized = await _serializer.DeserializeAsync<TSerializable>(stream);
-		}
+		await _serializer.SerializeAsync(stream, input);
+		var deserialized = await _serializer.DeserializeAsync<TSerializable>(stream);
 
 		// Assert.
 		deserialized.Should().BeEquivalentTo(input);

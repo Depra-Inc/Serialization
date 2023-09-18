@@ -12,9 +12,7 @@ internal sealed class TextSerializersTests<TSerializable> where TSerializable : 
 	private static IEnumerable<ITextSerializer> GetSerializers()
 	{
 		// Binary.
-#pragma warning disable CS0612
 		yield return new BinarySerializer();
-#pragma warning restore CS0612
 
 		// XML.
 		yield return new StandardXmlSerializer();

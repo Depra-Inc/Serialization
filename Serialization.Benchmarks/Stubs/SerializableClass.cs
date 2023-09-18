@@ -5,7 +5,7 @@ using System;
 using System.Xml.Serialization;
 using Depra.Serialization.Json.Newtonsoft;
 
-namespace Depra.Serialization.Benchmarks.SerializableTypes;
+namespace Depra.Serialization.Benchmarks.Stubs;
 
 /// <summary>
 /// Must be public to <see cref="XmlSerializer"/>.

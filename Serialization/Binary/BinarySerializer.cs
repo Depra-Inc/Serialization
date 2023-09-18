@@ -14,7 +14,6 @@ namespace Depra.Serialization.Binary
 	/// <summary>
 	/// Serializer using <see cref="BinaryFormatter"/>.
 	/// </summary>
-	[Obsolete]
 	public sealed partial class BinarySerializer : IStreamSerializer
 	{
 		private readonly BinaryFormatter _binaryFormatter;

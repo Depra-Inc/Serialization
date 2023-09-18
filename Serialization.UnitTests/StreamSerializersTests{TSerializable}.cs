@@ -14,9 +14,7 @@ internal sealed class StreamSerializersTests<TSerializable> where TSerializable 
 	private static IEnumerable<IStreamSerializer> GetSerializers()
 	{
 		// Binary.
-#pragma warning disable CS0612
 		yield return new BinarySerializer();
-#pragma warning restore CS0612
 
 		// XML.
 		yield return new StandardXmlSerializer();
@@ -34,14 +32,11 @@ internal sealed class StreamSerializersTests<TSerializable> where TSerializable 
 	{
 		// Arrange.
 		var input = new TSerializable();
+		using var stream = new MemoryStream();
 
 		// Act.
-		TSerializable deserialized;
-		using (var stream = new MemoryStream())
-		{
-			serializer.Serialize(stream, input);
-			deserialized = serializer.Deserialize<TSerializable>(stream);
-		}
+		serializer.Serialize(stream, input);
+		var deserialized = serializer.Deserialize<TSerializable>(stream);
 
 		// Assert.
 		deserialized.Should().BeEquivalentTo(input);
@@ -57,14 +52,11 @@ internal sealed class StreamSerializersTests<TSerializable> where TSerializable 
 	{
 		// Arrange.
 		var input = new TSerializable();
+		await using var stream = new MemoryStream();
 
 		// Act.
-		TSerializable deserialized;
-		await using (var stream = new MemoryStream())
-		{
-			await serializer.SerializeAsync(stream, input);
-			deserialized = await serializer.DeserializeAsync<TSerializable>(stream);
-		}
+		await serializer.SerializeAsync(stream, input);
+		var deserialized = await serializer.DeserializeAsync<TSerializable>(stream);
 
 		// Assert.
 		deserialized.Should().BeEquivalentTo(input);

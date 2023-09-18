@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
-using Depra.Serialization.Benchmarks.SerializableTypes;
 using Depra.Serialization.Binary;
 using Depra.Serialization.Interfaces;
 using Depra.Serialization.Json;
@@ -17,9 +16,7 @@ public class TextSerializerBenchmarks
 	public static IEnumerable<ITextSerializer> Serializers()
 	{
 		// Binary.
-#pragma warning disable CS0612
 		yield return new BinarySerializer();
-#pragma warning restore CS0612
 
 		// XML.
 		yield return new StandardXmlSerializer();
