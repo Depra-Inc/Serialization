@@ -6,8 +6,8 @@ using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Depra.Serialization.Errors;
 using Depra.Serialization.Interfaces;
-using Depra.Serialization.Internal;
 
 namespace Depra.Serialization.Json
 {
@@ -16,11 +16,22 @@ namespace Depra.Serialization.Json
 	/// </summary>
 	public readonly partial struct DataContractJsonSerializerAdapter : IStreamSerializer
 	{
-		public void Serialize<TIn>(Stream outputStream, TIn input) =>
-			Serialize(outputStream, input, typeof(TIn));
+		public void Serialize<TIn>(Stream outputStream, TIn input)
+		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
 
-		public void Serialize(Stream outputStream, object input, Type inputType) =>
+			new DataContractJsonSerializer(typeof(TIn)).WriteObject(outputStream, input);
+		}
+
+		public void Serialize(Stream outputStream, object input, Type inputType)
+		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNull(inputType, nameof(inputType));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
+
 			new DataContractJsonSerializer(inputType).WriteObject(outputStream, input);
+		}
 
 		public Task SerializeAsync<TIn>(Stream outputStream, TIn input)
 		{
@@ -39,6 +50,9 @@ namespace Depra.Serialization.Json
 
 		public object Deserialize(Stream inputStream, Type outputType)
 		{
+			Guard.AgainstNull(outputType, nameof(outputType));
+			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
+
 			var serializer = new DataContractJsonSerializer(outputType);
 			inputStream.Seek(0, SeekOrigin.Begin);
 

@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
+using Depra.Serialization.Errors;
 using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Binary
@@ -23,11 +24,22 @@ namespace Depra.Serialization.Binary
 		public BinarySerializer(ISurrogateSelector surrogateSelector) =>
 			_binaryFormatter = new BinaryFormatter { SurrogateSelector = surrogateSelector };
 
-		public void Serialize<TIn>(Stream outputStream, TIn input) =>
-			_binaryFormatter.Serialize(outputStream, input);
+		public void Serialize<TIn>(Stream outputStream, TIn input)
+		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
 
-		public void Serialize(Stream outputStream, object input, Type inputType) =>
 			_binaryFormatter.Serialize(outputStream, input);
+		}
+
+		public void Serialize(Stream outputStream, object input, Type inputType)
+		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNull(inputType, nameof(inputType));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
+
+			_binaryFormatter.Serialize(outputStream, input);
+		}
 
 		public Task SerializeAsync<TIn>(Stream outputStream, TIn input) =>
 			Task.Run(() => Serialize(outputStream, input));
@@ -40,6 +52,9 @@ namespace Depra.Serialization.Binary
 
 		public object Deserialize(Stream inputStream, Type outputType)
 		{
+			Guard.AgainstNull(outputType, nameof(outputType));
+			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
+
 			inputStream.Seek(0, SeekOrigin.Begin);
 			return _binaryFormatter.Deserialize(inputStream);
 		}

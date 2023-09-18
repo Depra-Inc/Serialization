@@ -26,21 +26,39 @@ namespace Depra.Serialization.Json.Microsoft
 
 		public void Serialize<TIn>(Stream outputStream, TIn input)
 		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
+
 			JsonSerializer.Serialize(new Utf8JsonWriter(outputStream), input, _options);
 			outputStream.Seek(0, SeekOrigin.Begin);
 		}
 
 		public void Serialize(Stream outputStream, object input, Type inputType)
 		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNull(inputType, nameof(inputType));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
+
 			JsonSerializer.Serialize(new Utf8JsonWriter(outputStream), input, inputType, _options);
 			outputStream.Seek(0, SeekOrigin.Begin);
 		}
 
-		public Task SerializeAsync<TIn>(Stream outputStream, TIn input) =>
-			JsonSerializer.SerializeAsync(outputStream, input, _options);
+		public Task SerializeAsync<TIn>(Stream outputStream, TIn input)
+		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
 
-		public Task SerializeAsync(Stream outputStream, object input, Type inputType) =>
-			JsonSerializer.SerializeAsync(outputStream, input, inputType, _options);
+			return JsonSerializer.SerializeAsync(outputStream, input, _options);
+		}
+
+		public Task SerializeAsync(Stream outputStream, object input, Type inputType)
+		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNull(inputType, nameof(inputType));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
+
+			return JsonSerializer.SerializeAsync(outputStream, input, inputType, _options);
+		}
 
 		public TOut Deserialize<TOut>(ReadOnlyMemory<byte> input)
 		{
@@ -64,6 +82,7 @@ namespace Depra.Serialization.Json.Microsoft
 
 		public object Deserialize(Stream inputStream, Type outputType)
 		{
+			Guard.AgainstNull(outputType, nameof(outputType));
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
 
 			inputStream.SeekIfAtEnd();

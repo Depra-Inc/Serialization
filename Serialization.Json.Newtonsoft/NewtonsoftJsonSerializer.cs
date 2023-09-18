@@ -30,6 +30,9 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 		public void Serialize<TIn>(Stream outputStream, TIn input)
 		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
+
 			var bytes = Serialize(input);
 			outputStream.Write(bytes);
 			outputStream.Seek(0, SeekOrigin.Begin);
@@ -37,6 +40,10 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 		public void Serialize(Stream outputStream, object input, Type inputType)
 		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNull(inputType, nameof(inputType));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
+
 			var bytes = Serialize(input, inputType);
 			outputStream.Write(bytes);
 			outputStream.Seek(0, SeekOrigin.Begin);
@@ -44,6 +51,9 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 		public async Task SerializeAsync<TIn>(Stream outputStream, TIn input)
 		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
+
 			await using var writer = CreateStreamWriter(outputStream);
 			using var jsonWriter = new JsonTextWriter(writer);
 
@@ -53,6 +63,10 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 		public async Task SerializeAsync(Stream outputStream, object input, Type inputType)
 		{
+			Guard.AgainstNull(input, nameof(input));
+			Guard.AgainstNull(inputType, nameof(inputType));
+			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
+
 			await using var writer = CreateStreamWriter(outputStream);
 			using var jsonWriter = new JsonTextWriter(writer);
 
@@ -62,6 +76,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 		public object Deserialize(Stream inputStream, Type outputType)
 		{
+			Guard.AgainstNull(outputType, nameof(outputType));
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
 
 			inputStream.SeekIfAtEnd();
@@ -109,6 +124,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 		public async ValueTask<object> DeserializeAsync(Stream inputStream, Type outputType,
 			CancellationToken cancellationToken = default)
 		{
+			Guard.AgainstNull(outputType, nameof(outputType));
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
 
 			inputStream.SeekIfAtEnd();
