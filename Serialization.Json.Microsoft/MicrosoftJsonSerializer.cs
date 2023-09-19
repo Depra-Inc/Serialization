@@ -15,7 +15,7 @@ namespace Depra.Serialization.Json.Microsoft
 	/// <summary>
 	/// Serializer using <see cref="JsonSerializer"/>.
 	/// </summary>
-	public readonly partial struct MicrosoftJsonSerializer : IStreamSerializer, IMemoryOptimalDeserializer
+	public readonly partial struct MicrosoftJsonSerializer : IStreamSerializer
 	{
 		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 		private readonly JsonSerializerOptions _options;
@@ -56,12 +56,6 @@ namespace Depra.Serialization.Json.Microsoft
 			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
 
 			return JsonSerializer.SerializeAsync(outputStream, input, inputType, _options);
-		}
-
-		public TOut Deserialize<TOut>(ReadOnlyMemory<byte> input)
-		{
-			Guard.AgainstEmpty(input, nameof(input));
-			return JsonSerializer.Deserialize<TOut>(input.Span, _options);
 		}
 
 		public TOut Deserialize<TOut>(Stream inputStream)

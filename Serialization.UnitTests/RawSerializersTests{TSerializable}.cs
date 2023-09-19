@@ -29,7 +29,7 @@ internal sealed class RawSerializersTests<TSerializable> where TSerializable : n
 	}
 
 	[Test]
-	public void SerializeToBytes_ThenResultIsNotNullOrEmpty(
+	public void SerializeToBytes_AndDeserializeFromBytes_ThenResultEqualsInput(
 		[ValueSource(nameof(GetSerializers))] IRawSerializer serializer)
 	{
 		// Arrange.
@@ -37,12 +37,14 @@ internal sealed class RawSerializersTests<TSerializable> where TSerializable : n
 
 		// Act.
 		var serialized = serializer.Serialize(input);
+		var deserialized = serializer.Deserialize<TSerializable>(serialized);
 
 		// Assert.
-		serialized.Should().NotBeNullOrEmpty();
+		deserialized.Should().BeEquivalentTo(input);
 
 		// Debug.
 		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
-		                      $"{nameof(serialized)} : {serialized.Flatten()}");
+		                      $"{nameof(serialized)} : {serialized.Flatten()}\n" +
+		                      $"{nameof(deserialized)} : {deserialized}");
 	}
 }

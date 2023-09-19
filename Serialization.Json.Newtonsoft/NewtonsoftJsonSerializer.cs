@@ -15,7 +15,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 	/// <summary>
 	/// Serializer using <see cref="JsonSerializer"/> and <see cref="JsonConvert"/>.
 	/// </summary>
-	public sealed partial class NewtonsoftJsonSerializer : IStreamSerializer, IMemoryOptimalDeserializer
+	public sealed partial class NewtonsoftJsonSerializer : IStreamSerializer
 	{
 		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 		private readonly JsonSerializer _serializer;
@@ -84,7 +84,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 			Guard.Against(totalBytes == 0, () => throw new InvalidDataException());
 
-			var bytesAsString = Encoding.UTF8.GetString(buffer);
+			var bytesAsString = ENCODING_TYPE.GetString(buffer);
 			using var stringReader = new StringReader(bytesAsString);
 			using var jsonReader = new JsonTextReader(stringReader);
 
@@ -93,14 +93,6 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 		public TOut Deserialize<TOut>(Stream inputStream) =>
 			(TOut)Deserialize(inputStream, typeof(TOut));
-
-		public TOut Deserialize<TOut>(ReadOnlyMemory<byte> input)
-		{
-			Guard.AgainstEmpty(input, nameof(input));
-
-			var inputAsString = Encoding.UTF8.GetString(input.Span);
-			return JsonConvert.DeserializeObject<TOut>(inputAsString, _settings);
-		}
 
 		public async ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
 			CancellationToken cancellationToken = default)
@@ -113,7 +105,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 			Guard.Against(totalBytes == 0, () => throw new InvalidDataException());
 
-			var bytesAsString = Encoding.UTF8.GetString(buffer.Span);
+			var bytesAsString = ENCODING_TYPE.GetString(buffer.Span);
 			using var stringReader = new StringReader(bytesAsString);
 			using var jsonReader = new JsonTextReader(stringReader);
 
@@ -132,7 +124,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 			Guard.Against(totalBytes == 0, () => throw new InvalidDataException());
 
-			var bytesAsString = Encoding.UTF8.GetString(buffer.Span);
+			var bytesAsString = ENCODING_TYPE.GetString(buffer.Span);
 			using var stringReader = new StringReader(bytesAsString);
 			using var jsonReader = new JsonTextReader(stringReader);
 

@@ -55,6 +55,16 @@ namespace Depra.Serialization.Errors
 
         [Conditional(DEBUG_CONDITION)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AgainstNullOrEmpty<T>(T[] argumentValue, string argumentName)
+        {
+            if (argumentValue is null || argumentValue.Length == 0)
+            {
+                throw new ArgumentException(string.Format(CANT_BE_NULL, argumentName));
+            }
+        }
+
+        [Conditional(DEBUG_CONDITION)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AgainstEmpty<T>(ReadOnlyMemory<T> argumentValue, string argumentName)
         {
             if (argumentValue.Length == 0)

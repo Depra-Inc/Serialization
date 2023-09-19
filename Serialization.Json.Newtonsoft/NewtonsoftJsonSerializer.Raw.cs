@@ -21,8 +21,21 @@ namespace Depra.Serialization.Json.Newtonsoft
 			return ENCODING_TYPE.GetBytes(JsonConvert.SerializeObject(input, inputType, _settings));
 		}
 
-		public TOut Deserialize<TOut>(byte[] input) => throw new NotImplementedException();
+		public TOut Deserialize<TOut>(byte[] input)
+		{
+			Guard.AgainstNullOrEmpty(input, nameof(input));
 
-		public object Deserialize(byte[] input, Type outputType) => throw new NotImplementedException();
+			var bytes = ENCODING_TYPE.GetString(input);
+			return JsonConvert.DeserializeObject<TOut>(bytes, _settings);
+		}
+
+		public object Deserialize(byte[] input, Type outputType)
+		{
+			Guard.AgainstNullOrEmpty(input, nameof(input));
+			Guard.AgainstNull(outputType, nameof(outputType));
+
+			var bytes = ENCODING_TYPE.GetString(input);
+			return JsonConvert.DeserializeObject(bytes, outputType, _settings);
+		}
 	}
 }

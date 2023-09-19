@@ -17,17 +17,19 @@ internal sealed class MicrosoftJsonRawSerializerTests
 	public void Setup() => _serializer = new MicrosoftJsonSerializer();
 
 	[Test]
-	public void SerializeToBytes_ThenResultIsNotNullOrEmpty(
+	public void SerializeToBytes_AndDeserializeFromBytes_ThenResultEqualsInput(
 		[ValueSource(nameof(GetInput))] Container input)
 	{
 		// Arrange & Act.
 		var serialized = _serializer.Serialize(input.Value, input.Type);
+		var deserialized = _serializer.Deserialize(serialized, input.Type);
 
 		// Assert.
-		serialized.Should().NotBeNullOrEmpty();
+		deserialized.Should().BeEquivalentTo(input.Value);
 
 		// Debug.
 		TestContext.WriteLine($"{nameof(input)} : {input.Value}\n" +
-		                      $"{nameof(serialized)} : {serialized.Flatten()}");
+		                      $"{nameof(serialized)} : {serialized.Flatten()}\n" +
+		                      $"{nameof(deserialized)} : {deserialized}");
 	}
 }

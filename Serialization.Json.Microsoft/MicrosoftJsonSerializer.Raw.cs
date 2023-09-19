@@ -21,8 +21,19 @@ namespace Depra.Serialization.Json.Microsoft
 			return JsonSerializer.SerializeToUtf8Bytes(input, inputType, _options);
 		}
 
-		public TOut Deserialize<TOut>(byte[] input) => throw new NotImplementedException();
+		public TOut Deserialize<TOut>(byte[] input)
+		{
+			Guard.AgainstNullOrEmpty(input, nameof(input));
 
-		public object Deserialize(byte[] input, Type outputType) => throw new NotImplementedException();
+			return JsonSerializer.Deserialize<TOut>(input, _options);
+		}
+
+		public object Deserialize(byte[] input, Type outputType)
+		{
+			Guard.AgainstNullOrEmpty(input, nameof(input));
+			Guard.AgainstNull(outputType, nameof(outputType));
+
+			return JsonSerializer.Deserialize(input, outputType, _options);
+		}
 	}
 }

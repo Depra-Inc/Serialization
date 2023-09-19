@@ -30,18 +30,20 @@ internal sealed class RawSerializersTests
 	}
 
 	[Test]
-	public void SerializeToBytes_ThenResultIsNotNullOrEmpty(
+	public void SerializeToBytes_AndDeserializeFromBytes_ThenResultEqualsInput(
 		[ValueSource(nameof(GetInput))] Container input,
 		[ValueSource(nameof(GetSerializers))] IRawSerializer serializer)
 	{
 		// Arrange & Act.
 		var serialized = serializer.Serialize(input.Value, input.Type);
+		var deserialized = serializer.Deserialize(serialized, input.Type);
 
 		// Assert.
-		serialized.Should().NotBeNullOrEmpty();
+		deserialized.Should().BeEquivalentTo(input.Value);
 
 		// Debug.
 		TestContext.WriteLine($"{nameof(input)} : {input.Value}\n" +
-		                      $"{nameof(serialized)} : {serialized.Flatten()}");
+		                      $"{nameof(serialized)} : {serialized.Flatten()}\n" +
+		                      $"{nameof(deserialized)} : {deserialized}");
 	}
 }
