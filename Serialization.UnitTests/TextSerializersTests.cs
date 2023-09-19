@@ -8,9 +8,9 @@ internal sealed class TextSerializersTests
 {
 	private static IEnumerable<Container> GetInput()
 	{
-		yield return new Container(typeof(SerializableClass), new SerializableClass(Guid.NewGuid().ToString()));
-		yield return new Container(typeof(SerializableStruct), new SerializableStruct(Guid.NewGuid().ToString()));
-		yield return new Container(typeof(SerializableRecord), new SerializableRecord(Guid.NewGuid().ToString()));
+		yield return new Container(typeof(SerializableClass), new SerializableClass());
+		yield return new Container(typeof(SerializableStruct), new SerializableStruct());
+		yield return new Container(typeof(SerializableRecord), new SerializableRecord());
 	}
 
 	private static IEnumerable<ITextSerializer> GetSerializers()

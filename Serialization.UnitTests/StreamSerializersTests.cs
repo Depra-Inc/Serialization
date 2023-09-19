@@ -69,5 +69,4 @@ internal sealed class StreamSerializersTests
 		TestContext.WriteLine($"{nameof(input)} : {input.Value}\n" +
 		                      $"{nameof(deserialized)} : {deserialized}");
 	}
-
 }

@@ -21,8 +21,7 @@ namespace Depra.Serialization.Json.Microsoft
 		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 		private readonly JsonSerializerOptions _options;
 
-		public MicrosoftJsonSerializer(JsonSerializerOptions options) =>
-			_options = options;
+		public MicrosoftJsonSerializer(JsonSerializerOptions options) => _options = options;
 
 		public void Serialize<TIn>(Stream outputStream, TIn input)
 		{
@@ -98,17 +97,18 @@ namespace Depra.Serialization.Json.Microsoft
 		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream, CancellationToken cancellationToken = default)
 		{
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
-			inputStream.SeekIfAtEnd();
 
+			inputStream.SeekIfAtEnd();
 			return JsonSerializer.DeserializeAsync<TOut>(inputStream, _options, cancellationToken);
 		}
 
 		public ValueTask<object> DeserializeAsync(Stream inputStream, Type outputType,
 			CancellationToken cancellationToken = default)
 		{
+			Guard.AgainstNull(outputType, nameof(outputType));
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
-			inputStream.SeekIfAtEnd();
 
+			inputStream.SeekIfAtEnd();
 			return JsonSerializer.DeserializeAsync(inputStream, outputType, _options, cancellationToken);
 		}
 

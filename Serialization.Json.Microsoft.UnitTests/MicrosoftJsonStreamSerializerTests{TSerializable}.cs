@@ -1,55 +1,19 @@
 ﻿// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-using Depra.Serialization.Extensions;
+using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Json.Microsoft.UnitTests;
 
 [TestFixture(typeof(SerializableClass))]
 [TestFixture(typeof(SerializableStruct))]
 [TestFixture(typeof(SerializableRecord))]
-internal sealed class MicrosoftJsonSerializerTests<TSerializable> where TSerializable : new()
+internal sealed class MicrosoftJsonStreamSerializerTests<TSerializable> where TSerializable : new()
 {
-	private MicrosoftJsonSerializer _serializer;
+	private IStreamSerializer _serializer;
 
 	[SetUp]
 	public void Setup() => _serializer = new MicrosoftJsonSerializer();
-
-	[Test]
-	public void SerializeToBytes_ThenResultIsNotNullOrEmpty()
-	{
-		// Arrange.
-		var input = new TSerializable();
-
-		// Act.
-		var serialized = _serializer.Serialize(input);
-
-		// Assert.
-		serialized.Should().NotBeNullOrEmpty();
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
-		                      $"{nameof(serialized)} : {serialized.Flatten()}");
-	}
-
-	[Test]
-	public void SerializeToString_AndDeserializeFromString_ThenResultEqualsInput()
-	{
-		// Arrange.
-		var input = new TSerializable();
-
-		// Act.
-		var serialized = _serializer.SerializeToString(input);
-		var deserialized = _serializer.Deserialize<TSerializable>(serialized);
-
-		// Assert.
-		deserialized.Should().BeEquivalentTo(input);
-
-		// Debug.
-		TestContext.WriteLine($"{nameof(input)} : {input}\n" +
-		                      $"{nameof(serialized)} : {serialized}\n" +
-		                      $"{nameof(deserialized)} : {deserialized}");
-	}
 
 	[Test]
 	public void SerializeToStream_AndDeserializeToInputType_ThenResultEqualsInput()
