@@ -2,21 +2,23 @@
 // © 2022-2023 Nikolay Melnikov <n.melnikov@depra.org>
 
 using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Jobs;
-using BenchmarkDotNet.Order;
 using BenchmarkDotNet.Running;
-using BenchmarkDotNet.Toolchains.InProcess.NoEmit;
-using BenchmarkDotNet.Validators;
+using BenchmarkDotNet.Toolchains.InProcess.Emit;
+using Depra.Serialization.Benchmarks;
 
-namespace Depra.Serialization.Benchmarks;
+var benchmark = BenchmarkSwitcher.FromTypes(new[] {
+	typeof(RawSerializationBenchmarks),
+});
 
-internal static class Program
+IConfig configuration = DefaultConfig.Instance.WithOptions(ConfigOptions.DisableOptimizationsValidator)
+	.AddJob(Job.ShortRun.WithToolchain(InProcessEmitToolchain.Instance));
+
+if (args.Length > 0)
 {
-	private static void Main() =>
-		BenchmarkRunner.Run(typeof(Program).Assembly, DefaultConfig.Instance
-			.AddValidator(JitOptimizationsValidator.FailOnError)
-			.AddJob(Job.ShortRun.WithToolchain(InProcessNoEmitToolchain.Instance))
-			.AddDiagnoser(MemoryDiagnoser.Default)
-			.WithOrderer(new DefaultOrderer(SummaryOrderPolicy.FastestToSlowest)));
+	benchmark.Run(args, configuration);
+}
+else
+{
+	benchmark.RunAll(configuration);
 }
