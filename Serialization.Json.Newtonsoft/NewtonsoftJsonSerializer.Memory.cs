@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// © 2022-2023 Nikolay Melnikov <n.melnikov@depra.org>
+
 using System;
 using Depra.Serialization.Errors;
 using Newtonsoft.Json;
@@ -16,8 +19,8 @@ namespace Depra.Serialization.Json.Newtonsoft
 
 		public object Deserialize(Type outputType, ReadOnlyMemory<byte> input)
 		{
-			Guard.AgainstNull(outputType, nameof(outputType));
 			Guard.AgainstEmpty(input, nameof(input));
+			Guard.AgainstNull(outputType, nameof(outputType));
 
 			var inputAsString = ENCODING_TYPE.GetString(input.Span);
 			return JsonConvert.DeserializeObject(inputAsString, outputType, _settings);

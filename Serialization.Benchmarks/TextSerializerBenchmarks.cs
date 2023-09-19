@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// © 2022-2023 Nikolay Melnikov <n.melnikov@depra.org>
+
 using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;

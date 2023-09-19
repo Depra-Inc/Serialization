@@ -1,7 +1,7 @@
-// Copyright © 2022-2023 Nikolay Melnikov. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
+// © 2022-2023 Nikolay Melnikov <n.melnikov@depra.org>
 
-namespace Depra.Serialization.Json.Microsoft.Benchmarks.SerializableTypes;
+namespace Depra.Serialization.Json.Newtonsoft.Benchmarks.Stubs;
 
 public class SerializableClass
 {

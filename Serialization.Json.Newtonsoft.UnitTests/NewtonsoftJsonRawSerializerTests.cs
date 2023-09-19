@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: Apache-2.0
+// © 2022-2023 Nikolay Melnikov <n.melnikov@depra.org>
+
 using Depra.Serialization.Extensions;
 
 namespace Depra.Serialization.Json.Newtonsoft.UnitTests;
