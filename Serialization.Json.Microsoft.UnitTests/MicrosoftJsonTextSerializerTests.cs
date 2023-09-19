@@ -1,5 +1,3 @@
-using Depra.Serialization.Interfaces;
-
 namespace Depra.Serialization.Json.Microsoft.UnitTests;
 
 internal sealed class MicrosoftJsonTextSerializerTests

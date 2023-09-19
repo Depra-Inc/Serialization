@@ -8,7 +8,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
 using Depra.Serialization.Errors;
-using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Binary
 {

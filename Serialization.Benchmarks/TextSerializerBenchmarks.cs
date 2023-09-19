@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Configs;
 using Depra.Serialization.Binary;
-using Depra.Serialization.Interfaces;
 using Depra.Serialization.Json;
 using Depra.Serialization.Json.Microsoft;
 using Depra.Serialization.Json.Newtonsoft;

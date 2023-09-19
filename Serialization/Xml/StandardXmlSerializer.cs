@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Depra.Serialization.Errors;
-using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Xml
 {

@@ -1,5 +1,4 @@
 using Depra.Serialization.Extensions;
-using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Json.Microsoft.UnitTests;
 

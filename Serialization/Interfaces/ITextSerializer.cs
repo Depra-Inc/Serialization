@@ -1,6 +1,6 @@
 using System;
 
-namespace Depra.Serialization.Interfaces
+namespace Depra.Serialization
 {
 	public interface ITextSerializer
 	{
@@ -43,7 +43,7 @@ namespace Depra.Serialization.Interfaces
 		/// <typeparam name="TOut">The type of the object to be deserialized.</typeparam>
 		/// <returns>The deserialized object of specified type.</returns>
 		TOut Deserialize<TOut>(string input);
-		
+
 		/// <summary>
 		/// Deserializes the specified object from given <see cref="string"/>.
 		/// </summary>

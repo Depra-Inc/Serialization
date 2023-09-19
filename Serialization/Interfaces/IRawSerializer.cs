@@ -1,6 +1,6 @@
 using System;
 
-namespace Depra.Serialization.Interfaces
+namespace Depra.Serialization
 {
 	public interface IRawSerializer
 	{

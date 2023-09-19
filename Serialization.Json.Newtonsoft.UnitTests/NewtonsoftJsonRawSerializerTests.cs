@@ -1,6 +1,4 @@
 using Depra.Serialization.Extensions;
-using Depra.Serialization.Interfaces;
-using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
 
 namespace Depra.Serialization.Json.Newtonsoft.UnitTests;
 

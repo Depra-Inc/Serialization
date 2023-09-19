@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Depra.Serialization.Interfaces
+namespace Depra.Serialization
 {
 	public interface IStreamSerializer
 	{

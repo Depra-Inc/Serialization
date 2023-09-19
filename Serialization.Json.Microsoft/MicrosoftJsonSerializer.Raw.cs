@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
 using Depra.Serialization.Errors;
-using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Json.Microsoft
 {

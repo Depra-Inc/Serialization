@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Depra.Serialization.Errors;
 using Depra.Serialization.Extensions;
-using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Json.Microsoft
 {

@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using Depra.Serialization.Interfaces;
 using Depra.Serialization.Internal;
 
 namespace Depra.Serialization.Json

@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Depra.Serialization.Interfaces
+namespace Depra.Serialization
 {
     /// <summary>
     /// Interface for deserializing bytes from regions of memory.

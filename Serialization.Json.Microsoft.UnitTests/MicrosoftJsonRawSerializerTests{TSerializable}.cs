@@ -1,5 +1,4 @@
 using Depra.Serialization.Extensions;
-using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Json.Microsoft.UnitTests;
 
@@ -12,7 +11,7 @@ internal sealed class MicrosoftJsonRawSerializerTests<TSerializable> where TSeri
 
 	[SetUp]
 	public void Setup() => _serializer = new MicrosoftJsonSerializer();
-	
+
 	[Test]
 	public void SerializeToBytes_ThenResultIsNotNullOrEmpty()
 	{

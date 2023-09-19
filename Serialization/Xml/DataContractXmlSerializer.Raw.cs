@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using Depra.Serialization.Interfaces;
 
 namespace Depra.Serialization.Xml
 {

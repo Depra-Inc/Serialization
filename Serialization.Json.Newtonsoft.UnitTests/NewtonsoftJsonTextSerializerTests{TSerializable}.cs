@@ -1,5 +1,3 @@
-using Depra.Serialization.Interfaces;
-
 namespace Depra.Serialization.Json.Newtonsoft.UnitTests;
 
 [TestFixture(typeof(SerializableClass))]
@@ -11,7 +9,7 @@ internal sealed class NewtonsoftJsonTextSerializerTests<TSerializable> where TSe
 
 	[SetUp]
 	public void Setup() => _serializer = new NewtonsoftJsonSerializer();
-	
+
 	[Test]
 	public void SerializeToString_AndDeserializeFromString_ThenResultEqualsInput()
 	{

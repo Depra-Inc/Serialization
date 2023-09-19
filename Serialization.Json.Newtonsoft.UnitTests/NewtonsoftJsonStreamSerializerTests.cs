@@ -1,5 +1,3 @@
-using Depra.Serialization.Interfaces;
-
 namespace Depra.Serialization.Json.Newtonsoft.UnitTests;
 
 internal sealed class NewtonsoftJsonStreamSerializerTests
@@ -10,12 +8,12 @@ internal sealed class NewtonsoftJsonStreamSerializerTests
 		yield return new Container(typeof(SerializableStruct), new SerializableStruct());
 		yield return new Container(typeof(SerializableRecord), new SerializableRecord());
 	}
-	
+
 	private IStreamSerializer _serializer;
 
 	[SetUp]
 	public void Setup() => _serializer = new NewtonsoftJsonSerializer();
-	
+
 	[Test]
 	public void SerializeToStream_AndDeserializeFromString_ThenResultEqualsInput(
 		[ValueSource(nameof(GetInput))] Container input)

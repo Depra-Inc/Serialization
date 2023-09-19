@@ -1,6 +1,5 @@
 using System;
 using Depra.Serialization.Errors;
-using Depra.Serialization.Interfaces;
 using Newtonsoft.Json;
 
 namespace Depra.Serialization.Json.Newtonsoft

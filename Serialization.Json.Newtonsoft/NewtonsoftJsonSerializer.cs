@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Depra.Serialization.Errors;
 using Depra.Serialization.Extensions;
-using Depra.Serialization.Interfaces;
 using Newtonsoft.Json;
 
 namespace Depra.Serialization.Json.Newtonsoft

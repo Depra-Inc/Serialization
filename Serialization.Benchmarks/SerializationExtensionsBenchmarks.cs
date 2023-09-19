@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using Depra.Serialization.Binary;
 using Depra.Serialization.Extensions;
-using Depra.Serialization.Interfaces;
 using Depra.Serialization.Json;
 using Depra.Serialization.Json.Microsoft;
 using Depra.Serialization.Json.Newtonsoft;
