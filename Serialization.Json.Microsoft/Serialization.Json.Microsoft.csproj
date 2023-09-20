@@ -3,7 +3,7 @@
     <PropertyGroup>
         <AssemblyName>Depra.Serialization.Json.Microsoft</AssemblyName>
         <RootNamespace>Depra.Serialization.Json.Microsoft</RootNamespace>
-        <Version>1.0.2</Version>
+        <Version>1.1.0</Version>
         <Authors>Nikolay Melnikov</Authors>
         <Company>Depra</Company>
         <Description>Adapter for serializer from System.Text.Json.</Description>
@@ -16,7 +16,7 @@
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <TargetFrameworks>netstandard2.1;net7.0</TargetFrameworks>
         <PackageReleaseNotes>Namespaces cleaned; 
-Adapter removed; 
+Interfaces separated,
 License updated</PackageReleaseNotes>
     </PropertyGroup>
 
