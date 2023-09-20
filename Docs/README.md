@@ -92,9 +92,9 @@ var deserialized = await serializer.DeserializeAsync(serialized, typeof(MyDataTy
 
 ## ➕ Extensions
 
-- `Depra.Newtonsoft.Json` - Adds support for serialization and deserialization in JSON format
+- `Depra.Json.Newtonsoft` - Adds support for serialization and deserialization in JSON format
   using the `Newtonsoft.Json` library.
-- `Depra.Microsoft.Json` - Adds support for serialization and deserialization in JSON format
+- `Depra.Json.Microsoft` - Adds support for serialization and deserialization in JSON format
   using the `System.Text.Json` library.
 
 ## 🤝 Collaboration
