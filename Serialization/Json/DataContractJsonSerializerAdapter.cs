@@ -45,7 +45,7 @@ namespace Depra.Serialization.Json
 		}
 
 		public TOut Deserialize<TOut>(Stream inputStream) =>
-			(TOut)Deserialize(inputStream, typeof(TOut));
+			(TOut) Deserialize(inputStream, typeof(TOut));
 
 		public object Deserialize(Stream inputStream, Type outputType)
 		{
@@ -58,7 +58,8 @@ namespace Depra.Serialization.Json
 			return serializer.ReadObject(inputStream);
 		}
 
-		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream, CancellationToken cancellationToken = default)
+		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
+			CancellationToken cancellationToken = default)
 		{
 			cancellationToken.ThrowIfCancellationRequested();
 			return new ValueTask<TOut>(Deserialize<TOut>(inputStream));

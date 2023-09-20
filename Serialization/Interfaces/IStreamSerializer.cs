@@ -67,7 +67,8 @@ namespace Depra.Serialization
 		/// <param name="cancellationToken">For cancellation ability.</param>
 		/// <typeparam name="TOut">The type of the object to be deserialized.</typeparam>
 		/// <returns>The deserialized object of specified type.</returns>
-		ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream, CancellationToken cancellationToken = default);
+		ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
+			CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Deserializes the specified object from given <see cref="Stream"/> asynchronously.
@@ -76,6 +77,7 @@ namespace Depra.Serialization
 		/// <param name="cancellationToken">For cancellation ability.</param>
 		/// <param name="outputType">The type of the object to be deserialized.</param>
 		/// <returns>The deserialized object of specified type.</returns>
-		ValueTask<object> DeserializeAsync(Stream inputStream, Type outputType, CancellationToken cancellationToken = default);
+		ValueTask<object> DeserializeAsync(Stream inputStream, Type outputType,
+			CancellationToken cancellationToken = default);
 	}
 }

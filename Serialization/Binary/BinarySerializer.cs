@@ -47,7 +47,7 @@ namespace Depra.Serialization.Binary
 			Task.Run(() => Serialize(outputStream, input, inputType));
 
 		public TOut Deserialize<TOut>(Stream inputStream) =>
-			(TOut)Deserialize(inputStream, typeof(TOut));
+			(TOut) Deserialize(inputStream, typeof(TOut));
 
 		public object Deserialize(Stream inputStream, Type outputType)
 		{

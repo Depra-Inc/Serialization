@@ -36,7 +36,7 @@ namespace Depra.Serialization.Extensions
 			{
 				for (var index = 0; index < count.Value; ++index)
 				{
-					result.Add((T)self.GetValue(dataName + "_[" + index + "]", typeof(T)));
+					result.Add((T) self.GetValue(dataName + "_[" + index + "]", typeof(T)));
 				}
 			}
 			else
@@ -44,7 +44,7 @@ namespace Depra.Serialization.Extensions
 				// Backward compatible.
 				try
 				{
-					result.AddRange((IList<T>)self.GetValue(dataName, typeof(IList<T>)));
+					result.AddRange((IList<T>) self.GetValue(dataName, typeof(IList<T>)));
 				}
 				catch
 				{

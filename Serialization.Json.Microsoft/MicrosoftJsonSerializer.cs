@@ -87,7 +87,8 @@ namespace Depra.Serialization.Json.Microsoft
 			return JsonSerializer.Deserialize(ref utf8Reader, outputType, _options);
 		}
 
-		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream, CancellationToken cancellationToken = default)
+		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
+			CancellationToken cancellationToken = default)
 		{
 			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
 

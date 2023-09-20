@@ -92,7 +92,7 @@ namespace Depra.Serialization.Json.Newtonsoft
 		}
 
 		public TOut Deserialize<TOut>(Stream inputStream) =>
-			(TOut)Deserialize(inputStream, typeof(TOut));
+			(TOut) Deserialize(inputStream, typeof(TOut));
 
 		public async ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
 			CancellationToken cancellationToken = default)
