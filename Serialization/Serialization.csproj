@@ -14,11 +14,10 @@
         <RepositoryUrl>https://github.com/Depression-aggression/Serialization</RepositoryUrl>
         <RepositoryType>Module</RepositoryType>
         <PackageTags>Depra, Serialization, Deserialization, Serializer, Async, Binary, Xml, Json</PackageTags>
-        <PackageVersion>1.1.5</PackageVersion>
+        <PackageVersion>1.2.0</PackageVersion>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <PackageReleaseNotes>Namespaces cleaned; 
-Adapter removed; 
-License updated</PackageReleaseNotes>
+        <PackageReleaseNotes>Interfaces separated
+Namespaces cleaned; </PackageReleaseNotes>
         <LangVersion>9</LangVersion>
     </PropertyGroup>
     
