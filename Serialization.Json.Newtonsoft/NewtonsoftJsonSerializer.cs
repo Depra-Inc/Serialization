@@ -9,6 +9,8 @@ namespace Depra.Serialization.Json.Newtonsoft
 {
 	public sealed partial class NewtonsoftJsonSerializer : ISerializer
 	{
+		public NewtonsoftJsonSerializer() => _serializer = JsonSerializer.CreateDefault();
+
 		public byte[] Serialize<TIn>(TIn input)
 		{
 			Guard.AgainstNull(input, nameof(input));
