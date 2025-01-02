@@ -1,81 +1,37 @@
-﻿// SPDX-License-Identifier: Apache-2.0
-// © 2022-2023 Nikolay Melnikov <n.melnikov@depra.org>
+// SPDX-License-Identifier: Apache-2.0
+// © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
 
 using System;
 using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using Depra.Serialization.Errors;
 
 namespace Depra.Serialization.Json
 {
-	/// <summary>
-	/// Serializer using <see cref="DataContractJsonSerializer"/>.
-	/// </summary>
-	public readonly partial struct DataContractJsonSerializerAdapter : IStreamSerializer
+	public readonly partial struct DataContractJsonSerializerAdapter : ISerializer
 	{
-		public void Serialize<TIn>(Stream outputStream, TIn input)
+		public byte[] Serialize<TIn>(TIn input)
 		{
-			Guard.AgainstNull(input, nameof(input));
-			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
-
-			new DataContractJsonSerializer(typeof(TIn)).WriteObject(outputStream, input);
+			using var memoryStream = new MemoryStream();
+			Serialize(memoryStream, input);
+			return memoryStream.ToArray();
 		}
 
-		public void Serialize(Stream outputStream, object input, Type inputType)
+		public byte[] Serialize(object input, Type inputType)
 		{
-			Guard.AgainstNull(input, nameof(input));
-			Guard.AgainstNull(inputType, nameof(inputType));
-			Guard.AgainstNullOrEmpty(outputStream, nameof(outputStream));
-
-			new DataContractJsonSerializer(inputType).WriteObject(outputStream, input);
+			using var memoryStream = new MemoryStream();
+			Serialize(memoryStream, input, inputType);
+			return memoryStream.ToArray();
 		}
 
-		public Task SerializeAsync<TIn>(Stream outputStream, TIn input)
+		public TOut Deserialize<TOut>(byte[] input)
 		{
-			var serializer = this;
-			return Task.Run(() => serializer.Serialize(outputStream, input));
+			using var memoryStream = new MemoryStream(input);
+			return Deserialize<TOut>(memoryStream);
 		}
 
-		public Task SerializeAsync(Stream outputStream, object input, Type inputType)
+		public object Deserialize(byte[] input, Type outputType)
 		{
-			var serializer = this;
-			return Task.Run(() => serializer.Serialize(outputStream, input, inputType));
+			using var memoryStream = new MemoryStream(input);
+			return Deserialize(memoryStream, outputType);
 		}
-
-		public TOut Deserialize<TOut>(Stream inputStream) =>
-			(TOut) Deserialize(inputStream, typeof(TOut));
-
-		public object Deserialize(Stream inputStream, Type outputType)
-		{
-			Guard.AgainstNull(outputType, nameof(outputType));
-			Guard.AgainstNullOrEmpty(inputStream, nameof(inputStream));
-
-			var serializer = new DataContractJsonSerializer(outputType);
-			inputStream.Seek(0, SeekOrigin.Begin);
-
-			return serializer.ReadObject(inputStream);
-		}
-
-		public ValueTask<TOut> DeserializeAsync<TOut>(Stream inputStream,
-			CancellationToken cancellationToken = default)
-		{
-			cancellationToken.ThrowIfCancellationRequested();
-			return new ValueTask<TOut>(Deserialize<TOut>(inputStream));
-		}
-
-		public ValueTask<object> DeserializeAsync(Stream inputStream, Type outputType,
-			CancellationToken cancellationToken = default)
-		{
-			cancellationToken.ThrowIfCancellationRequested();
-			return new ValueTask<object>(Deserialize(inputStream, outputType));
-		}
-
-		/// <summary>
-		/// Just for tests and benchmarks.
-		/// </summary>
-		/// <returns>Returns the pretty name of the serializer.</returns>
-		public override string ToString() => "DC_JsonSerializer";
 	}
 }

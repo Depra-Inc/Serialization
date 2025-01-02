@@ -17,7 +17,7 @@ namespace Depra.Serialization.Extensions
 		/// <typeparam name="TOut">The type of the object to be cloned.</typeparam>
 		/// <returns>The cloned object of specified type.</returns>
 		public static TOut Clone<TSerializer, TOut>(this TSerializer serializer, TOut input)
-			where TSerializer : IStreamSerializer, IRawSerializer
+			where TSerializer : IStreamSerializer, ISerializer
 		{
 			using var memoryStream = new MemoryStream(serializer.Serialize(input));
 			return serializer.Deserialize<TOut>(memoryStream);
@@ -31,7 +31,7 @@ namespace Depra.Serialization.Extensions
 		/// <param name="inputType">The type of the object to be cloned.</param>
 		/// <returns>The cloned object.</returns>
 		public static object Clone<TSerializer>(this TSerializer serializer, object input, Type inputType)
-			where TSerializer : IRawSerializer, IStreamSerializer
+			where TSerializer : ISerializer, IStreamSerializer
 		{
 			using var memoryStream = new MemoryStream(serializer.Serialize(input, inputType));
 			return serializer.Deserialize(memoryStream, inputType);

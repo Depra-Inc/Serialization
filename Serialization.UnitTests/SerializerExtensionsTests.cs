@@ -49,23 +49,23 @@ internal sealed class SerializerExtensionsTests<TSerializable> where TSerializab
 		                      $"{nameof(cloned)} : {cloned}");
 	}
 
-	internal sealed class RawAndStreamSerializer : IRawSerializer, IStreamSerializer
+	internal sealed class RawAndStreamSerializer : ISerializer, IStreamSerializer
 	{
 		private readonly object _serializer;
 
 		public RawAndStreamSerializer(object serializer) => _serializer = serializer;
 
 		public byte[] Serialize<TIn>(TIn input) =>
-			((IRawSerializer)_serializer).Serialize(input);
+			((ISerializer)_serializer).Serialize(input);
 
 		public byte[] Serialize(object input, Type inputType) =>
-			((IRawSerializer)_serializer).Serialize(input, inputType);
+			((ISerializer)_serializer).Serialize(input, inputType);
 
 		public TOut Deserialize<TOut>(byte[] input) =>
-			((IRawSerializer)_serializer).Deserialize<TOut>(input);
+			((ISerializer)_serializer).Deserialize<TOut>(input);
 
 		public object Deserialize(byte[] input, Type outputType) =>
-			((IRawSerializer)_serializer).Deserialize(input, outputType);
+			((ISerializer)_serializer).Deserialize(input, outputType);
 
 		public void Serialize<TIn>(Stream outputStream, TIn input) =>
 			((IStreamSerializer)_serializer).Serialize(outputStream, input);

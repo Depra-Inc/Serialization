@@ -14,7 +14,7 @@ internal sealed class NewtonsoftJsonRawSerializerTests
 		yield return new Container(typeof(SerializableRecord), new SerializableRecord());
 	}
 
-	private IRawSerializer _serializer;
+	private ISerializer _serializer;
 
 	[SetUp]
 	public void Setup() => _serializer = new NewtonsoftJsonSerializer();

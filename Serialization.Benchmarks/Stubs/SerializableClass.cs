@@ -5,28 +5,29 @@ using System;
 using System.Xml.Serialization;
 using Depra.Serialization.Json.Newtonsoft;
 
-namespace Depra.Serialization.Benchmarks.Stubs;
-
-/// <summary>
-/// Must be public to <see cref="XmlSerializer"/>.
-/// </summary>
-[Serializable]
-public class SerializableClass
+namespace Depra.Serialization.Benchmarks.Stubs
 {
-	internal static readonly Type Type = typeof(SerializableClass);
-
 	/// <summary>
-	/// Property can be a field.
-	/// Cannot be private and internal to <see cref="XmlSerializer"/> and <see cref="NewtonsoftJsonSerializer"/>
+	/// Must be public to <see cref="XmlSerializer"/>.
 	/// </summary>
-	public string Id { get; set; }
+	[Serializable]
+	public class SerializableClass
+	{
+		internal static readonly Type Type = typeof(SerializableClass);
 
-	/// <summary>
-	/// Required for <see cref="XmlSerializer"/>
-	/// </summary>
-	public SerializableClass() { }
+		/// <summary>
+		/// Property can be a field.
+		/// Cannot be private and internal to <see cref="XmlSerializer"/> and <see cref="NewtonsoftJsonSerializer"/>
+		/// </summary>
+		public string Id { get; set; }
 
-	public SerializableClass(string id) => Id = id;
+		/// <summary>
+		/// Required for <see cref="XmlSerializer"/>
+		/// </summary>
+		public SerializableClass() { }
 
-	public override string ToString() => Id;
+		public SerializableClass(string id) => Id = id;
+
+		public override string ToString() => Id;
+	}
 }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// © 2022-2023 Nikolay Melnikov <n.melnikov@depra.org>
+// © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
 
 using System;
 using System.Text;
@@ -7,11 +7,11 @@ using Depra.Serialization.Internal;
 
 namespace Depra.Serialization.Json
 {
-	public readonly partial struct DataContractJsonSerializerAdapter : ITextSerializer
+	public readonly partial struct DataContractJsonSerializerAdapter : ITextSerializer, IPrettyTextSerializer
 	{
 		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 
-		public string SerializeToString<TIn>(TIn input) =>
+		public string SerializeToString<TIn>(TIn input) => 
 			ENCODING_TYPE.GetString(Serialize(input));
 
 		public string SerializeToString(object input, Type inputType) =>
@@ -29,10 +29,8 @@ namespace Depra.Serialization.Json
 			return Deserialize(stream, outputType);
 		}
 
-		string ITextSerializer.SerializeToPrettyString<TIn>(TIn input) =>
-			SerializeToString(input);
+		public string SerializeToPrettyString<TIn>(TIn input) => SerializeToString(input);
 
-		string ITextSerializer.SerializeToPrettyString(object input, Type inputType) =>
-			SerializeToString(input, inputType);
+		public string SerializeToPrettyString(object input, Type inputType) => SerializeToString(input, inputType);
 	}
 }

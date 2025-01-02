@@ -18,7 +18,7 @@ internal sealed class StreamSerializersTests
 		yield return new Container(typeof(SerializableRecord), new SerializableRecord(Guid.NewGuid().ToString()));
 	}
 
-	private static IEnumerable<IRawSerializer> GetSerializers()
+	private static IEnumerable<ISerializer> GetSerializers()
 	{
 		// Binary.
 		yield return new BinarySerializer();

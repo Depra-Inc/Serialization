@@ -13,7 +13,7 @@ namespace Depra.Serialization.UnitTests;
 [TestFixture(typeof(SerializableRecord))]
 internal sealed class RawSerializersTests<TSerializable> where TSerializable : new()
 {
-	private static IEnumerable<IRawSerializer> GetSerializers()
+	private static IEnumerable<ISerializer> GetSerializers()
 	{
 		// Binary.
 		yield return new BinarySerializer();
@@ -30,7 +30,7 @@ internal sealed class RawSerializersTests<TSerializable> where TSerializable : n
 
 	[Test]
 	public void SerializeToBytes_AndDeserializeFromBytes_ThenResultEqualsInput(
-		[ValueSource(nameof(GetSerializers))] IRawSerializer serializer)
+		[ValueSource(nameof(GetSerializers))] ISerializer serializer)
 	{
 		// Arrange.
 		var input = new TSerializable();

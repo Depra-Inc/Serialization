@@ -1,10 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <RootNamespace>Depra.Serialization.Benchmarks</RootNamespace>
-        <LangVersion>11</LangVersion>
+        <LangVersion>9</LangVersion>
         <PackageId>Serialization.Benchmarks</PackageId>
         <AssemblyName>Depra.Serialization.Benchmarks</AssemblyName>
     </PropertyGroup>

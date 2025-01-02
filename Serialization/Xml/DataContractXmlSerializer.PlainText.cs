@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// © 2022-2023 Nikolay Melnikov <n.melnikov@depra.org>
+// © 2022-2024 Nikolay Melnikov <n.melnikov@depra.org>
 
 using System;
 using System.Text;
@@ -7,7 +7,7 @@ using Depra.Serialization.Internal;
 
 namespace Depra.Serialization.Xml
 {
-	public readonly partial struct DataContractXmlSerializer : ITextSerializer
+	public readonly partial struct DataContractXmlSerializer : ITextSerializer, IPrettyTextSerializer
 	{
 		private static readonly Encoding ENCODING_TYPE = Encoding.UTF8;
 
@@ -29,10 +29,8 @@ namespace Depra.Serialization.Xml
 			return Deserialize(stream, outputType);
 		}
 
-		string ITextSerializer.SerializeToPrettyString<TIn>(TIn input) =>
-			SerializeToString(input);
+		public string SerializeToPrettyString<TIn>(TIn input) => SerializeToString(input);
 
-		string ITextSerializer.SerializeToPrettyString(object input, Type inputType) =>
-			SerializeToString(input, inputType);
+		public string SerializeToPrettyString(object input, Type inputType) => SerializeToString(input, inputType);
 	}
 }

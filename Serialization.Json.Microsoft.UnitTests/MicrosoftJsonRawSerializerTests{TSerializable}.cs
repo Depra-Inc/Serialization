@@ -10,7 +10,7 @@ namespace Depra.Serialization.Json.Microsoft.UnitTests;
 [TestFixture(typeof(SerializableRecord))]
 internal sealed class MicrosoftJsonRawSerializerTests<TSerializable> where TSerializable : new()
 {
-	private IRawSerializer _serializer;
+	private ISerializer _serializer;
 
 	[SetUp]
 	public void Setup() => _serializer = new MicrosoftJsonSerializer();

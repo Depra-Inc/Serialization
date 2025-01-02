@@ -17,7 +17,7 @@ internal sealed class RawSerializersTests
 		yield return new Container(typeof(SerializableRecord), new SerializableRecord());
 	}
 
-	private static IEnumerable<IRawSerializer> GetSerializers()
+	private static IEnumerable<ISerializer> GetSerializers()
 	{
 		// Binary.
 		yield return new BinarySerializer();
@@ -35,7 +35,7 @@ internal sealed class RawSerializersTests
 	[Test]
 	public void SerializeToBytes_AndDeserializeFromBytes_ThenResultEqualsInput(
 		[ValueSource(nameof(GetInput))] Container input,
-		[ValueSource(nameof(GetSerializers))] IRawSerializer serializer)
+		[ValueSource(nameof(GetSerializers))] ISerializer serializer)
 	{
 		// Arrange & Act.
 		var serialized = serializer.Serialize(input.Value, input.Type);

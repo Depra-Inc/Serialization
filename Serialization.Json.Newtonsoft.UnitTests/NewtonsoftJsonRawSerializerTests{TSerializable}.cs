@@ -10,7 +10,7 @@ namespace Depra.Serialization.Json.Newtonsoft.UnitTests;
 [TestFixture(typeof(SerializableRecord))]
 internal sealed class NewtonsoftJsonRawSerializerTests<TSerializable> where TSerializable : new()
 {
-	private IRawSerializer _serializer;
+	private ISerializer _serializer;
 
 	[SetUp]
 	public void Setup() => _serializer = new NewtonsoftJsonSerializer();

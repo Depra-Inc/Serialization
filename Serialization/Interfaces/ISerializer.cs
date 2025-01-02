@@ -5,7 +5,7 @@ using System;
 
 namespace Depra.Serialization
 {
-	public interface IRawSerializer
+	public interface ISerializer
 	{
 		/// <summary>
 		/// Serializes the given <paramref name="input"/> into a <see cref="byte"/> array.
